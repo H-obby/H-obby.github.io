@@ -1,0 +1,87 @@
+CREATE TABLE Utilisateur(
+   id_utilisateur INT,
+   login VARCHAR(50) NOT NULL,
+   mot_de_passe VARCHAR(50) NOT NULL,
+   nom VARCHAR(50) NOT NULL,
+   prenom VARCHAR(50) NOT NULL,
+   centre VARCHAR(50) NOT NULL,
+   PRIMARY KEY(id_utilisateur)
+);
+
+CREATE TABLE Promotion(
+   id_promo INT,
+   promo VARCHAR(50) NOT NULL,
+   PRIMARY KEY(id_promo)
+);
+
+CREATE TABLE Entreprise(
+   id_entreprise INT,
+   nom VARCHAR(50) NOT NULL,
+   secteur_d_activite INT,
+   mail VARCHAR(50),
+   PRIMARY KEY(id_entreprise)
+);
+
+CREATE TABLE Adresse(
+   id_addresse INT,
+   addresse VARCHAR(100) NOT NULL,
+   PRIMARY KEY(id_addresse)
+);
+
+CREATE TABLE Stage(
+   id_stage VARCHAR(50),
+   competences VARCHAR(50),
+   adresse VARCHAR(50),
+   promo_concernees VARCHAR(50),
+   duree VARCHAR(50),
+   remuneration DECIMAL(15,2),
+   date_offre DATE,
+   places_disponibles INT,
+   id_entreprise INT NOT NULL,
+   PRIMARY KEY(id_stage),
+   FOREIGN KEY(id_entreprise) REFERENCES Entreprise(id_entreprise)
+);
+
+CREATE TABLE Administrateur(
+   id_admin INT,
+   login VARCHAR(50) NOT NULL,
+   mot_de_passe VARCHAR(50) NOT NULL,
+   nom VARCHAR(50),
+   prenom VARCHAR(50),
+   PRIMARY KEY(id_admin)
+);
+
+CREATE TABLE Appartenir(
+   id_utilisateur INT,
+   id_promo INT,
+   PRIMARY KEY(id_utilisateur, id_promo),
+   FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur),
+   FOREIGN KEY(id_promo) REFERENCES Promotion(id_promo)
+);
+
+CREATE TABLE Evaluation(
+   id_utilisateur INT,
+   note INT,
+   id_entreprise INT NOT NULL,
+   PRIMARY KEY(id_utilisateur),
+   FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur),
+   FOREIGN KEY(id_entreprise) REFERENCES Entreprise(id_entreprise)
+);
+
+CREATE TABLE Se_situer(
+   id_entreprise INT,
+   id_addresse INT,
+   PRIMARY KEY(id_entreprise, id_addresse),
+   FOREIGN KEY(id_entreprise) REFERENCES Entreprise(id_entreprise),
+   FOREIGN KEY(id_addresse) REFERENCES Adresse(id_addresse)
+);
+
+CREATE TABLE Relation(
+   id_utilisateur INT,
+   id_stage VARCHAR(50),
+   wish_listed LOGICAL,
+   status_offre INT,
+   PRIMARY KEY(id_utilisateur, id_stage),
+   FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur),
+   FOREIGN KEY(id_stage) REFERENCES Stage(id_stage)
+);
