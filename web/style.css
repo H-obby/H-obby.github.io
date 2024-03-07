@@ -7,7 +7,7 @@
   --dl-color-danger-300: #A22020;
   --dl-color-danger-500: #BF2626;
   --dl-color-danger-700: #E14747;
-  --dl-color-gray-black: #000000;
+  --dl-color-gray-black: #0e1111ff;
   --dl-color-gray-white: #e7f0f2ff;
   --dl-size-size-medium: 96px;
   --dl-size-size-xlarge: 192px;
@@ -72,6 +72,10 @@
 }
 .list-item {
   display: list-item;
+}
+.tagListItem {
+  display: list-item;
+  padding-bottom: var(--dl-space-space-halfunit);
 }
 .teleport-show {
   display: flex !important;
