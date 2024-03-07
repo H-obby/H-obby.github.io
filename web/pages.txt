@@ -1,0 +1,17 @@
+non connecté:
+	Hero
+	Connexion (SFx1)
+
+connecté:
+	Home 
+	Recherche/gestion entreprise (SFx2)
+		Visionnage entreprise (SFx5, SFx7)
+		Création/modification entreprise (SFx3, SFx4, SFx6)
+	Recherche/gestion offre de stage (SFx8)
+		Visionnage offre (SFx12, SFx22, SFx24)
+		Création/modification offre (SFx9, SFx10, SFx11)
+	Recherche/gestion pilotes (SFx13)
+		Création/modification pilote (SFx14, SFx15, SFx16)
+	Recherche/gestion étudiants (SFx17)
+		Création/modification/visionnage étudiant (SFx18, SFx19, SFx20, SFx21)
+	Wish-list (SFx23)
