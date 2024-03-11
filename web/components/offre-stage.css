@@ -106,6 +106,10 @@
   margin-bottom: var(--dl-space-space-unit);
 }
 
+
+
+
+
 @media(max-width: 991px) {
   .offre-stage-blog-post-card {
     flex-direction: row;

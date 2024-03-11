@@ -7,34 +7,13 @@
     <meta charset="utf-8" />
     <meta property="twitter:card" content="summary_large_image" />
 
-    <style data-tag="reset-style-sheet">
-      html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}html { scroll-behavior: smooth  }
-    </style>
-    <style data-tag="default-style-sheet">
-      html {
-        font-family: Inter;
-        font-size: 16px;
-      }
-
-      body {
-        font-weight: 400;
-        font-style:normal;
-        text-decoration: none;
-        text-transform: none;
-        letter-spacing: normal;
-        line-height: 1.15;
-        color: var(--dl-color-gray-black);
-        background-color: var(--dl-color-gray-white);
-
-      }
-    </style>
     <link
       rel="stylesheet"
       href="https://unpkg.com/animate.css@4.1.1/animate.css"
     />
     <link
       rel="shortcut icon"
-      href="public/practicum.svg"
+      href="../public/practicum.svg"
       type="icon/png"
       sizes="32x32"
     />
@@ -45,43 +24,22 @@
     />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
       href="https://unpkg.com/@teleporthq/teleport-custom-scripts/dist/style.css"
     />
+    <style>
+      [data-thq="thq-dropdown"]:hover > [data-thq="thq-dropdown-list"] {
+          display: flex;
+        }
+
+        [data-thq="thq-dropdown"]:hover > div [data-thq="thq-dropdown-arrow"] {
+          transform: rotate(90deg);
+        }
+    </style>
   </head>
   <body>
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="../styles/style.css" />
     <div>
-      <link href="./logged-in-landing.css" rel="stylesheet" />
+      <link href="../styles/logged-in-landing.css" rel="stylesheet" />
 
       <div class="logged-in-landing-container">
         <header
@@ -90,36 +48,38 @@
         >
           <div class="logged-in-header-logo-name">
             <img
-              src="e81db3f4-1431-4060-a6f8-114b09430b17"
               alt="Logo Practicum"
+              src="../public/practicum2.svg"
               class="logged-in-header-image"
             />
           </div>
           <div class="search-bar-container search-bar-root-class-name2">
-            <img
-              alt="image"
-              src="public/search-svgrepo-com%20(1).svg"
-              class="search-bar-image"
-            />
-            <input
-              type="text"
-              placeholder="Rechercher"
-              class="search-bar-textinput input"
-            />
+            <div class="search-bar-container1">
+              <img
+                alt="image"
+                src="../public/search-svgrepo-com%20(1).svg"
+                class="search-bar-image"
+              />
+              <input
+                type="text"
+                placeholder="Rechercher"
+                class="search-bar-textinput input"
+              />
+            </div>
           </div>
           <div class="logged-in-header-container">
             <div class="logged-in-header-btn-group">
               <button type="button" class="logged-in-header-button button">
                 <img
-                  src="public/notification-12-svgrepo-com.svg"
                   alt="image"
+                  src="../public/notification-12-svgrepo-com.svg"
                   class="logged-in-header-image1"
                 />
               </button>
               <button type="button" class="logged-in-header-button1 button">
                 <img
-                  src="public/leetram-200h.png"
                   alt="image"
+                  src="../public/leetram-200h.png"
                   class="logged-in-header-image2"
                 />
               </button>
@@ -128,39 +88,148 @@
         </header>
         <div class="logged-in-landing-container1">
           <div class="logged-in-landing-container2">
-            <div class="logged-in-landing-container3">
-              <h1 class="logged-in-landing-text">Bienvenue ${User} !</h1>
+            <h1 class="logged-in-landing-text">Bienvenue ${User} !</h1>
+            <span>
+              Bienvenue sur Practicum, l'endroit où ta recherche de stage
+              devient une aventure captivante ! Ici, imagine une liste de
+              souhaits pleine de stages excitants et des profs qui agissent
+              comme des complices super futés, dénichant pour toi les
+              opportunités les plus passionnantes. Sur Practicum, explore des
+              offres de stages qui te correspondent vraiment, personnalise ta
+              liste de rêves professionnels, le tout dans une ambiance
+              décontractée et pro. C'est comme si tes profs et une équipe de
+              chasseurs de stages se réunissaient pour t'ouvrir les portes des
+              expériences les plus prometteuses. Prêt à booster ta carrière avec
+              Practicum ? Let’s do this! 🚀
+            </span>
+          </div>
+          <h1 class="logged-in-landing-debug">
+            DEBUG : Ces boutons permettent de naviguer et ne seront là que pour
+            le mockup.
+          </h1>
+          <div class="logged-in-landing-container3">
+            <a
+              href="modif-etudiant.html"
+              class="logged-in-landing-button button"
+            >
               <span>
-                Bienvenue sur Practicum, l'endroit où ta recherche de stage
-                devient une aventure captivante ! Ici, imagine une liste de
-                souhaits pleine de stages excitants et des profs qui agissent
-                comme des complices super futés, dénichant pour toi les
-                opportunités les plus passionnantes. Sur Practicum, explore des
-                offres de stages qui te correspondent vraiment, personnalise ta
-                liste de rêves professionnels, le tout dans une ambiance
-                décontractée et pro. C'est comme si tes profs et une équipe de
-                chasseurs de stages se réunissaient pour t'ouvrir les portes des
-                expériences les plus prometteuses. Prêt à booster ta carrière
-                avec Practicum ? Let’s do this! 🚀
+                <span>Modif Etudiant</span>
+                <br />
               </span>
-            </div>
+            </a>
+            <a
+              href="modif-tuteur.html"
+              class="logged-in-landing-button01 button"
+            >
+              <span>
+                <span>Modif Tuteur</span>
+                <br />
+              </span>
+            </a>
+            <a
+              href="modif-offre-entre.html"
+              class="logged-in-landing-button02 button"
+            >
+              <span>
+                <span>Modif Entreprise</span>
+                <br />
+              </span>
+            </a>
+            <a
+              href="modif-offre-stage.html"
+              class="logged-in-landing-button03 button"
+            >
+              <span>
+                <span>Modif Offre de Stage</span>
+                <br />
+              </span>
+            </a>
           </div>
           <div class="logged-in-landing-container4">
-            <h1 class="logged-in-landing-text2">
+            <a
+              href="visu-etudiant.html"
+              class="logged-in-landing-button04 button"
+            >
+              <span>
+                <span>Affichage Etudiant</span>
+                <br />
+              </span>
+            </a>
+            <a
+              href="visu-tuteur.html"
+              class="logged-in-landing-button05 button"
+            >
+              <span>
+                <span>Affichage Tuteur</span>
+                <br />
+              </span>
+            </a>
+            <a
+              href="visu-entrpris.html"
+              class="logged-in-landing-button06 button"
+            >
+              <span>
+                <span>Affichage Entreprise</span>
+                <br />
+              </span>
+            </a>
+            <a
+              href="visu-offre-stage.html"
+              class="logged-in-landing-button07 button"
+            >
+              <span>
+                <span>Affichage Offre de Stage</span>
+                <br />
+              </span>
+            </a>
+          </div>
+          <div class="logged-in-landing-container5">
+            <a
+              href="page-recherche.html"
+              class="logged-in-landing-button08 button"
+            >
+              <span>
+                <span>Recherche Offre de Stage</span>
+                <br />
+              </span>
+            </a>
+            <a
+              href="page-recherche-utilisateur.html"
+              class="logged-in-landing-button09 button"
+            >
+              <span>
+                <span>Recherche Etudiant</span>
+                <br />
+              </span>
+            </a>
+            <a
+              href="page-recherche-tuteur.html"
+              class="logged-in-landing-button10 button"
+            >
+              <span>
+                <span>Recherche Tuteur</span>
+                <br />
+              </span>
+            </a>
+          </div>
+          <div class="logged-in-landing-container6">
+            <h1 class="logged-in-landing-text35">
               Les dernières offres par ici!
             </h1>
-            <div class="logged-in-landing-container5">
+            <div class="logged-in-landing-container7">
               <div class="search-bar-container search-bar-root-class-name1">
-                <img
-                  alt="image"
-                  src="public/search-svgrepo-com%20(1).svg"
-                  class="search-bar-image"
-                />
-                <input
-                  type="text"
-                  placeholder="Rechercher"
-                  class="search-bar-textinput input"
-                />
+                <div class="search-bar-container1">
+                  <img
+                    alt="image"
+                    src="../public/search-svgrepo-com%20(1).svg"
+                    class="search-bar-image"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Rechercher"
+                    class="search-bar-textinput input"
+                  />
+                </div>
               </div>
               <div
                 class="offre-stage-blog-post-card offre-stage-root-class-name9"
@@ -195,7 +264,7 @@
                     <button type="button" class="offre-stage-button button">
                       <img
                         alt="image"
-                        src="public/bookmark-svgrepo-com.svg"
+                        src="../public/bookmark-svgrepo-com.svg"
                         class="offre-stage-image"
                       />
                     </button>
@@ -235,7 +304,7 @@
                     <button type="button" class="offre-stage-button button">
                       <img
                         alt="image"
-                        src="public/bookmark-svgrepo-com.svg"
+                        src="../public/bookmark-svgrepo-com.svg"
                         class="offre-stage-image"
                       />
                     </button>
@@ -249,9 +318,9 @@
           <span class="footer-tdr">
             <span>© 2024 Practicum, Tous droits réservés.</span>
           </span>
-          <a href="logged-in-landing.html" class="footer-mentions-lgales">
+          <span class="footer-mentions-lgales">
             <span>Mentions légales</span>
-          </a>
+          </span>
           <div class="footer-icon-group">
             <button class="footer-auth button">
               <span>

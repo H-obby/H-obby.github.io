@@ -2,12 +2,19 @@
   display: flex;
   position: relative;
 }
+.search-bar-container1 {
+  flex: 0 0 auto;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  border-color: var(--dl-color-gray-black);
+  border-width: 1px;
+  padding-left: var(--dl-space-space-halfunit);
+  border-radius: var(--dl-radius-radius-radius8);
+  justify-content: flex-start;
+}
 .search-bar-image {
-  top: 6px;
-  left: 6px;
-  width: 23px;
-  margin: auto;
-  position: absolute;
+  width: 22px;
   align-self: center;
   object-fit: cover;
 }
@@ -16,18 +23,31 @@
   width: 80vw;
   max-width: 800px;
   min-width: var(--dl-size-size-large);
-  padding-left: var(--dl-space-space-twounits);
+  border-width: 0px;
+  padding-left: var(--dl-space-space-halfunit);
   border-radius: var(--dl-radius-radius-radius8);
+  background-color: transparent;
 }
 .search-bar-root-class-name {
   width: 62%;
 }
-
 .search-bar-root-class-name1 {
   width: 100%;
   height: auto;
   display: none;
   margin-bottom: var(--dl-space-space-unit);
+}
+.search-bar-root-class-name2 {
+  max-width: 70%;
+}
+.search-bar-root-class-name3 {
+  display: none;
+}
+.search-bar-root-class-name4 {
+  display: none;
+}
+.search-bar-root-class-name5 {
+  display: none;
 }
 @media(max-width: 991px) {
   .search-bar-textinput {
@@ -67,12 +87,27 @@
   .search-bar-root-class-name {
     width: 90%;
   }
+  .search-bar-root-class-name1 {
+    display: flex;
+  }
   .search-bar-root-class-name2 {
     width: auto;
     display: none;
   }
-  .search-bar-root-class-name1 {
+  .search-bar-root-class-name3 {
+    width: 90%;
     display: flex;
+    margin-bottom: var(--dl-space-space-twounits);
+  }
+  .search-bar-root-class-name4 {
+    width: 90%;
+    display: flex;
+    margin-bottom: var(--dl-space-space-twounits);
+  }
+  .search-bar-root-class-name5 {
+    width: 90%;
+    display: flex;
+    margin-bottom: var(--dl-space-space-twounits);
   }
 }
 
@@ -87,6 +122,7 @@
   padding-right: var(--dl-space-space-threeunits);
   padding-bottom: var(--dl-space-space-twounits);
   justify-content: space-between;
+  background-color: var(--dl-color-gray-white);
 }
 .logged-in-header-logo-name {
   display: flex;
@@ -138,6 +174,17 @@
   object-fit: cover;
   border-radius: var(--dl-radius-radius-round);
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

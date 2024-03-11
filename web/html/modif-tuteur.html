@@ -1,40 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Login-Page - WebProject</title>
-    <meta property="og:title" content="Login-Page - WebProject" />
+    <title>ModifTuteur - WebProject</title>
+    <meta property="og:title" content="ModifTuteur - WebProject" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
     <meta property="twitter:card" content="summary_large_image" />
-
-    <style data-tag="reset-style-sheet">
-      html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}html { scroll-behavior: smooth  }
-    </style>
-    <style data-tag="default-style-sheet">
-      html {
-        font-family: Inter;
-        font-size: 16px;
-      }
-
-      body {
-        font-weight: 400;
-        font-style:normal;
-        text-decoration: none;
-        text-transform: none;
-        letter-spacing: normal;
-        line-height: 1.15;
-        color: var(--dl-color-gray-black);
-        background-color: var(--dl-color-gray-white);
-
-      }
-    </style>
     <link
       rel="stylesheet"
       href="https://unpkg.com/animate.css@4.1.1/animate.css"
     />
     <link
       rel="shortcut icon"
-      href="public/practicum.svg"
+      href="../public/practicum.svg"
       type="icon/png"
       sizes="32x32"
     />
@@ -47,51 +25,112 @@
       rel="stylesheet"
       href="https://unpkg.com/@teleporthq/teleport-custom-scripts/dist/style.css"
     />
+    <style>
+      [data-thq="thq-dropdown"]:hover > [data-thq="thq-dropdown-list"] {
+          display: flex;
+        }
+
+        [data-thq="thq-dropdown"]:hover > div [data-thq="thq-dropdown-arrow"] {
+          transform: rotate(90deg);
+        }
+    </style>
   </head>
   <body>
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="../styles/style.css" />
     <div>
-      <link href="./login-page.css" rel="stylesheet" />
+      <link href="../styles/modif-tuteur.css" rel="stylesheet" />
 
-      <div class="login-page-container">
-        <header data-role="Header" class="header-header header-root-class-name">
-          <div class="header-logo-name">
-            <img src="public/practicum2.svg" class="header-image" />
+      <div class="modif-tuteur-container">
+        <header
+          data-role="Header"
+          class="logged-in-header-header logged-in-header-root-class-name13"
+        >
+          <div class="logged-in-header-logo-name">
+            <img
+              alt="Logo Practicum"
+              src="../public/practicum2.svg"
+              class="logged-in-header-image"
+            />
           </div>
-          <div class="header-btn-group">
-            <a href="login-page.html" class="header-auth button">
-              <span>Authentification</span>
-            </a>
+          <div class="search-bar-container search-bar-root-class-name2">
+            <div class="search-bar-container1">
+              <img
+                alt="image"
+                src="../public/search-svgrepo-com%20(1).svg"
+                class="search-bar-image"
+              />
+              <input
+                type="text"
+                placeholder="Rechercher"
+                class="search-bar-textinput input"
+              />
+            </div>
+          </div>
+          <div class="logged-in-header-container">
+            <div class="logged-in-header-btn-group">
+              <button type="button" class="logged-in-header-button button">
+                <img
+                  alt="image"
+                  src="../public/notification-12-svgrepo-com.svg"
+                  class="logged-in-header-image1"
+                />
+              </button>
+              <button type="button" class="logged-in-header-button1 button">
+                <img
+                  alt="image"
+                  src="../public/leetram-200h.png"
+                  class="logged-in-header-image2"
+                />
+              </button>
+            </div>
           </div>
         </header>
-        <div class="login-page-login-page">
-          <h1 class="login-page-text">
-            <span>Connection</span>
-            <br />
-          </h1>
-          <form class="login-page-form">
-            <input
-              type="text"
-              placeholder="Nom d'utilisateur"
-              class="login-page-username input"
+        <main class="modif-tuteur-main">
+          <div class="modif-tuteur-container1">
+            <img
+              alt="image"
+              src="../public/image-1400h.png"
+              class="modif-tuteur-image"
             />
-            <input
-              type="password"
-              placeholder="Mot de passe"
-              class="login-page-password input"
-            />
-            <a href="page-recherche.html" class="login-page-navlink button">
-              Se connecter
-            </a>
-          </form>
-        </div>
-        <footer class="footer-footer footer-root-class-name">
+            <button type="button" class="modif-tuteur-button button">
+              Modifier l'image
+            </button>
+            <button type="button" class="modif-tuteur-button1 button">
+              POSTER
+            </button>
+          </div>
+          <div class="modif-tuteur-main-text-content">
+            <div class="modif-tuteur-container2">
+              <input
+                type="text"
+                placeholder="Nom"
+                autocomplete="new-password"
+                class="modif-tuteur-nom-etudiant input"
+              />
+              <input
+                type="text"
+                placeholder="Prénom"
+                autocomplete="new-password"
+                class="modif-tuteur-prenom-etudiant input"
+              />
+            </div>
+            <form class="modif-tuteur-form">
+              <input
+                type="text"
+                placeholder="Centre"
+                autocomplete="new-password"
+                class="modif-tuteur-centre input"
+              />
+            </form>
+          </div>
+        </main>
+        <footer class="footer-footer footer-root-class-name12">
           <span class="footer-tdr">
             <span>© 2024 Practicum, Tous droits réservés.</span>
           </span>
-          <a href="logged-in-landing.html" class="footer-mentions-lgales">
+          <span class="footer-mentions-lgales">
             <span>Mentions légales</span>
-          </a>
+          </span>
           <div class="footer-icon-group">
             <button class="footer-auth button">
               <span>

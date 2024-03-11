@@ -1,40 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>VisuOffreStage - WebProject</title>
-    <meta property="og:title" content="VisuOffreStage - WebProject" />
+    <title>VisuEntrpris - WebProject</title>
+    <meta property="og:title" content="VisuEntrpris - WebProject" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
     <meta property="twitter:card" content="summary_large_image" />
-
-    <style data-tag="reset-style-sheet">
-      html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}html { scroll-behavior: smooth  }
-    </style>
-    <style data-tag="default-style-sheet">
-      html {
-        font-family: Inter;
-        font-size: 16px;
-      }
-
-      body {
-        font-weight: 400;
-        font-style:normal;
-        text-decoration: none;
-        text-transform: none;
-        letter-spacing: normal;
-        line-height: 1.15;
-        color: var(--dl-color-gray-black);
-        background-color: var(--dl-color-gray-white);
-
-      }
-    </style>
     <link
       rel="stylesheet"
       href="https://unpkg.com/animate.css@4.1.1/animate.css"
     />
     <link
       rel="shortcut icon"
-      href="public/practicum.svg"
+      href="../public/practicum.svg"
       type="icon/png"
       sizes="32x32"
     />
@@ -45,99 +23,120 @@
     />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
       href="https://unpkg.com/@teleporthq/teleport-custom-scripts/dist/style.css"
     />
+    <style>
+      [data-thq="thq-dropdown"]:hover > [data-thq="thq-dropdown-list"] {
+          display: flex;
+        }
+
+        [data-thq="thq-dropdown"]:hover > div [data-thq="thq-dropdown-arrow"] {
+          transform: rotate(90deg);
+        }
+    </style>
   </head>
   <body>
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="../styles/style.css" />
     <div>
-      <link href="./visu-offre-stage.css" rel="stylesheet" />
+      <link href="../styles/visu-entrpris.css" rel="stylesheet" />
 
-      <div class="visu-offre-stage-container">
+      <div class="visu-entrpris-container">
         <header
           data-role="Header"
-          class="header-header header-root-class-name1"
+          class="logged-in-header-header logged-in-header-root-class-name7"
         >
-          <div class="header-logo-name">
-            <img src="public/practicum2.svg" class="header-image" />
+          <div class="logged-in-header-logo-name">
+            <img
+              alt="Logo Practicum"
+              src="../public/practicum2.svg"
+              class="logged-in-header-image"
+            />
           </div>
-          <div class="header-btn-group">
-            <a href="login-page.html" class="header-auth button">
-              <span>Authentification</span>
-            </a>
+          <div class="search-bar-container search-bar-root-class-name2">
+            <div class="search-bar-container1">
+              <img
+                alt="image"
+                src="../public/search-svgrepo-com%20(1).svg"
+                class="search-bar-image"
+              />
+              <input
+                type="text"
+                placeholder="Rechercher"
+                class="search-bar-textinput input"
+              />
+            </div>
+          </div>
+          <div class="logged-in-header-container">
+            <div class="logged-in-header-btn-group">
+              <button type="button" class="logged-in-header-button button">
+                <img
+                  alt="image"
+                  src="../public/notification-12-svgrepo-com.svg"
+                  class="logged-in-header-image1"
+                />
+              </button>
+              <button type="button" class="logged-in-header-button1 button">
+                <img
+                  alt="image"
+                  src="../public/leetram-200h.png"
+                  class="logged-in-header-image2"
+                />
+              </button>
+            </div>
           </div>
         </header>
-        <main class="visu-offre-stage-main">
-          <div class="visu-offre-stage-container1">
-            <div class="visu-offre-stage-container2">
-              <ul class="visu-offre-stage-ul list">
-                <li class="visu-offre-stage-li tagListItem">
-                  <span class="visu-offre-stage-text">Durée :</span>
-                  <span>3 Mois</span>
+        <main class="visu-entrpris-main">
+          <div class="visu-entrpris-container1">
+            <div class="visu-entrpris-container2">
+              <ul class="visu-entrpris-ul list">
+                <li class="visu-entrpris-li tagListItem">
+                  <span class="visu-entrpris-text">Contact informations:</span>
+                  <span>Contact informations</span>
                 </li>
-                <li class="visu-offre-stage-li1 tagListItem">
-                  <span class="visu-offre-stage-text02">Gaming :</span>
+                <li class="visu-entrpris-li1 tagListItem">
+                  <span class="visu-entrpris-text02">Gaming :</span>
                   <span>
                     oigrboiugrborbiougbgr iugbre uiobgre iug reiou gbreoigub
                     oubg roubgo urbeougb&nbsp;
                   </span>
                 </li>
-                <li class="visu-offre-stage-li2 tagListItem">
-                  <span class="visu-offre-stage-text04">Durée :</span>
-                  <span>3 Mois</span>
-                </li>
               </ul>
-              <div class="visu-offre-stage-container3">
-                <button type="button" class="visu-offre-stage-button button">
-                  POSTULER
-                </button>
-                <button type="button" class="visu-offre-stage-button1 button">
-                  <img
-                    alt="image"
-                    src="public/bookmark-svgrepo-com.svg"
-                    class="visu-offre-stage-image"
-                  />
-                </button>
+              <div class="visu-entrpris-container3">
+                <img
+                  alt="image"
+                  src="../public/star-svgrepo-com.svg"
+                  class="visu-entrpris-image svgStar"
+                />
+                <img
+                  alt="image"
+                  src="../public/star-svgrepo-com.svg"
+                  class="visu-entrpris-image1 svgStar"
+                />
+                <img
+                  alt="image"
+                  src="../public/star-svgrepo-com.svg"
+                  class="visu-entrpris-image2 svgStar"
+                />
+                <img
+                  alt="image"
+                  src="../public/star-svgrepo-com.svg"
+                  class="visu-entrpris-image3 svgStar"
+                />
+                <img
+                  alt="image"
+                  src="../public/star-svgrepo-com.svg"
+                  class="visu-entrpris-image4 svgStar"
+                />
               </div>
             </div>
           </div>
-          <div class="visu-offre-stage-main-text-content">
-            <div class="visu-offre-stage-container4">
-              <span class="visu-offre-stage-text06">ENTREPRISE</span>
-              <span class="visu-offre-stage-text07">Il y a 3 jours</span>
+          <div class="visu-entrpris-main-text-content">
+            <div class="visu-entrpris-container4">
+              <span class="visu-entrpris-text04">ENTREPRISE</span>
+              <span class="visu-entrpris-text05">Il y a 3 jours</span>
             </div>
-            <h1 class="visu-offre-stage-text08">Lorem ipsum dolor sit amet</h1>
-            <span class="visu-offre-stage-text09">
+            <h1 class="visu-entrpris-text06">Lorem ipsum dolor sit amet</h1>
+            <span class="visu-entrpris-text07">
               <span>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -154,8 +153,8 @@
                 eros. Tincidunt id aliquet risus feugiat in ante metus dictum.
                 Ultrices dui sapien eget mi.
               </span>
-              <br class="visu-offre-stage-text11" />
-              <br class="visu-offre-stage-text12" />
+              <br class="visu-entrpris-text09" />
+              <br class="visu-entrpris-text10" />
               <br />
               <span>
                 Eget duis at tellus at urna. Enim diam vulputate ut pharetra sit
@@ -174,8 +173,8 @@
                 Habitant morbi tristique senectus et. Diam volutpat commodo sed
                 egestas.
               </span>
-              <br class="visu-offre-stage-text15" />
-              <br class="visu-offre-stage-text16" />
+              <br class="visu-entrpris-text13" />
+              <br class="visu-entrpris-text14" />
               <br />
               <span>
                 Mauris ultrices eros in cursus. Volutpat ac tincidunt vitae
@@ -193,13 +192,13 @@
             </span>
           </div>
         </main>
-        <footer class="footer-footer footer-root-class-name3">
+        <footer class="footer-footer footer-root-class-name5">
           <span class="footer-tdr">
             <span>© 2024 Practicum, Tous droits réservés.</span>
           </span>
-          <a href="logged-in-landing.html" class="footer-mentions-lgales">
+          <span class="footer-mentions-lgales">
             <span>Mentions légales</span>
-          </a>
+          </span>
           <div class="footer-icon-group">
             <button class="footer-auth button">
               <span>

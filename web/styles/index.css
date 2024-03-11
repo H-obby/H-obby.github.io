@@ -9,6 +9,7 @@
   padding-right: var(--dl-space-space-threeunits);
   padding-bottom: var(--dl-space-space-twounits);
   justify-content: space-between;
+  background-color: var(--dl-color-gray-white);
 }
 .header-logo-name {
   display: flex;
@@ -29,7 +30,6 @@
   display: flex;
   text-decoration: none;
 }
-
 
 @media(max-width: 767px) {
   .header-header {
@@ -55,6 +55,7 @@
   padding-right: var(--dl-space-space-threeunits);
   padding-bottom: var(--dl-space-space-twounits);
   justify-content: space-between;
+  background-color: var(--dl-color-gray-white);
 }
 .footer-tdr {
   align-self: center;
@@ -69,7 +70,6 @@
   text-align: center;
   font-weight: 300;
   padding-left: 0px;
-  text-decoration: underline;
 }
 .footer-icon-group {
   display: flex;
@@ -106,6 +106,27 @@
 .footer-root-class-name4 {
   background-color: var(--dl-color-gray-white);
 }
+
+
+
+
+.footer-root-class-name9 {
+  height: auto;
+  min-width: 100%;
+}
+.footer-root-class-name10 {
+  height: auto;
+  min-width: 100%;
+}
+
+.footer-root-class-name12 {
+  height: auto;
+  min-width: 100%;
+}
+.footer-root-class-name13 {
+  height: auto;
+  min-width: 100%;
+}
 @media(max-width: 767px) {
   .footer-footer {
     height: 15vh;
@@ -129,6 +150,12 @@
   .footer-root-class-name2 {
     height: 10vh;
   }
+  .footer-root-class-name8 {
+    height: 10vh;
+  }
+  .footer-root-class-name11 {
+    height: 10vh;
+  }
 }
 @media(max-width: 479px) {
   .footer-footer {
@@ -149,17 +176,24 @@
   .footer-root-class-name2 {
     height: 18vh;
   }
+  .footer-root-class-name8 {
+    height: 18vh;
+  }
+  .footer-root-class-name11 {
+    height: 18vh;
+  }
 }
 
-.login-page-container {
+.index-container {
   width: 100%;
   display: flex;
   overflow: auto;
   min-height: 100vh;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: column;
+  justify-content: flex-start;
 }
-.login-page-login-page {
+.index-hero {
   flex: 1;
   width: 100%;
   height: auto;
@@ -178,7 +212,12 @@
   border-right-width: 1vw;
   border-bottom-width: 0px;
 }
-.login-page-text {
+.index-text {
+  color: var(--dl-color-gray-white);
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+}
+.index-text1 {
   color: var(--dl-color-gray-white);
   font-size: 3rem;
   max-width: var(--dl-size-size-maxwidth);
@@ -186,52 +225,27 @@
   text-align: center;
   margin-bottom: var(--dl-space-space-twounits);
 }
-.login-page-form {
-  gap: var(--dl-space-space-halfunit);
-  width: auto;
-  height: 100%;
-  display: flex;
-  align-self: center;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-}
-.login-page-username {
-  width: 40vw;
-  height: var(--dl-size-size-small);
-  margin: var(--dl-space-space-halfunit);
-  min-width: var(--dl-size-size-xxlarge);
-}
-.login-page-password {
-  width: 40vw;
-  height: var(--dl-size-size-small);
-  margin: var(--dl-space-space-halfunit);
-  min-width: var(--dl-size-size-xxlarge);
-  padding-top: 0.5rem;
-}
-.login-page-navlink {
+.index-navlink {
   color: var(--dl-color-gray-white);
-  align-self: center;
   transition: 0.3s;
   padding-top: var(--dl-space-space-unit);
   padding-left: var(--dl-space-space-twounits);
-  border-radius: var(--dl-radius-radius-radius8);
   padding-right: var(--dl-space-space-twounits);
   padding-bottom: var(--dl-space-space-unit);
   text-decoration: none;
   background-color: var(--dl-color-gray-black);
 }
-.login-page-navlink:hover {
+.index-navlink:hover {
   transform: scale(1.02);
 }
 @media(max-width: 767px) {
-  .login-page-login-page {
+  .index-hero {
     padding-left: var(--dl-space-space-twounits);
     padding-right: var(--dl-space-space-twounits);
   }
 }
 @media(max-width: 479px) {
-  .login-page-login-page {
+  .index-hero {
     min-height: 60%;
     padding-top: var(--dl-space-space-twounits);
     padding-left: var(--dl-space-space-unit);
