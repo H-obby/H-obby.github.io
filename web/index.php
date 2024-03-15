@@ -62,3 +62,4 @@ try{
     $page_content = $e->getMessage();
 }
 require_once("layouts/base.php");
+?>
