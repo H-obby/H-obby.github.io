@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 18 mars 2024 à 14:38
+-- Généré le : lun. 18 mars 2024 à 15:35
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -35,6 +35,15 @@ CREATE TABLE `administrateur` (
   `prenom` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Déchargement des données de la table `administrateur`
+--
+
+INSERT INTO `administrateur` (`id_admin`, `login`, `mot_de_passe`, `nom`, `prenom`) VALUES
+(1, 'Dieu', 'admin', 'Joseph', 'Hugo'),
+(2, 'Leetram', 'admin', 'Marteel', 'Théo'),
+(3, 'Jr', 'admin', 'Cyusa', 'Adnan');
+
 -- --------------------------------------------------------
 
 --
@@ -45,6 +54,18 @@ CREATE TABLE `appartenir` (
   `id_utilisateur` int(11) NOT NULL,
   `id_promo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `appartenir`
+--
+
+INSERT INTO `appartenir` (`id_utilisateur`, `id_promo`) VALUES
+(1, 1),
+(2, 1),
+(3, 1),
+(3, 2),
+(4, 1),
+(5, 2);
 
 -- --------------------------------------------------------
 
@@ -110,6 +131,15 @@ CREATE TABLE `promotion` (
   `promo` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Déchargement des données de la table `promotion`
+--
+
+INSERT INTO `promotion` (`id_promo`, `promo`) VALUES
+(1, 'LI3JP201'),
+(2, 'LI1JP115'),
+(3, 'phantom blood');
+
 -- --------------------------------------------------------
 
 --
@@ -169,6 +199,17 @@ CREATE TABLE `utilisateur` (
   `centre` text NOT NULL,
   `type` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `utilisateur`
+--
+
+INSERT INTO `utilisateur` (`id_utilisateur`, `login`, `mot_de_passe`, `nom`, `prenom`, `centre`, `type`) VALUES
+(1, 'adam.adjeroud@viacesi.fr', 'adam', 'Adjeroud', 'Adam', 'Lille', 1),
+(2, 'maksum@viacesi.fr', 'maksum', 'Chakira', 'Maksum', 'Lille', 1),
+(3, 'smail@viacesi.fr', 'smail', 'Benali', 'Smail', 'Lille', 2),
+(4, 'amir@viacesi.fr', 'amir', 'Chachoui', 'Amir', 'Lille', 2),
+(5, 'machin@viacesi.fr', 'machin', 'Truc', 'Machin', 'Lille', 1);
 
 --
 -- Index pour les tables déchargées
@@ -255,7 +296,7 @@ ALTER TABLE `utilisateur`
 -- AUTO_INCREMENT pour la table `administrateur`
 --
 ALTER TABLE `administrateur`
-  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `entreprise`
@@ -273,7 +314,7 @@ ALTER TABLE `historique_stage`
 -- AUTO_INCREMENT pour la table `promotion`
 --
 ALTER TABLE `promotion`
-  MODIFY `id_promo` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_promo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `secteur_activite`
@@ -291,7 +332,7 @@ ALTER TABLE `stage`
 -- AUTO_INCREMENT pour la table `utilisateur`
 --
 ALTER TABLE `utilisateur`
-  MODIFY `id_utilisateur` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_utilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Contraintes pour les tables déchargées
