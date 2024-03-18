@@ -2,7 +2,7 @@
 <?php
 /* Configuration des variables d'environnement */
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'WS6');
+define('DB_NAME', 'projetweb');
 define('DB_USER', 'root');
 define('DB_PASSWORD', '');
 

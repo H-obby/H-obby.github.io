@@ -1,7 +1,9 @@
 <?php
 session_start();
+define("URL", str_replace("index.php", "", (isset($_SERVER["HTTPS"]) ? "https" : "http").
+    "://".$_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"]));
 
-require_once("controllers/MainController.controller.php");
+require_once("controllers/MainController.php");
 $controller = new MainController();
 
 if (!isset($_SESSION["logged"])){

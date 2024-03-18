@@ -14,9 +14,21 @@
         data-tag="font"
     />
     <link href='../styles/style.css' rel='stylesheet' />
+    <?php if(!empty($page_css)) : ?>
+        <?php foreach($page_css as $fichier_css) : ?>
+            <link href="<?= URL ?>styles/<?= $fichier_css ?>" rel='stylesheet' />
+        <?php endforeach; ?>
+    <?php endif; ?>
 
     <body>
-        <?php require_once("header.html"); ?>
+        <?php 
+            if($_SESSION["logged"]) {
+                require_once("loggedHeader.html"); 
+            } else {
+                require_once("header.html");
+            }
+        
+        ?>
         <?= $page_content; ?>
         <?php require_once("footer.html"); ?>
     </body>

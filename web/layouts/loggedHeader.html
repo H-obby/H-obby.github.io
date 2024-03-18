@@ -1,0 +1,49 @@
+<div>
+	<link href="../components/logged-in-header.css" rel="stylesheet" />
+	<header data-role="Header" class="logged-in-header-header">
+		<div class="logged-in-header-logo-name">
+			<img alt="Logo Practicum" src="../public/practicum2.svg" class="logged-in-header-image" />
+		</div>
+		<div class="search-bar-container search-bar-root-class-name2">
+			<div class="search-bar-container1">
+				<img alt="image" src="../public/search-svgrepo-com%20(1).svg" class="search-bar-image" />
+				<input type="text" placeholder="Rechercher" class="search-bar-textinput input" />
+			</div>
+		</div>
+		<div class="logged-in-header-container">
+			<div class="logged-in-header-btn-group">
+				<button type="button" class="logged-in-header-button button">
+					<img alt="image" src="../public/notification-12-svgrepo-com.svg" class="logged-in-header-image1" />
+				</button>
+				<div id="profileDropdown" class="dropdown">
+					<button class="dropdown-toggle" onclick="revealProfileDropdown()">
+						<img alt="image" src="../public/leetram-200h.png" class="image2" />
+					</button>
+					<ul id="profileDropdownContent" class="dropdown-list">
+                        <a href="profile">Profile</a>
+                        <a href="param">Paramètres</a>
+                        <a href="deco">Déconnection</a>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</header>
+	<script>
+		function revealProfileDropdown() {
+			document.getElementById("avatarDropdown").classList.toggle("show");
+		}
+		// Close the dropdown menu if the user clicks outside of it
+		window.onclick = function(event) {
+			if (!event.target.matches('.dropbtn')) {
+				var dropdowns = document.getElementsByClassName("dropdown-content");
+				var i;
+				for (i = 0; i < dropdowns.length; i++) {
+					var openDropdown = dropdowns[i];
+					if (openDropdown.classList.contains('show')) {
+						openDropdown.classList.remove('show');
+					}
+				}
+			}
+		}
+	</script>
+</div>

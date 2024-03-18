@@ -1,0 +1,10 @@
+<?php
+
+class MainManager {
+    public function getSampleUser(){
+        $data = [
+            "username" => "Théo",
+        ];
+        return $data;
+    }
+}

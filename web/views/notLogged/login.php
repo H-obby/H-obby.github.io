@@ -1,4 +1,3 @@
-<link href="./styles/login-page.css" rel="stylesheet" />
 <div class="login-page-login-page">
     <h1 class="login-page-text">
     <span>Connection</span>

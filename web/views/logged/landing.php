@@ -1,6 +1,6 @@
 <div class="logged-in-landing-container1">
   <div class="logged-in-landing-container2">
-    <h1 class="logged-in-landing-text">Bienvenue ${User} !</h1>
+    <h1 class="logged-in-landing-text">Bienvenue <?= $datas["username"]; ?> !</h1>
     <span> Bienvenue sur Practicum, l'endroit où ta recherche de stage devient une aventure captivante ! Ici, imagine une liste de souhaits pleine de stages excitants et des profs qui agissent comme des complices super futés, dénichant pour toi les opportunités les plus passionnantes. Sur Practicum, explore des offres de stages qui te correspondent vraiment, personnalise ta liste de rêves professionnels, le tout dans une ambiance décontractée et pro. C'est comme si tes profs et une équipe de chasseurs de stages se réunissaient pour t'ouvrir les portes des expériences les plus prometteuses. Prêt à booster ta carrière avec Practicum ? Let’s do this! 🚀 </span>
   </div>
   <h1 class="logged-in-landing-debug"> DEBUG : Ces boutons permettent de naviguer et ne seront là que pour le mockup. </h1>
