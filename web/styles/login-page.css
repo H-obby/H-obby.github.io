@@ -1,3 +1,38 @@
+.header-header {
+  width: 100%;
+  display: flex;
+  position: relative;
+  max-width: 100%;
+  padding-top: var(--dl-space-space-twounits);
+  padding-left: var(--dl-space-space-threeunits);
+  padding-right: var(--dl-space-space-threeunits);
+  padding-bottom: var(--dl-space-space-twounits);
+  justify-content: space-between;
+  background-color: var(--dl-color-gray-white);
+}
+
+.header-logo-name {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-image {
+  height: var(--dl-size-size-small);
+}
+
+.header-btn-group {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.header-auth {
+  display: flex;
+  text-decoration: none;
+}
 .login-page-container {
   width: 100%;
   display: flex;
@@ -80,4 +115,51 @@
     padding-right: var(--dl-space-space-unit);
     padding-bottom: var(--dl-space-space-twounits);
   }
+}
+.footer-footer {
+  width: 100%;
+  display: flex;
+  position: relative;
+  max-width: 100%;
+  align-self: flex-start;
+  align-items: center;
+  padding-top: var(--dl-space-space-twounits);
+  padding-left: var(--dl-space-space-threeunits);
+  padding-right: var(--dl-space-space-threeunits);
+  flex-direction: column;
+  padding-bottom: var(--dl-space-space-twounits);
+  justify-content: space-between;
+  background-color: var(--dl-color-gray-white);
+}
+
+.footer-tdr {
+  align-self: center;
+  font-style: normal;
+  text-align: center;
+  font-weight: 300;
+  padding-left: 0px;
+  padding-bottom: var(--dl-space-space-unit);
+}
+
+.footer-mentions-lgales {
+  align-self: center;
+  font-style: normal;
+  text-align: center;
+  font-weight: 300;
+  padding-bottom: var(--dl-space-space-unit);
+}
+
+.footer-icon-group {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.footer-auth {
+  padding-top: var(--dl-space-space-halfunit);
+  padding-left: var(--dl-space-space-halfunit);
+  border-radius: var(--dl-radius-radius-radius4);
+  padding-right: var(--dl-space-space-halfunit);
+  padding-bottom: var(--dl-space-space-halfunit);
 }
