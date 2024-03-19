@@ -73,7 +73,7 @@ class MainController extends Render{
             "page_description" => "Modifier Etudiant",
             "page_title" => "ModifEtudiant",
             "page_css" => ["modif-etudiant.css"],
-            "view" => "views/Logged/login.php",
+            "view" => "views/Logged/modifetu.php",
             "template" => "layouts/base.php",
         ];
         $this->render($data_ModifEtudiant);
@@ -84,7 +84,7 @@ class MainController extends Render{
             "page_description" => "Modifier offre entreprise",
             "page_title" => "Modifoffre",
             "page_css" => ["modif-offre-entre.css"],
-            "view" => "views/Logged/login.php",
+            "view" => "views/Logged/modifoffre.php",
             "template" => "layouts/base.php",
         ];
         $this->render($data_Modifoffre);
@@ -95,7 +95,7 @@ class MainController extends Render{
             "page_description" => "Modifier offre stage",
             "page_title" => "Modifoffrestage",
             "page_css" => ["modif-offre-entre.css"],
-            "view" => "views/Logged/login.php",
+            "view" => "views/Logged/modifstage.php",
             "template" => "layouts/base.php",
         ];
         $this->render($data_Modifstage);
@@ -106,7 +106,7 @@ class MainController extends Render{
             "page_description" => "Modifier Tuteur",
             "page_title" => "Modiftuteur",
             "page_css" => ["modif-tuteur.css"],
-            "view" => "views/Logged/login.php",
+            "view" => "views/Logged/modiftuteur.php",
             "template" => "layouts/base.php",
         ];
         $this->render($data_Modiftuteur);
@@ -117,7 +117,7 @@ class MainController extends Render{
             "page_description" => "Page Recherche Tuteur",
             "page_title" => "page recherche tuteur",
             "page_css" => ["Page-Recherche-Tuteur.css"],
-            "view" => "views/Logged/login.php",
+            "view" => "views/Logged/recherchetuteur.php",
             "template" => "layouts/base.php",
         ];
         $this->render($data_recherchetuteur);
@@ -128,7 +128,7 @@ class MainController extends Render{
             "page_description" => "Page Recherche utilisateur",
             "page_title" => "Page Recherche Utilisateur",
             "page_css" => ["page-recherche-utilisateur.css"],
-            "view" => "views/Logged/login.php",
+            "view" => "views/Logged/rechercheutilisateur.php",
             "template" => "layouts/base.php",
         ];
         $this->render($data_rechercheutilisateur);
@@ -139,7 +139,7 @@ class MainController extends Render{
             "page_description" => "Visualisation entreprise",
             "page_title" => "visu entrpris",
             "page_css" => ["visu-entrpris.css"],
-            "view" => "views/Logged/login.php",
+            "view" => "views/Logged/visuentre.php",
             "template" => "layouts/base.php",
         ];
         $this->render($data_visuentre);
@@ -150,7 +150,7 @@ class MainController extends Render{
             "page_description" => "Visualisation tuteur",
             "page_title" => "visu tuteur",
             "page_css" => ["visu-tuteur.css"],
-            "view" => "views/Logged/login.php",
+            "view" => "views/Logged/visututeur.php",
             "template" => "layouts/base.php",
         ];
         $this->render($data_visututeur);
@@ -161,7 +161,7 @@ class MainController extends Render{
             "page_description" => "Visualisation etudiant",
             "page_title" => "visu etudiant",
             "page_css" => ["visu-etudiant.css"],
-            "view" => "views/Logged/login.php",
+            "view" => "views/Logged/visuetudiant.php",
             "template" => "layouts/base.php",
         ];
         $this->render($data_visuetu);
@@ -172,7 +172,7 @@ class MainController extends Render{
             "page_description" => "Visualisation offre de stage",
             "page_title" => "visu offre stage",
             "page_css" => ["visu-offre-stage.css"],
-            "view" => "views/Logged/login.php",
+            "view" => "views/Logged/visustage.php",
             "template" => "layouts/base.php",
         ];
         $this->render($data_visuoffre);
