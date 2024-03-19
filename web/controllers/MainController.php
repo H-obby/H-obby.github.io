@@ -44,4 +44,16 @@ class MainController extends Render{
         ];
         $this->render($data_index);
     }
+
+    public function search(){
+        $data_search = [
+            "type_recherche" => $_POST["search-type"], 
+            "page_description" => "Recherche de ".$_POST["search-type"],
+            "page_title" => "Recherche",
+            "page_css" => ["page-recherche.css"],
+            "view" => "views/logged/page-recherche.php",
+            "template" => "layouts/base.php",
+        ];
+        $this->render($data_search);
+    }
 }

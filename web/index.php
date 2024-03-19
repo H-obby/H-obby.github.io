@@ -19,15 +19,16 @@ if (!isset($_SESSION['CREATED'])) {
     $_SESSION['CREATED'] = time();
 }
 
+if (time() - $_SESSION['CREATED'] > 1800) {
+    session_regenerate_id(true);
+    $_SESSION['CREATED'] = time();
+}
+
 if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 1800)) {
     session_unset();
     session_destroy();
 }
 
-if (time() - $_SESSION['CREATED'] > 1800) {
-    session_regenerate_id(true);
-    $_SESSION['CREATED'] = time();
-}
 
 if(empty($_GET['page'])){
     $page = 'index';
@@ -57,6 +58,9 @@ try{
             case "index":
                 $controller->loggedLanding();
                 break;
+
+            case "search":
+                $controller->search();
 
             default:
                 throw new Exception("La page n'existe pas - ". $page);
