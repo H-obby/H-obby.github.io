@@ -7,4 +7,8 @@ class MainManager {
         ];
         return $data;
     }
+
+    public function login($username, $password){
+        
+    }
 }
