@@ -21,3 +21,11 @@ function getConnexion()
         die; // On arrête le code PHP
     }
 }
+
+function getMDP($login)
+{
+    $connexion = getConnexion();
+    $query = $connexion->prepare('SELECT mot_de_passe FROM utilisateur WHERE login = :login limit 1');
+    $query->execute(['login' => $login]);
+    return $query->fetch();
+}

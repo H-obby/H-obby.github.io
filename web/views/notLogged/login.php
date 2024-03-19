@@ -11,10 +11,12 @@
 </div> 
 
 <?php
-    if(isset($_POST["username"]) && isset( $_POST["password"])){
-        $username = $_POST["username"];
-        $password = $_POST["password"];
-        if($username == "admin" && $password == "admin"){
+    require_once("controllers/Database.php");
+
+    if(isset($_POST["login"]) && isset( $_POST["password"])){
+        $login = $_POST["login"];
+        $encryptedPassword = hash("sha256", $_POST["password"]);
+        if($encryptedPassword == getMDP($login)["mot_de_passe"]){
             $_SESSION["logged"] = true;
             $_SESSION["permissionLevel"] = 2;
             header("Location: index");

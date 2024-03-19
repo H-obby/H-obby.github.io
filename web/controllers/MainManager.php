@@ -41,5 +41,8 @@ class MainManager {
         $query->execute();
         return $query->fetchAll();
     }
-}
 
+    public function login($username, $password){
+        
+    }
+}

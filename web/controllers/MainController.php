@@ -44,7 +44,7 @@ class MainController extends Render{
         ];
         $this->render($data_index);
     }
-
+    
     public function search(){
         $data_search = [
             "type_recherche" => $_POST["search-type"], 
