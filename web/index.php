@@ -9,6 +9,9 @@ $controller = new MainController();
 if (!isset($_SESSION["logged"])){
     $_SESSION["logged"] = false;
 }
+if (!isset($_SESSION["loggedAs"])){
+    $_SESSION["loggedAs"] = "";
+}
 if (!isset($_SESSION["permissionLevel"])){
     $_SESSION["permissionLevel"] = 1;
 }
@@ -38,7 +41,7 @@ if(empty($_GET['page'])){
 }
 
 try{
-    if(!$_SESSION["logged"]){
+    if(!$_SESSION["logged"] || !$_SESSION["loggedAs"]){
         //handle non-logged in pages
         switch ($page){
             case "index":

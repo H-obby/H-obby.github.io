@@ -33,7 +33,7 @@ class MainController extends Render{
     }
 
     public function loggedLanding(){
-        $datas = $this->mainManager->getSampleUser();
+        $datas = $_SESSION["permissionLevel"] == 3 ? $this->mainManager->getAdminName() : $this->mainManager->getUserName();
         $data_index = [
             "page_description" => "Espace Utilisateur",
             "page_title" => "Espace Utilisateur",
