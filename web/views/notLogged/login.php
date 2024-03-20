@@ -4,7 +4,7 @@
     <br />
   </h1>
   <form class="login-page-form" action="" method="post">
-    <input name="login" type="text" placeholder="Mail" class="login-page-username input" />
+    <input name="login" type="text" placeholder="Adresse Mail" class="login-page-username input" />
     <input name="password" type="password" placeholder="Mot de passe" class="login-page-password input" />
     <input type="submit" value="Se connecter" class="login-page-navlink button" />
   </form>

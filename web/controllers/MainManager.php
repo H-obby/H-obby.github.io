@@ -24,7 +24,6 @@ class MainManager {
             echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
             die; // On arrête le code PHP
         }
-        echo '<pre>'; print_r($array); echo '</pre>';
         $data = [
             "username" => $query->fetchAll()[0]["prenom"],
         ];

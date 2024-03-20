@@ -23,7 +23,7 @@
     <body>
         <?php 
             if($_SESSION["logged"]) {
-                require_once("loggedHeader.html"); 
+                require_once("loggedHeader.php"); 
             } else {
                 require_once("header.html");
             }
