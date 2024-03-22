@@ -68,6 +68,10 @@ try{
                 $controller->search();
                 break;
 
+            case "affiche":
+                $controller->affiche();
+                break;
+
             default:
                 throw new Exception("La page n'existe pas - ". $page);
         }

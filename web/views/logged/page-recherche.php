@@ -15,16 +15,16 @@
 					<select class="page-recherche-select">
 						<option value="Option 1" disabled="true" selected="true" class="page-recherche-default"> Durée </option>
 						<option value="Option 2">2 mois</option>
-						<option value="Option 3">5-6 mois</option>
-						<option value="Option 4">3-4 mois</option>
+						<option value="Option 3">3-4 mois</option>
+						<option value="Option 34">5-6 mois</option>
 						<option value="Option 5">6 mois et +</option>
 						<option value="Option 6">Ne pas restreindre</option>
 					</select>
 					<select class="page-recherche-select">
 						<option value="Option 1" disabled="true" selected="true" class="page-recherche-default"> Niveau d'études </option>
 						<option value="Option 2">Bac+2</option>
-						<option value="Option 3">Bac+4</option>
-						<option value="Option 4">Bac+3</option>
+						<option value="Option 3">Bac+3</option>
+						<option value="Option 4">Bac+4</option>
 						<option value="Option 5">Bac+5</option>
 						<option value="Option 6">Ne pas restreindre</option>
 					</select>
@@ -34,17 +34,10 @@
 						<option value="Option 3">BTP</option>
 						<option value="Option 3">Ne pas restreindre</option>
 					</select>
-					<select class="page-recherche-select">
-						<option value="Option 1" disabled="true" selected="true" class="page-recherche-default"> Localisation </option>
-						<option value="Option 2">Dans un rayon de 25km</option>
-						<option value="Option 3">Dans un rayon de 50km</option>
-						<option value="Option 3">Ne pas restreindre</option>
-					</select>
 					<div class="page-recherche-container3">
 						<button type="button" class="page-recherche-button button">
 							<span>
-								<span>FILTRER</span>
-								<br />
+								FILTRER
 							</span>
 						</button>
 					</div>
@@ -94,7 +87,7 @@
 						$datePostee = new DateTime($stageData["date_offre"]);
 						$dateElapsed = humanTiming(strtotime($datePostee->format("Y-m-d H:i:s")));
 
-						$tags = array($stageData["promo_concernees"], $stageData["duree"], $stageData["remuneration"]);
+						$tags = array($stageData["promo_concernees"], $stageData["duree"], $stageData["remuneration"]."€");
 						$temp = explode(",", $stageData["competences"]);
 						$tags = array_merge($tags, $temp);
 						$finalHTML = "";
@@ -111,7 +104,7 @@
 							<div class="offre-stage-container">
 								<div class="offre-stage-container1">
 									<span class="offre-stage-text">
-										'."poop".'
+										'.$stageData["nom_entreprise"].'
 									</span>
 									<span class="offre-stage-text1">
 										<span>Il y a '.$dateElapsed.'</span>
@@ -127,7 +120,9 @@
 									'.$finalHTML.'
 								</div>
 								<div class="offre-stage-container3">
-									<span class="offre-stage-text4">Lire plus -&gt;</span>
+									<a class="offre-stage-text4" href="affiche&offreID='.urlencode($stageContainer["id_stage"]).'">
+										Lire plus -&gt;
+									</a>
 									<button type="button" class="offre-stage-button button">
 										<img alt="image" src="public/bookmark-svgrepo-com.svg" class="offre-stage-image" />
 									</button>

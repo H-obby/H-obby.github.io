@@ -133,9 +133,10 @@ class MainManager {
     public function getStageFromID(int $id){
         try {
             $query = $this->dbConnect->prepare(
-                "SELECT titre, competences, adresse, promo_concernees,
-                remuneration, date_offre, places_disponibles, description, duree
-                FROM stage 
+                "SELECT stage.titre, stage.competences, stage.adresse, stage.promo_concernees,
+                stage.remuneration, stage.date_offre, stage.places_disponibles, stage.description, stage.duree,
+                entreprise.nom as nom_entreprise
+                FROM stage JOIN entreprise ON stage.id_entreprise = entreprise.id_entreprise
                 WHERE :id = id_stage"
             );
             $query->bindValue(":id", $id);

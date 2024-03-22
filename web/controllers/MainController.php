@@ -67,6 +67,20 @@ class MainController extends Render{
         $this->render($data_search);
     }
 
+    public function affiche(){
+        $datas = [];
+        $data_search = [
+            "page_description" => "Affichage",
+            "page_title" => "Affichage",
+            "page_css" => ["visu-offre-stage.css"],
+            "componentCSS" => ["search-bar.css", "logged-in-header.css"],
+            "datas" => $datas,
+            "view" => "views/logged/visustage.php",
+            "template" => "layouts/base.php",
+        ];
+        $this->render($data_search);
+    }
+
     public function mentions(){
         $data_mentions = [
             "page_description" => "Mentions legales",
