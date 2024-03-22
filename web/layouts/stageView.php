@@ -1,9 +1,8 @@
-<link href="../components/offre-stage.css" rel="stylesheet" />
 <div class="offre-stage-blog-post-card">
 	<div class="offre-stage-container">
 		<div class="offre-stage-container1">
 			<span class="offre-stage-text">
-				<span>ENTREPRISE</span>
+				<?= "sex";?>
 			</span>
 			<span class="offre-stage-text1">
 				<span>Il y a 3 jours</span>

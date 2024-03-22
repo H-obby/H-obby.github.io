@@ -105,15 +105,20 @@ class MainManager {
         }
     }
 
-    public function looseGetRechercheStage($searchValue){
+    public function looseGetRechercheStage($searchValue):array{
         try {
             $query = $this->dbConnect->prepare(
                 "SELECT id_stage 
                 FROM stage 
-                WHERE :search LIKE titre OR :search LIKE competences OR 
-                :search LIKE adresse OR :search LIKE promo_concernees OR 
-                :search LIKE duree OR :search LIKE remuneration OR 
-                :search LIKE description OR :search LIKE date_offre"
+                WHERE 
+                (titre              LIKE :search 
+                OR competences         LIKE :search 
+                OR adresse             LIKE :search 
+                OR promo_concernees    LIKE :search 
+                OR duree               LIKE :search 
+                OR remuneration        LIKE :search 
+                OR description         LIKE :search 
+                OR date_offre          LIKE :search)"
             );
             $query->bindValue(":search", '%'.$searchValue.'%');
             $query->execute();
@@ -129,7 +134,7 @@ class MainManager {
         try {
             $query = $this->dbConnect->prepare(
                 "SELECT titre, competences, adresse, promo_concernees,
-                remuneration, date_offre, places_disponibles, description 
+                remuneration, date_offre, places_disponibles, description, duree
                 FROM stage 
                 WHERE :id = id_stage"
             );

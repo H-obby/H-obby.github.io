@@ -6,6 +6,17 @@ define("URL", str_replace("index.php", "", (isset($_SERVER["HTTPS"]) ? "https" :
 require_once("controllers/MainController.php");
 $controller = new MainController();
 
+if (isset($_SESSION['CREATED']) && time() - $_SESSION['CREATED'] > 1800) {
+    session_regenerate_id(true);
+    $_SESSION['CREATED'] = time();
+}
+
+if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 1800)) {
+    session_unset();
+    session_destroy();
+    session_start();
+}
+
 if (!isset($_SESSION["logged"])){
     $_SESSION["logged"] = false;
 }
@@ -22,15 +33,6 @@ if (!isset($_SESSION['CREATED'])) {
     $_SESSION['CREATED'] = time();
 }
 
-if (time() - $_SESSION['CREATED'] > 1800) {
-    session_regenerate_id(true);
-    $_SESSION['CREATED'] = time();
-}
-
-if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 1800)) {
-    session_unset();
-    session_destroy();
-}
 
 
 if(empty($_GET['page'])){
@@ -64,6 +66,7 @@ try{
 
             case "search":
                 $controller->search();
+                break;
 
             default:
                 throw new Exception("La page n'existe pas - ". $page);

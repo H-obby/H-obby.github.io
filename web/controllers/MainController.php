@@ -4,7 +4,7 @@
 require_once("controllers/MainManager.php");
 require_once("controllers/Render.php");
 class MainController extends Render{
-    private $mainManager;
+    public $mainManager;
 
     public function __construct(){
         $this->mainManager = new MainManager();
@@ -46,11 +46,21 @@ class MainController extends Render{
     }
     
     public function search(){
+        switch($_POST["searchType"]){
+            case "stage":
+                $datas["stages"] = $this->mainManager->looseGetRechercheStage($_POST["searchValue"]);
+                break;
+            default:
+                $datas = [];
+                break;
+        }
         $data_search = [
-            "type_recherche" => $_POST["search-type"], 
-            "page_description" => "Recherche de ".$_POST["search-type"],
-            "page_title" => "Recherche",
+            "type_recherche" => $_POST["searchType"], 
+            "page_description" => "Recherche de ".$_POST["searchType"],
+            "page_title" => "Recherche ".$_POST["searchType"],
             "page_css" => ["page-recherche.css"],
+            "componentCSS" => ["offre-stage.css", "search-bar.css", "logged-in-header.css"],
+            "datas" => $datas,
             "view" => "views/logged/page-recherche.php",
             "template" => "layouts/base.php",
         ];
@@ -177,5 +187,4 @@ class MainController extends Render{
         ];
         $this->render($data_visuoffre);
     }
-
 }

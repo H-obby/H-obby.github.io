@@ -19,6 +19,12 @@
             <link href="<?= URL ?>styles/<?= $fichier_css ?>" rel='stylesheet' />
         <?php endforeach; ?>
     <?php endif; ?>
+    
+    <?php if(!empty($componentCSS)) : ?>
+        <?php foreach($componentCSS as $fichier_css) : ?>
+            <link href="<?= URL ?>component/<?= $fichier_css ?>" rel='stylesheet' />
+        <?php endforeach; ?>
+    <?php endif; ?>
 
     <body>
         <?php 
