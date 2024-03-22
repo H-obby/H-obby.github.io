@@ -8,9 +8,9 @@
     />
 
 	<header data-role="Header" class="logged-in-header-header">
-		<div class="logged-in-header-logo-name">
+		<a href="index" class="logged-in-header-logo-name">
 			<img alt="Logo Practicum" src="../public/practicum2.svg" class="logged-in-header-image" />
-		</div>
+		</a>
 		<?php require_once("layouts/search-bar.php")?>
 		<div class="logged-in-header-container">
 			<div class="logged-in-header-btn-group">
