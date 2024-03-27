@@ -51,6 +51,8 @@
 				</div>
 				<?php
     				$controller = new MainController();
+					$id_stage;
+
 					function humanTiming ($time)
 					{
 
@@ -98,7 +100,7 @@
 						
 						echo '
 						<div class="offre-stage-blog-post-card">
-							<div class="offre-stage-container">
+							<div class="offre-stage-container" id="stageCard">
 								<div class="offre-stage-container1">
 									<span class="offre-stage-text">
 										'.$stageData["nom_entreprise"].'
@@ -117,16 +119,42 @@
 									'.$finalHTML.'
 								</div>
 								<div class="offre-stage-container3">
-									<a class="offre-stage-text4" href="affiche&offreID='.urlencode($stageContainer["id_stage"]).'">
+									<a class="offre-stage-text4">
 										Lire plus -&gt;
 									</a>
-									<button type="button" class="offre-stage-button button">
+									<button type="button" class="offre-stage-button button" id="fav">
 										<img alt="image" src="public/bookmark-svgrepo-com.svg" class="offre-stage-image" />
 									</button>
 								</div>
 							</div>
 						</div>
+						<script>
+							let stageCard = document.getElementById("stageCard");
+							let fav	= document.getElementById("fav");
+							isHoveringFav = false;
+							fav.onmouseover = function(){
+								isHoveringFav = true;
+							}
+							fav.onmouseout = function(){
+								isHoveringFav = false;
+							}
+							stageCard.onclick = function(){
+								if (isHoveringFav){
+									//alert("<?php favoriteCilck($stageContainer["id_stage"]) ?>");
+									let yipeee = 1;
+									return;
+								}
+								window.location.href = "affiche&offreID='.urlencode($stageContainer["id_stage"]).'";
+							}
+						</script>
 						';
+					}
+
+					function favoriteClick($id_stage){
+						$controller = new MainController();
+						//$controller->mainManager->setFavorite($id_stage);
+
+						echo ("za bitchi");
 					}
 				?>
 			</div>

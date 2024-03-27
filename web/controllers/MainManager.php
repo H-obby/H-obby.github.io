@@ -236,4 +236,94 @@ class MainManager {
             die; // On arrête le code PHP
         }
     }
+
+    public function addRelation($id_stage){
+        try {
+            $query = $this->dbConnect->prepare(
+                "INSERT INTO relation (id_stage, login)
+                VALUES (:id_stage, (SELECT id_utilisateur
+                FROM utilisateur
+                WHERE login = :login))"
+            );
+            $query->bindValue(":id_stage", $id_stage);
+            $query->bindValue(":login", $_SESSION["loggedAs"]);
+            $query->execute();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
+    public function setFavorite($id_stage){
+        try { // On vérifie si la relation existe déjà
+            $query = $this->dbConnect->prepare(
+                "SELECT * FROM relation
+                WHERE id_stage = :id_stage 
+                AND id_utilisateur = (SELECT id_utilisateur
+                FROM utilisateur
+                WHERE login = :login)"
+            );
+            $query->bindValue(":id_stage", $id_stage);
+            $query->bindValue(":login", $_SESSION["loggedAs"]);
+            $query->execute();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+        
+        if ($query->rowCount() == 0){ // Si la relation n'existe pas, on la crée
+            try {
+                $query = $this->dbConnect->prepare(
+                    "INSERT INTO relation (id_stage, id_utilisateur)
+                    VALUES (:id_stage, (SELECT id_utilisateur
+                    FROM utilisateur
+                    WHERE login = :login))"
+                );
+                $query->bindValue(":id_stage", $id_stage);
+                $query->bindValue(":login", $_SESSION["loggedAs"]);
+                $query->execute();
+            } catch (Exception $exception) {
+                echo '<h1>'.$exception->getMessage().'</h1>';
+                echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+                die; // On arrête le code PHP
+            }
+        }
+
+        try { 
+            if($this->dbConnect->prepare(
+                "SELECT wish_listed FROM relation
+                HERE id_stage = :id_stage 
+                AND id_utilisateur = (SELECT id_utilisateur
+                FROM utilisateur
+                WHERE login = :login)"
+            )) {
+                $query = $this->dbConnect->prepare(
+                    "INSERT INTO relation (wish_listed)
+                    VALUES (0)
+                    WHERE id_stage = :id_stage 
+                    AND id_utilisateur = (SELECT id_utilisateur
+                    FROM utilisateur
+                    WHERE login = :login)"
+                );
+            } else {
+                $query = $this->dbConnect->prepare(
+                    "INSERT INTO relation (wish_listed)
+                    VALUES (1)
+                    WHERE id_stage = :id_stage 
+                    AND id_utilisateur = (SELECT id_utilisateur
+                    FROM utilisateur
+                    WHERE login = :login)"
+                );
+            }
+            $query->bindValue(":id_stage", $id_stage);
+            $query->bindValue(":login", $_SESSION["loggedAs"]);
+            $query->execute();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
 }
