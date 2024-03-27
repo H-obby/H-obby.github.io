@@ -108,17 +108,19 @@ class MainManager {
     public function looseGetRechercheStage($searchValue, $filters):array{
         try {
 
-            $requete = "SELECT id_stage 
+            $requete = "SELECT id_stage, MATCH(
+                            titre, competences, adresse,
+                            domaine_activite, description) 
+                        AGAINST (:relSearch IN BOOLEAN MODE) AS relevancy_score
                         FROM stage 
                         WHERE 
-                        (titre              LIKE :search 
-                        OR competences         LIKE :search 
-                        OR adresse             LIKE :search 
+                        (
+                        MATCH (titre, competences, adresse,
+                               domaine_activite, description) 
+                        AGAINST (:relSearch IN BOOLEAN MODE) > 0
                         OR promo_concernees    LIKE :search 
-                        OR domaine_activite    LIKE :search 
                         OR duree               LIKE :search 
                         OR remuneration        LIKE :search 
-                        OR description         LIKE :search 
                         OR date_offre          LIKE :search)";
             
 			if(isset($filters["duree"])) {
@@ -191,9 +193,21 @@ class MainManager {
                 }
                 $requete .= " ";
             }
+            $requete .= "ORDER BY relevancy_score DESC, date_offre DESC";
             
-
             $query = $this->dbConnect->prepare($requete);
+            if($searchValue != ""){
+                $splitted = preg_split('/\s+/', $searchValue);
+                foreach ($splitted as $key=>$value){
+                    if(substr($value, 0, 1) != "+") {
+                        $splitted[$key] = "*".$value."*";
+                    }
+                }
+                print_r(implode(" ",$splitted));
+                $query->bindValue(":relSearch", implode(" ", $splitted));
+            } else {
+                $query->bindValue(":relSearch",$searchValue);
+            }
             $query->bindValue(":search", '%'.$searchValue.'%');
             $query->execute();
             return $query->fetchAll();

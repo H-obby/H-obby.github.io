@@ -34,11 +34,10 @@
 						</span>
 						<p>Paramètres</p>
 					  </li>
-					  <li class="sub-item">
-						<span class="material-icons-outlined">
-							wishlist
-							<a href="wishlist">
-						</span>
+					  <li class="sub-item" onclick="location.href='wishlist'">
+						<a class="material-icons-outlined" href="wishlist">
+							bookmark
+						</a>
 						<p>Wishlist</p>
 					  </li>
 					  <li class="sub-item">
