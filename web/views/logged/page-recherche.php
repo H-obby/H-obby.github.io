@@ -2,43 +2,42 @@
 	<div class="page-recherche-container">
 		<div class="page-recherche-container1">
 			<div class="page-recherche-container2">
-				<form class="page-recherche-form" method="post">
-					<select class="page-recherche-select">
-						<option value="Option 1" disabled="true" selected="true" class="page-recherche-default"> Date </option>
-						<!-- A terme, prendre les options de filtre de la BDD -->
-						<option value="Option 2">Dernières 24h</option>
-						<option value="Option 3">3 derniers jours</option>
-						<option value="Option 4">7 derniers jours</option>
-						<option value="Option 5">14 derniers jours</option>
-						<option value="Option 6">Ne pas restreindre</option>
+				<form class="page-recherche-form" action="" method="post">
+					<select name="date" class="page-recherche-select">
+						<option value="null" <?php echo !isset($_POST["date"]) || $_POST["date"] == "null" ? "selected" : "" ?> disabled class="page-recherche-default"> Dates </option>
+						<option value="24h" <?php echo isset($_POST["date"]) && $_POST["date"] == "24h" ? "selected" : "" ?> >Dernières 24h</option>
+						<option value="3dj" <?php echo isset($_POST["date"]) && $_POST["date"] == "3dj" ? "selected" : "" ?> >3 derniers jours</option>
+						<option value="7dj" <?php echo isset($_POST["date"]) && $_POST["date"] == "7dj" ? "selected" : "" ?> >7 derniers jours</option>
+						<option value="14dj" <?php echo isset($_POST["date"]) && $_POST["date"] == "14dj" ? "selected" : "" ?> >14 derniers jours</option>
+						<option value="null">Ne pas restreindre</option>
 					</select>
-					<select class="page-recherche-select">
-						<option value="Option 1" disabled="true" selected="true" class="page-recherche-default"> Durée </option>
-						<option value="Option 2">2 mois</option>
-						<option value="Option 3">3-4 mois</option>
-						<option value="Option 34">5-6 mois</option>
-						<option value="Option 5">6 mois et +</option>
-						<option value="Option 6">Ne pas restreindre</option>
+					<select name="duree" class="page-recherche-select">
+						<option value="null" <?php echo !isset($_POST["duree"]) || $_POST["duree"] == "null" ? "selected" : "" ?> disabled class="page-recherche-default"> Durée </option>
+						<option value="2m" <?php echo isset($_POST["duree"]) && $_POST["duree"] == "2m" ? "selected" : "" ?> >2 mois</option>
+						<option value="34m" <?php echo isset($_POST["duree"]) && $_POST["duree"] == "34m" ? "selected" : "" ?> >3-4 mois</option>
+						<option value="56m" <?php echo isset($_POST["duree"]) && $_POST["duree"] == "56m" ? "selected" : "" ?> >5-6 mois</option>
+						<option value="6+m" <?php echo isset($_POST["duree"]) && $_POST["duree"] == "6+m" ? "selected" : "" ?> >6 mois et +</option>
+						<option value="null">Ne pas restreindre</option>
 					</select>
-					<select class="page-recherche-select">
-						<option value="Option 1" disabled="true" selected="true" class="page-recherche-default"> Niveau d'études </option>
-						<option value="Option 2">Bac+2</option>
-						<option value="Option 3">Bac+3</option>
-						<option value="Option 4">Bac+4</option>
-						<option value="Option 5">Bac+5</option>
-						<option value="Option 6">Ne pas restreindre</option>
+					<select name="niv" class="page-recherche-select">
+						<option value="null" <?php echo !isset($_POST["niv"]) || $_POST["niv"] == "null" ? "selected" : "" ?>  disabled class="page-recherche-default"> Niveau d'études </option>
+						<option value="b+2" <?php echo isset($_POST["niv"]) && $_POST["niv"] == "b+2" ? "selected" : "" ?> >Bac+2</option>
+						<option value="b+3" <?php echo isset($_POST["niv"]) && $_POST["niv"] == "b+3" ? "selected" : "" ?> >Bac+3</option>
+						<option value="b+4" <?php echo isset($_POST["niv"]) && $_POST["niv"] == "b+4" ? "selected" : "" ?> >Bac+4</option>
+						<option value="b+5" <?php echo isset($_POST["niv"]) && $_POST["niv"] == "b+5" ? "selected" : "" ?> >Bac+5</option>
+						<option value="null">Ne pas restreindre</option>
 					</select>
-					<select class="page-recherche-select">
-						<option value="Option 1" disabled="true" selected="true" class="page-recherche-default"> Secteur d'activité </option>
-						<option value="Option 2">Informatique</option>
-						<option value="Option 3">BTP</option>
-						<option value="Option 3">Ne pas restreindre</option>
+					<select name="sec" class="page-recherche-select">
+						<option value="null" <?php echo !isset($_POST["sec"]) || $_POST["sec"] == "null" ? "selected" : "" ?>  disabled class="page-recherche-default"> Secteur d'activité </option>
+						<option value="info" <?php echo isset($_POST["sec"]) && $_POST["sec"] == "info" ? "selected" : "" ?> >Informatique</option>
+						<option value="btp" <?php echo isset($_POST["sec"]) && $_POST["sec"] == "btp" ? "selected" : "" ?> >BTP</option>
+						<option value="null">Ne pas restreindre</option>
 					</select>
+					<input type="hidden" value="<?=htmlentities($datas["searchType"])?>" name="searchType" />
+					<input type="hidden" value="<?=htmlentities($datas["searchValue"])?>" name="searchValue" />
 					<div class="page-recherche-container3">
-						<button type="button" class="page-recherche-button button">
-							<span>
-								FILTRER
-							</span>
+						<button type="submit" name="filter" class="page-recherche-button button">
+							FILTRER
 						</button>
 					</div>
 				</form>
@@ -50,8 +49,6 @@
 						<input type="text" placeholder="Rechercher" class="search-bar-textinput input" />
 					</div>
 				</div>
-				<!-- Spawn one container per thing here -->
-
 				<?php
     				$controller = new MainController();
 					function humanTiming ($time)
@@ -87,7 +84,7 @@
 						$datePostee = new DateTime($stageData["date_offre"]);
 						$dateElapsed = humanTiming(strtotime($datePostee->format("Y-m-d H:i:s")));
 
-						$tags = array($stageData["promo_concernees"], $stageData["duree"], $stageData["remuneration"]."€");
+						$tags = array(ucfirst($stageData["promo_concernees"]), $stageData["domaine"], $stageData["duree"], $stageData["remuneration"]."€");
 						$temp = explode(",", $stageData["competences"]);
 						$tags = array_merge($tags, $temp);
 						$finalHTML = "";

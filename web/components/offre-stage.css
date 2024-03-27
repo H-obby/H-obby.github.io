@@ -16,6 +16,7 @@
   max-width: var(--dl-size-size-maxwidth);
   box-shadow: 0px 0px 20px 0px rgba(21, 21, 21, 0.56);
   transition: 0.3s;
+  z-index: -1;
   align-items: stretch;
   border-radius: var(--dl-radius-radius-radius8);
   flex-direction: row;

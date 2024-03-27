@@ -11,7 +11,9 @@
 		<a href="index" class="logged-in-header-logo-name">
 			<img alt="Logo Practicum" src="../public/practicum2.svg" class="logged-in-header-image" />
 		</a>
-		<?php require_once("layouts/search-bar.php")?>
+		<div class="search-bar-container search-bar-root-class-name2">
+			<?php require_once("layouts/search-bar.php")?>
+		</div>
 		<div class="logged-in-header-container">
 			<div class="logged-in-header-btn-group">
 				<button type="button" class="logged-in-header-button button">
