@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <link
+        rel="shortcut icon"
+        href=<?=URL."public/practicum.svg"?>
+        type="icon/png"
+        sizes="32x32"
+        />
         <title><?= "Practicum | ".$page_title; ?></title>
         <meta property="og:title" content="Practicum" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />

@@ -46,16 +46,40 @@ class MainController extends Render{
     }
     
     public function search(){
+		$filter_options = [];
+		if(isset($_POST["date"]) && $_POST["date"] != "null"){
+			$date = $_POST["date"];
+			$filter_options["date"] = $date;
+		}
+		if(isset($_POST["duree"]) && $_POST["duree"] != "null"){
+			$duree = $_POST["duree"];
+			$filter_options["duree"] = $duree;
+		}
+		if(isset($_POST["niv"]) && $_POST["niv"] != "null"){
+			$niv = $_POST["niv"];
+			$filter_options["niv"] = $niv;
+		} 
+		if(isset($_POST["sec"]) && $_POST["sec"] != "null"){
+			$sec = $_POST["sec"];
+			$filter_options["sec"] = $sec;
+		} 
+
         switch($_POST["searchType"]){
             case "stage":
-                $datas["stages"] = $this->mainManager->looseGetRechercheStage($_POST["searchValue"]);
+                $datas["stages"] = $this->mainManager->looseGetRechercheStage(
+                    $_POST["searchValue"],
+                    $filter_options
+                );
                 break;
             default:
                 $datas = [];
                 break;
         }
+
+        $datas["searchType"] = $_POST["searchType"];
+        $datas["searchValue"] = $_POST["searchValue"];
+
         $data_search = [
-            "type_recherche" => $_POST["searchType"], 
             "page_description" => "Recherche de ".$_POST["searchType"],
             "page_title" => "Recherche ".$_POST["searchType"],
             "page_css" => ["page-recherche.css"],

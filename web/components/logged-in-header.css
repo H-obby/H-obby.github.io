@@ -120,6 +120,7 @@
 
 .dropdown_li .dropdown_ul {
   flex-direction: column;
+  z-index: 100;
   position: absolute;
   background-color: white;
   align-items: flex-start;

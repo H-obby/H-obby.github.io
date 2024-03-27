@@ -105,21 +105,95 @@ class MainManager {
         }
     }
 
-    public function looseGetRechercheStage($searchValue):array{
+    public function looseGetRechercheStage($searchValue, $filters):array{
         try {
-            $query = $this->dbConnect->prepare(
-                "SELECT id_stage 
-                FROM stage 
-                WHERE 
-                (titre              LIKE :search 
-                OR competences         LIKE :search 
-                OR adresse             LIKE :search 
-                OR promo_concernees    LIKE :search 
-                OR duree               LIKE :search 
-                OR remuneration        LIKE :search 
-                OR description         LIKE :search 
-                OR date_offre          LIKE :search)"
-            );
+
+            $requete = "SELECT id_stage 
+                        FROM stage 
+                        WHERE 
+                        (titre              LIKE :search 
+                        OR competences         LIKE :search 
+                        OR adresse             LIKE :search 
+                        OR promo_concernees    LIKE :search 
+                        OR domaine_activite    LIKE :search 
+                        OR duree               LIKE :search 
+                        OR remuneration        LIKE :search 
+                        OR description         LIKE :search 
+                        OR date_offre          LIKE :search)";
+            
+			if(isset($filters["duree"])) {
+                switch($filters["duree"]){
+                    case "2m":
+                        $requete .= "AND (duree = '2 mois')";
+                        break;
+                    case "34m":
+                        $requete .= "AND (duree = '3 mois' OR duree = '4 mois')";
+                        break;
+                    case "56m":
+                        $requete .= "AND (duree = '5 mois' OR duree = '6 mois')";
+                        break;
+                    case "6+m":
+                        $requete .= "AND (CAST(SUBSTRING(duree, 1, 1) AS INT) >= 6)";
+                        break;
+                    default:
+                        break;
+                }
+                $requete .= " ";
+            }
+            if(isset($filters["date"])) {
+                switch($filters["date"]){
+                    case "24h":
+                        $requete .= "AND (TIMESTAMPDIFF(HOUR, date_offre, NOW()) < 24)";
+                        break;
+                    case "3dj":
+                        $requete .= "AND (TIMESTAMPDIFF(DAY, date_offre, NOW()) < 3)";
+                        break;
+                    case "7dj":
+                        $requete .= "AND (TIMESTAMPDIFF(DAY, date_offre, NOW()) < 7)";
+                        break;
+                    case "14dj":
+                        $requete .= "AND (TIMESTAMPDIFF(DAY, date_offre, NOW()) < 14)";
+                        break;
+                    default:
+                        break;
+                }
+                $requete .= " ";
+            }
+            if(isset($filters["niv"])) {
+                switch($filters["niv"]){
+                    case "b+2":
+                        $requete .= "AND (promo_concernees = 'bac+2')";
+                        break;
+                    case "b+3":
+                        $requete .= "AND (promo_concernees = 'bac+3')";
+                        break;
+                    case "b+4":
+                        $requete .= "AND (promo_concernees = 'bac+4')";
+                        break;
+                    case "b+5":
+                        $requete .= "AND (promo_concernees = 'bac+5')";
+                        break;
+                    default:
+                        break;
+                }
+                $requete .= " ";
+            }
+            if(isset($filters["sec"])) {
+                switch($filters["sec"]){
+                    case "info":
+                        $requete .= "AND (domaine_activite = 'Informatique')";
+                        break;
+                    case "btp":
+                        $requete .= "AND (domaine_activite = 'BTP')";
+                        break;
+                    default:
+                        break;
+                }
+                $requete .= " ";
+            }
+            
+
+            $query = $this->dbConnect->prepare($requete);
             $query->bindValue(":search", '%'.$searchValue.'%');
             $query->execute();
             return $query->fetchAll();
@@ -135,7 +209,7 @@ class MainManager {
             $query = $this->dbConnect->prepare(
                 "SELECT stage.titre, stage.competences, stage.adresse, stage.promo_concernees,
                 stage.remuneration, stage.date_offre, stage.places_disponibles, stage.description, stage.duree,
-                entreprise.nom as nom_entreprise
+                stage.domaine_activite as domaine, entreprise.nom as nom_entreprise
                 FROM stage JOIN entreprise ON stage.id_entreprise = entreprise.id_entreprise
                 WHERE :id = id_stage"
             );

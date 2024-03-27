@@ -1,4 +1,5 @@
 <?php
+session_cache_limiter('private_no_expire');
 session_start();
 define("URL", str_replace("index.php", "", (isset($_SERVER["HTTPS"]) ? "https" : "http").
     "://".$_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"]));
@@ -26,9 +27,7 @@ if (!isset($_SESSION["loggedAs"])){
 if (!isset($_SESSION["permissionLevel"])){
     $_SESSION["permissionLevel"] = 1;
 }
-if (!isset($_SESSION['LAST_ACTIVITY'])) {
-    $_SESSION['LAST_ACTIVITY'] = time();
-}
+$_SESSION['LAST_ACTIVITY'] = time();
 if (!isset($_SESSION['CREATED'])) {
     $_SESSION['CREATED'] = time();
 }
@@ -52,6 +51,10 @@ try{
 
             case "login":
                 $controller->login();
+                break;
+
+            case "search" | "affiche":
+                $controller->index();
                 break;
 
             default:
