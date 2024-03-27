@@ -201,4 +201,15 @@ class MainController extends Render{
         ];
         $this->render($data_visuoffre);
     }
+
+    public function wishlist(){
+        $data_wishlist = [
+            "page_description" => "Wishlist offre stage",
+            "page_title" => "Wishlist",
+            "page_css" => ["wishlist.css"],
+            "view" => "views/logged/wishlist.php",
+            "template" => "layouts/base.php",
+        ];
+        $this->render($data_wishlist);
+    }
 }

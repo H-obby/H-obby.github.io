@@ -72,6 +72,10 @@ try{
                 $controller->affiche();
                 break;
 
+            case "wishlist":
+                $controller->wishlist();
+                break;
+
             default:
                 throw new Exception("La page n'existe pas - ". $page);
         }

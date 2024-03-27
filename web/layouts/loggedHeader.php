@@ -28,9 +28,16 @@
 					  </li>
 					  <li class="sub-item">
 						<span class="material-icons-outlined">
-						  format_list_bulleted
+							format_list_bulleted
 						</span>
 						<p>Paramètres</p>
+					  </li>
+					  <li class="sub-item">
+						<span class="material-icons-outlined">
+							wishlist
+							<a href="wishlist">
+						</span>
+						<p>Wishlist</p>
 					  </li>
 					  <li class="sub-item">
 						<span class="material-icons-outlined"> logout </span>

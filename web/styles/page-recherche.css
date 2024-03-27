@@ -19,7 +19,7 @@
 }
 
 .offre-stage-blog-post-card {
-  width: 100%;
+  width: 500%;
   min-width: 60%;
   margin-bottom: 3rem;
   display: flex;
@@ -104,24 +104,13 @@
   background-color: transparent;
 }
 .offre-stage-image {
-  width: 32px;
+  width: 30px;
   object-fit: cover;
 }
-
-
-
-
-
-
-
-
 
 .offre-stage-root-class-name9 {
   margin-bottom: var(--dl-space-space-unit);
 }
-
-
-
 
 
 @media(max-width: 991px) {
@@ -204,7 +193,7 @@
   border-radius: var(--dl-radius-radius-radius4);
   padding-right: 0.5rem;
   padding-bottom: 0.5rem;
-  background-color: E7F0F2;
+  background-color: #E7F0F2;
 }
 .page-recherche-default {
   display: none;

@@ -101,3 +101,25 @@ body {
   padding-right: var(--dl-space-space-halfunit);
   padding-bottom: var(--dl-space-space-halfunit);
 }
+
+@media (max-width: 991px) {
+  .offre-stage-blog-post-card {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .offre-stage-blog-post-card {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+@media (max-width: 479px) {
+  .offre-stage-blog-post-card {
+    width: calc(100% - 20px);
+    margin: 10px;
+  }
+}
