@@ -100,7 +100,7 @@
 						
 						echo '
 						<div class="offre-stage-blog-post-card">
-							<div class="offre-stage-container" id="stageCard">
+							<div class="offre-stage-container" id="stageCard'.$stageContainer["id_stage"].'">
 								<div class="offre-stage-container1">
 									<span class="offre-stage-text">
 										'.$stageData["nom_entreprise"].'
@@ -122,26 +122,25 @@
 									<a class="offre-stage-text4">
 										Lire plus -&gt;
 									</a>
-									<button type="button" class="offre-stage-button button" id="fav">
+									<button type="button" class="offre-stage-button button" id="fav'.$stageContainer["id_stage"].'">
 										<img alt="image" src="public/bookmark-svgrepo-com.svg" class="offre-stage-image" />
 									</button>
 								</div>
 							</div>
 						</div>
 						<script>
-							let stageCard = document.getElementById("stageCard");
-							let fav	= document.getElementById("fav");
-							isHoveringFav = false;
-							fav.onmouseover = function(){
-								isHoveringFav = true;
+							let stageCard'.$stageContainer["id_stage"].' = document.getElementById("stageCard'.$stageContainer["id_stage"].'");
+							let fav'.$stageContainer["id_stage"].'	= document.getElementById("fav'.$stageContainer["id_stage"].'");
+							let isHoveringFav'.$stageContainer["id_stage"].' = false;
+							fav'.$stageContainer["id_stage"].'.onmouseover = function(){
+								isHoveringFav'.$stageContainer["id_stage"].' = true;
 							}
-							fav.onmouseout = function(){
-								isHoveringFav = false;
+							fav'.$stageContainer["id_stage"].'.onmouseout = function(){
+								isHoveringFav'.$stageContainer["id_stage"].' = false;
 							}
-							stageCard.onclick = function(){
-								if (isHoveringFav){
-									//alert("<?php favoriteCilck($stageContainer["id_stage"]) ?>");
-									let yipeee = 1;
+							stageCard'.$stageContainer["id_stage"].'.onclick = function(){
+								if (isHoveringFav'.$stageContainer["id_stage"].'){
+									
 									return;
 								}
 								window.location.href = "affiche&offreID='.urlencode($stageContainer["id_stage"]).'";
