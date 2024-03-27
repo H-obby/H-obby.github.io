@@ -51,6 +51,7 @@
 				</div>
 				<?php
     				$controller = new MainController();
+					//$controller->mainManager->setFavorite(1);
 					$id_stage;
 
 					function humanTiming ($time)
@@ -147,13 +148,6 @@
 							}
 						</script>
 						';
-					}
-
-					function favoriteClick($id_stage){
-						$controller = new MainController();
-						//$controller->mainManager->setFavorite($id_stage);
-
-						echo ("za bitchi");
 					}
 				?>
 			</div>
