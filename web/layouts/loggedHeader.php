@@ -40,7 +40,7 @@
 						</a>
 						<p>Wishlist</p>
 					  </li>
-					  <li class="sub-item">
+					  <li class="sub-item" onclick="location.href='phpScripts/disconnect.php'">
 						<span class="material-icons-outlined"> logout </span>
 						<p>Déconnection</p>
 					  </li>
