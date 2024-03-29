@@ -239,10 +239,10 @@ class MainManager {
         try { // On vérifie si la relation existe déjà
             $query = $this->dbConnect->prepare(
                 "SELECT * FROM relation
-                WHERE id_stage = :id_stage 
+                WHERE (id_stage = :id_stage 
                 AND id_utilisateur = (SELECT id_utilisateur
                 FROM utilisateur
-                WHERE login = :login)"
+                WHERE login = :login))"
             );
             $query->bindValue(":id_stage", $id_stage);
             $query->bindValue(":login", $_SESSION["loggedAs"]);
@@ -272,29 +272,40 @@ class MainManager {
         }
 
         try { 
-            if($this->dbConnect->prepare( // On vérifie si la relation est déjà wish-listed
-                "SELECT wish_listed FROM relation
-                HERE id_stage = :id_stage 
-                AND id_utilisateur = (SELECT id_utilisateur
-                FROM utilisateur
-                WHERE login = :login)"
-            )) { // Si elle l'est, on la retire de la wish-list
-                $query = $this->dbConnect->prepare(
-                    "INSERT INTO relation (wish_listed)
-                    VALUES (0)
-                    WHERE id_stage = :id_stage 
+            try {
+                $query = $this->dbConnect->prepare( // On vérifie si la relation est déjà wish-listed
+                    "SELECT wish_listed FROM relation
+                    WHERE (id_stage = :id_stage 
                     AND id_utilisateur = (SELECT id_utilisateur
                     FROM utilisateur
-                    WHERE login = :login)"
+                    WHERE login = :login))"
+                );
+                $query->bindValue(":id_stage", $id_stage);
+                $query->bindValue(":login", $_SESSION["loggedAs"]);
+                $query->execute();
+            } catch (Exception $exception) {
+                echo '<h1>'.$exception->getMessage().'</h1>';
+                echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+                die; // On arrête le code PHP
+            }
+
+            if($query->fetchAll()[0]["wish_listed"]) { // Si elle l'est, on la retire de la wish-list
+                $query = $this->dbConnect->prepare(
+                    "UPDATE `relation` 
+                    SET wish_listed = 0
+                    WHERE (id_stage = :id_stage 
+                    AND id_utilisateur = (SELECT id_utilisateur
+                    FROM utilisateur
+                    WHERE login = :login))"
                 );
             } else { // Sinon, on l'ajoute
                 $query = $this->dbConnect->prepare(
-                    "INSERT INTO relation (wish_listed)
-                    VALUES (1)
-                    WHERE id_stage = :id_stage 
+                    "UPDATE `relation` 
+                    SET wish_listed = 1
+                    WHERE (id_stage = :id_stage 
                     AND id_utilisateur = (SELECT id_utilisateur
                     FROM utilisateur
-                    WHERE login = :login)"
+                    WHERE login = :login))"
                 );
             }
             $query->bindValue(":id_stage", $id_stage);

@@ -155,22 +155,22 @@
 							favs.forEach(function(element){
 								element.onmouseover = function(){
 									isHoveringFavorite = true;
-									console.log(isHoveringFavorite);
+									//console.log(isHoveringFavorite);
 								}
 								element.onmouseout = function(){
 									isHoveringFavorite = false;
-									console.log(isHoveringFavorite);
+									//console.log(isHoveringFavorite);
 								}
 							});
 
 							cards.forEach(function(element){
 								element.onmouseover = function(){
 									whichHovering = Number(element.id.substr(element.id.length - 1));
-									console.log(whichHovering);
+									//console.log(whichHovering);
 								}
 								element.onmouseout = function(){
 									whichHovering = Number(-1);
-									console.log(whichHovering);
+									//console.log(whichHovering);
 								}
 								element.onclick = function(){
 									if (isHoveringFavorite && whichHovering == Number(element.id.substr(element.id.length - 1))){
