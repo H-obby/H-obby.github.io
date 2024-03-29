@@ -42,6 +42,12 @@ if(empty($_GET['page'])){
 }
 
 try{
+    if(str_starts_with($page, "function--")){
+        $func = str_replace("function--","", $page);
+        $controller->$func($_POST);
+        die;
+    }
+
     if(!$_SESSION["logged"] || !$_SESSION["loggedAs"]){
         //handle non-logged in pages
         switch ($page){

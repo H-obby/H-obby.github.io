@@ -51,8 +51,6 @@
 				</div>
 				<?php
     				$controller = new MainController();
-					//$controller->mainManager->setFavorite(1);
-					$id_stage;
 
 					function humanTiming ($time)
 					{
@@ -77,9 +75,13 @@
 
 					}
 
+					$allStageIDs = [];
+					$glIndex = 0;
+
 					foreach($datas["stages"] as &$stageContainer){
 						$stageData = $controller->mainManager->getStageFromID($stageContainer["id_stage"])[0];
 						$desc = $stageData["description"];
+						$allStageIDs[$glIndex] = $stageContainer["id_stage"];
 						if(strlen($desc) > 300){
 							$desc = substr($desc,0,300)." ...";
 						}
@@ -100,7 +102,7 @@
 						}
 						
 						echo '
-						<div class="offre-stage-blog-post-card">
+						<div class="offre-stage-blog-post-card" action="" method="post">
 							<div class="offre-stage-container" id="stageCard'.$stageContainer["id_stage"].'">
 								<div class="offre-stage-container1">
 									<span class="offre-stage-text">
@@ -123,32 +125,74 @@
 									<a class="offre-stage-text4">
 										Lire plus -&gt;
 									</a>
-									<button type="button" class="offre-stage-button button" id="fav'.$stageContainer["id_stage"].'">
+									<button type="button" id="fav'.$stageContainer["id_stage"].'" class="offre-stage-button button">
 										<img alt="image" src="public/bookmark-svgrepo-com.svg" class="offre-stage-image" />
 									</button>
 								</div>
 							</div>
 						</div>
-						<script>
-							let stageCard'.$stageContainer["id_stage"].' = document.getElementById("stageCard'.$stageContainer["id_stage"].'");
-							let fav'.$stageContainer["id_stage"].'	= document.getElementById("fav'.$stageContainer["id_stage"].'");
-							let isHoveringFav'.$stageContainer["id_stage"].' = false;
-							fav'.$stageContainer["id_stage"].'.onmouseover = function(){
-								isHoveringFav'.$stageContainer["id_stage"].' = true;
-							}
-							fav'.$stageContainer["id_stage"].'.onmouseout = function(){
-								isHoveringFav'.$stageContainer["id_stage"].' = false;
-							}
-							stageCard'.$stageContainer["id_stage"].'.onclick = function(){
-								if (isHoveringFav'.$stageContainer["id_stage"].'){
-									
-									return;
-								}
-								window.location.href = "affiche&offreID='.urlencode($stageContainer["id_stage"]).'";
-							}
-						</script>
 						';
+
+						if(isset($_REQUEST['fav'.$stageContainer["id_stage"]])){
+							echo 'gamer';
+						}
+						$glIndex++;
 					}
+
+					$allStageCardIDs = $allStageIDs;
+					$allStageFavIDs = $allStageIDs;
+					foreach($allStageIDs as $key=>$id){
+						$allStageCardIDs[$key] = "stageCard".$id;
+						$allStageFavIDs[$key] = "fav".$id;
+					}
+					$allStageIDsStr = "['".implode("', '", $allStageIDs)."']";
+
+					echo '
+					<script>
+						let cards = [];
+						let favs = [];
+						let whichHovering = -1;
+						let isHoveringFavorite = false;
+
+						for(let x in '.$allStageIDsStr.') {
+							cards.push(document.getElementById("stageCard"+'.$allStageIDsStr.'[x]));
+							favs.push(document.getElementById("fav"+'.$allStageIDsStr.'[x]));
+
+							favs.forEach(function(element){
+								element.onmouseover = function(){
+									isHoveringFavorite = true;
+									console.log(isHoveringFavorite);
+								}
+								element.onmouseout = function(){
+									isHoveringFavorite = false;
+									console.log(isHoveringFavorite);
+								}
+							});
+
+							cards.forEach(function(element){
+								element.onmouseover = function(){
+									whichHovering = Number('.$allStageIDsStr.'[x]);
+									console.log(whichHovering);
+								}
+								element.onmouseout = function(){
+									whichHovering = Number(-1);
+									console.log(whichHovering);
+								}
+								element.onclick = function(){
+									let formData = new FormData();
+									formData.append("id", '.$allStageIDsStr.'[x]);
+									if (isHoveringFavorite && whichHovering == Number('.$allStageIDsStr.'[x])){
+										fetch("function--addWishlist", {method: "POST", body: formData})
+										.then(res => res.text())
+										.then(txt => console.log(txt))
+										.catch(err => console.error(err));
+										return false;
+									}
+									window.location.href = "affiche&offreID="+'.$allStageIDsStr.'[x];
+								}
+							});
+						}
+					</script>';
 				?>
 			</div>
 		</div>

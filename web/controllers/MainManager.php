@@ -107,7 +107,6 @@ class MainManager {
 
     public function looseGetRechercheStage($searchValue, $filters):array{
         try {
-
             $requete = "SELECT id_stage, MATCH(
                             titre, competences, adresse,
                             domaine_activite, description) 
@@ -203,7 +202,6 @@ class MainManager {
                         $splitted[$key] = "*".$value."*";
                     }
                 }
-                print_r(implode(" ",$splitted));
                 $query->bindValue(":relSearch", implode(" ", $splitted));
             } else {
                 $query->bindValue(":relSearch",$searchValue);

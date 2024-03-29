@@ -236,4 +236,8 @@ class MainController extends Render{
         ];
         $this->render($data_wishlist);
     }
+
+    public function addWishlist($postData){
+        $this->mainManager->setFavorite($postData["id"]);
+    }
 }
