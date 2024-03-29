@@ -141,6 +141,8 @@
 					}
 					$allStageIDsStr = "['".implode("', '", $allStageIDs)."']";
 
+					$perms = $_SESSION["permissionLevel"];
+
 					echo '
 					<script>
 						let cards = [];
@@ -174,12 +176,14 @@
 								}
 								element.onclick = function(){
 									if (isHoveringFavorite && whichHovering == Number(element.id.substr(element.id.length - 1))){
-										let formData = new FormData();
-										formData.append("id", element.id.substr(element.id.length - 1));
-										fetch("function--addWishlist", {method: "POST", body: formData})
-										.then(res => res.text())
-										.then(txt => console.log(txt))
-										.catch(err => console.error(err));
+										if('.$perms.' == 1 || '.$perms.' == 2){
+											let formData = new FormData();
+											formData.append("id", element.id.substr(element.id.length - 1));
+											fetch("function--addWishlist", {method: "POST", body: formData})
+											.then(res => res.text())
+											.then(txt => console.log(txt))
+											.catch(err => console.error(err));
+										}
 										return false;
 									} else {
 										window.location.href = "affiche&offreID="+element.id.substr(element.id.length - 1);

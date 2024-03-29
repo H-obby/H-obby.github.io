@@ -271,25 +271,8 @@ class MainManager {
             }
         }
 
-        try { 
-            try {
-                $query = $this->dbConnect->prepare( // On vérifie si la relation est déjà wish-listed
-                    "SELECT wish_listed FROM relation
-                    WHERE (id_stage = :id_stage 
-                    AND id_utilisateur = (SELECT id_utilisateur
-                    FROM utilisateur
-                    WHERE login = :login))"
-                );
-                $query->bindValue(":id_stage", $id_stage);
-                $query->bindValue(":login", $_SESSION["loggedAs"]);
-                $query->execute();
-            } catch (Exception $exception) {
-                echo '<h1>'.$exception->getMessage().'</h1>';
-                echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
-                die; // On arrête le code PHP
-            }
-
-            if($query->fetchAll()[0]["wish_listed"]) { // Si elle l'est, on la retire de la wish-list
+        try { // On vérifie si la relation est wish-listed
+            if(MainManager::getFavorite($id_stage)) { // Si elle l'est, on la retire de la wish-list
                 $query = $this->dbConnect->prepare(
                     "UPDATE `relation` 
                     SET wish_listed = 0
@@ -311,6 +294,26 @@ class MainManager {
             $query->bindValue(":id_stage", $id_stage);
             $query->bindValue(":login", $_SESSION["loggedAs"]);
             $query->execute();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
+    public function getFavorite($id_stage){
+        try {
+            $query = $this->dbConnect->prepare(
+                "SELECT wish_listed FROM relation
+                WHERE (id_stage = :id_stage 
+                AND id_utilisateur = (SELECT id_utilisateur
+                FROM utilisateur
+                WHERE login = :login))"
+            );
+            $query->bindValue(":id_stage", $id_stage);
+            $query->bindValue(":login", $_SESSION["loggedAs"]);
+            $query->execute();
+            return $query->fetchAll()[0]["wish_listed"];
         } catch (Exception $exception) {
             echo '<h1>'.$exception->getMessage().'</h1>';
             echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';

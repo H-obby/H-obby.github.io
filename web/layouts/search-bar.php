@@ -6,7 +6,9 @@
   <select name="searchType" class="search-bar-select">
     <option value="stage">Stage</option>
     <option value="entreprise">Entreprise</option>
-    <option value="utilisateur">Utilisateur</option>
-    <option value="tuteur">Tuteur</option>
+    <?php if ($_SESSION["permissionLevel"] > 1): ?>
+      <option value="utilisateur">Utilisateur</option>
+      <option value="tuteur">Tuteur</option>
+    <?php endif; ?>
   </select>
 </form>

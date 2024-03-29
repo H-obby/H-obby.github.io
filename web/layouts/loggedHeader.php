@@ -22,7 +22,7 @@
 
 				<!-- Dropdown -->
 				<div class="dropdown_li">
-					<img src="../public/leetram-200h.png" class="profile" />
+					<img src="../public/leetram-200h.png" class="profile" alt="profile picture"/>
 					<ul class="dropdown_ul">
 					  <li class="sub-item">
 						<span class="material-icons-outlined"> manage_accounts </span>
