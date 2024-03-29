@@ -1,20 +1,18 @@
-.mentions-lgales-container {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: right;
-  justify-content: flex-start;
-  margin-top: 0.5em;
-}
 .mentions-lgales-image {
   width: 258px;
   height: var(--dl-size-size-small);
 }
 .container{
   margin: 2em 2em 2em 2em;
+  
 }
 .container >* {
-  margin-bottom: 0.5em;
-  padding-bottom: 1em;
+  margin-bottom: 2em;
+  padding-bottom: 2em;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: right;
+  justify-content: flex-start;
 }
 .grid-container {
   display: grid;
@@ -23,7 +21,7 @@
   
 }
 .body {
-  background-color: lightgray;
+  background-color: rgb(2, 48, 253);
   padding: 20px;
 }
 @media(max-width: 767px) {

@@ -74,6 +74,14 @@ try{
             $controller->wishlist();
             break;
 
+        case "assistance":
+            $controller->assistance();
+            break;
+
+        case "mentions":
+            $controller->mentions();
+            break;
+
         default:
             throw new Exception("La page n'existe pas - ". $page);
     }

@@ -240,4 +240,17 @@ class MainController extends Render{
     public function addWishlist($postData){
         $this->mainManager->setFavorite($postData["id"]);
     }
+
+    public function assistance()
+    {
+        $data_assistance = [
+            "page_description" => "Page d'assistance",
+            "page_title" => "Assistance offre stage",
+            "page_css" => ["assistance.css"],
+            "view" => "views/notLogged/assistance.php",
+            "template" => "layouts/base.php",
+        ];
+        $this->render($data_assistance);
+    }
+
 }
