@@ -48,46 +48,34 @@ try{
         die;
     }
 
-    if(!$_SESSION["logged"] || !$_SESSION["loggedAs"]){
-        //handle non-logged in pages
-        switch ($page){
-            case "index":
-                $controller->index();
-                break;
+    switch ($page){
+        case "index":
+            if($_SESSION["logged"]) $controller->loggedLanding();
+            else $controller->index();
+            break;
 
-            case "login":
-                $controller->login();
-                break;
+        case "login":
+            $controller->login();
+            break;
 
-            case "search" | "affiche":
-                $controller->index();
-                break;
+        case "search":
+            $controller->search();
+            break;
 
-            default:
-                throw new Exception("La page n'existe pas - ". $page);
-        }
-    } else {
-        //is logged in and allow all pages
-        switch ($page){
-            case "index":
-                $controller->loggedLanding();
-                break;
+        case "affiche":
+            $controller->affiche();
+            break;
 
-            case "search":
-                $controller->search();
-                break;
+        case "modifStage":
+            $controller->Modifstage();
+            break;
 
-            case "affiche":
-                $controller->affiche();
-                break;
+        case "wishlist":
+            $controller->wishlist();
+            break;
 
-            case "wishlist":
-                $controller->wishlist();
-                break;
-
-            default:
-                throw new Exception("La page n'existe pas - ". $page);
-        }
+        default:
+            throw new Exception("La page n'existe pas - ". $page);
     }
 } catch(Exception $e){
     $page_description = "Page 404";

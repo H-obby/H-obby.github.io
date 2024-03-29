@@ -60,7 +60,7 @@
             <ul class="visu-offre-stage-ul list">
               '.$fullHTMLTagList.'
             </ul>
-            <div class="visu-offre-stage-container4">
+            <form class="visu-offre-stage-container4">
               <button type="button" class="visu-offre-stage-button button">
                 POSTULER
               </button>
@@ -71,7 +71,12 @@
                   class="visu-offre-stage-image"
                 />
               </button>
-            </div>
+            </form>
+            <form action="modifStage&stage_id='.$_GET["offreID"].'" class="visu-offre-stage-container5">
+              <button type="submit" class="visu-offre-stage-button2 button">
+                MODIFIER
+              </button>
+            </form>
           </div>
         </div>
       </div>

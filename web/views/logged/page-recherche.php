@@ -54,7 +54,6 @@
 
 					function humanTiming ($time)
 					{
-
 						$time = time() - $time; // to get the time since that moment
 						$time = ($time<1)? 1 : $time;
 						$tokens = array (
@@ -72,7 +71,6 @@
 							$numberOfUnits = floor($time / $unit);
 							return $numberOfUnits.' '.$text.(($numberOfUnits>1)?'s':'');
 						}
-
 					}
 
 					$allStageIDs = [];
@@ -132,10 +130,6 @@
 							</div>
 						</div>
 						';
-
-						if(isset($_REQUEST['fav'.$stageContainer["id_stage"]])){
-							echo 'gamer';
-						}
 						$glIndex++;
 					}
 
@@ -171,7 +165,7 @@
 
 							cards.forEach(function(element){
 								element.onmouseover = function(){
-									whichHovering = Number('.$allStageIDsStr.'[x]);
+									whichHovering = Number(element.id.substr(element.id.length - 1));
 									console.log(whichHovering);
 								}
 								element.onmouseout = function(){
@@ -179,16 +173,17 @@
 									console.log(whichHovering);
 								}
 								element.onclick = function(){
-									let formData = new FormData();
-									formData.append("id", '.$allStageIDsStr.'[x]);
-									if (isHoveringFavorite && whichHovering == Number('.$allStageIDsStr.'[x])){
+									if (isHoveringFavorite && whichHovering == Number(element.id.substr(element.id.length - 1))){
+										let formData = new FormData();
+										formData.append("id", element.id.substr(element.id.length - 1));
 										fetch("function--addWishlist", {method: "POST", body: formData})
 										.then(res => res.text())
 										.then(txt => console.log(txt))
 										.catch(err => console.error(err));
 										return false;
+									} else {
+										window.location.href = "affiche&offreID="+element.id.substr(element.id.length - 1);
 									}
-									window.location.href = "affiche&offreID="+'.$allStageIDsStr.'[x];
 								}
 							});
 						}

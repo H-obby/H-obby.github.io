@@ -94,9 +94,9 @@
   color: var(--dl-color-gray-black);
   font-style: normal;
   font-weight: 500;
-  cursor:pointer;
 }
 .offre-stage-button {
+  cursor:pointer;
   display: flex;
   padding: 0px;
   border-width: 0px;

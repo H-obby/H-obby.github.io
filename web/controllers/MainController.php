@@ -140,9 +140,9 @@ class MainController extends Render{
 
     public function Modifstage(){
         $data_Modifstage = [
-            "page_description" => "Modifier offre stage",
-            "page_title" => "Modifoffrestage",
-            "page_css" => ["modif-offre-entre.css"],
+            "page_description" => "Modification d'offre de stage",
+            "page_title" => "Modification de stages",
+            "page_css" => ["modif-offre-stage.css"],
             "view" => "views/Logged/modifstage.php",
             "template" => "layouts/base.php",
         ];
