@@ -204,7 +204,6 @@
   display: flex;
   min-width: 80%;
   align-self: center;
-  margin-top: var(--dl-space-space-oneandhalfunits);
   align-items: flex-start;
   margin-left: var(--dl-space-space-unit);
   margin-right: var(--dl-space-space-unit);

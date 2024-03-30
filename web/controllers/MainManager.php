@@ -333,7 +333,6 @@ class MainManager {
             $desc = $postData["desc"];
             $now = date('Y-m-d H:i:s', time());
             $entreprise = $this->getEntrepriseIDFromName($postData["nom_entreprise"]);
-            print_r($entreprise);
             if(sizeof($entreprise) <= 0){
                 return false;
             }
@@ -365,6 +364,64 @@ class MainManager {
             $query->bindValue(":entreprise",     $entreprise[0]["id_entreprise"]);
             $query->execute();
             return true;
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
+    public function removeStage($id){
+        try { 
+            $requete ="DELETE FROM stage WHERE id_stage = :id LIMIT 1";
+            $query = $this->dbConnect->prepare($requete);
+            $query->bindValue(":id", $id);
+            $query->execute();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
+    public function createStage($postData):string{
+        try { 
+            $duree = $postData["duree"];
+            $promo_concernees = $postData["promo_concernees"];
+            $competences = $postData["competences"];
+            $remuneration = $postData["remuneration"];
+            $adresse = $postData["adresse"];
+            $places_disponibles = $postData["places_disponibles"];
+            $titre = $postData["titre"];
+            $desc = $postData["desc"];
+            $now = date('Y-m-d H:i:s', time());
+            $entreprise = $this->getEntrepriseIDFromName($postData["nom_entreprise"]);
+            if(sizeof($entreprise) <= 0){
+                return "-1";
+            }
+
+            $requete ="INSERT INTO 
+                `stage`(`titre`, `competences`,`adresse`,`duree`,`remuneration`,`date_offre`,
+                `places_disponibles`,`description`,`promo_concernees`,`id_entreprise`)
+                VALUES 
+                (:titre,:competences,:adresse,:duree,:remuneration,:now,
+                :places,:desc,:promos,:entreprise)";
+
+            $query = $this->dbConnect->prepare($requete);
+            $query->bindValue(":titre",          $titre);
+            $query->bindValue(":competences",    $competences);
+            $query->bindValue(":adresse",        $adresse);
+            $query->bindValue(":duree",          $duree);
+            $query->bindValue(":remuneration",   $remuneration);
+            $query->bindValue(":now",            $now);
+            $query->bindValue(":places",         $places_disponibles);
+            $query->bindValue(":desc",           $desc);
+            $query->bindValue(":promos",         $promo_concernees);
+            $query->bindValue(":entreprise",     $entreprise[0]["id_entreprise"]);
+            $query->execute();
+
+            $justCreatedID = $this->dbConnect->lastInsertId("stage");
+            return $justCreatedID;
         } catch (Exception $exception) {
             echo '<h1>'.$exception->getMessage().'</h1>';
             echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';

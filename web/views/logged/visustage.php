@@ -51,7 +51,7 @@
 
   $datePostee = new DateTime($stageData["date_offre"]);
   $dateElapsed = humanTiming(strtotime($datePostee->format("Y-m-d H:i:s")));
-
+  $jsonDesc = json_encode($stageData["description"]);
   echo '
     <main class="visu-offre-stage-main">
       <div class="visu-offre-stage-container1">
@@ -72,9 +72,14 @@
                 />
               </button>
             </form>
-            <form action="modifStage&stage_id='.$_GET["offreID"].'" class="visu-offre-stage-container5">
+            <form action="modification&stage_id='.$_GET["offreID"].'" class="visu-offre-stage-container5">
               <button type="submit" class="visu-offre-stage-button2 button">
                 MODIFIER
+              </button>
+            </form>
+            <form onsubmit="areYouSure()" action="" class="visu-offre-stage-container5">
+              <button type="submit" class="visu-offre-stage-button2 button">
+                SUPPRIMER
               </button>
             </form>
           </div>
@@ -86,9 +91,32 @@
           <span class="visu-offre-stage-text07">Il y a '.$dateElapsed.'</span>
         </div>
         <h1 class="visu-offre-stage-text08">'.$stageData["titre"].'</h1>
-        <span class="visu-offre-stage-text09">
-          '.$stageData["description"].'
-        </span>
+        <span id="desc" class="visu-offre-stage-text09"></span>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script>
+          document.getElementById("desc").innerHTML =
+          marked.parse('.$jsonDesc.');
+        </script>
       </div>
     </main>
+
+    <script>
+      function areYouSure(){
+        if(confirm("Voulez-vous vraiment supprimer le stage \"'.$stageData["titre"].'\" ?")){
+          $.ajax({type: "POST", url: "function--ajaxRemoveStage", 
+            data: {
+              id:'.$_GET["offreID"].'
+            },
+            success: function(){
+              window.location.replace("index&t='.time().'");
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+              console.log(errorThrown);
+            }
+          });
+        } else {
+
+        }
+      }
+    </script>
   ';

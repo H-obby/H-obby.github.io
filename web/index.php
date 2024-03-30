@@ -25,7 +25,7 @@ if (!isset($_SESSION["loggedAs"])){
     $_SESSION["loggedAs"] = "";
 }
 if (!isset($_SESSION["permissionLevel"])){
-    $_SESSION["permissionLevel"] = 1;
+    $_SESSION["permissionLevel"] = 0;
 }
 $_SESSION['LAST_ACTIVITY'] = time();
 if (!isset($_SESSION['CREATED'])) {
@@ -66,8 +66,8 @@ try{
             $controller->affiche();
             break;
 
-        case "modifStage":
-            $controller->Modifstage();
+        case "modification":
+            $controller->modification();
             break;
 
         case "wishlist":

@@ -1,17 +1,30 @@
 <?php
     $controller = new MainController();
-
-    $stageData = $controller->mainManager->getStageFromID($_GET["stage_id"])[0];
+    $isCreation = !isset($_GET["stage_id"]);
     
-    if(isset($_POST["duree"])) $duree = $_POST["duree"];
-    if(isset($_POST["promo_concernees"])) $promo_concernees = $_POST["promo_concernees"];
-    if(isset($_POST["competences"])) $competences = $_POST["competences"];
-    if(isset($_POST["remuneration"])) $remuneration = $_POST["remuneration"];
-    if(isset($_POST["adresse"])) $adresse = $_POST["adresse"];
-    if(isset($_POST["places_disponibles"])) $places_disponibles = $_POST["places_disponibles"];
-    if(isset($_POST["nom_entreprise"])) $nom_entreprise = $_POST["nom_entreprise"];
-    if(isset($_POST["titre"])) $titre = $_POST["titre"];
-    if(isset($_POST["desc"])) $desc = $_POST["desc"];
+    if(!$isCreation){
+        $stageData = $controller->mainManager->getStageFromID($_GET["stage_id"])[0];
+    
+        if(isset($_POST["duree"])) $duree = $_POST["duree"];
+        if(isset($_POST["promo_concernees"])) $promo_concernees = $_POST["promo_concernees"];
+        if(isset($_POST["competences"])) $competences = $_POST["competences"];
+        if(isset($_POST["remuneration"])) $remuneration = $_POST["remuneration"];
+        if(isset($_POST["adresse"])) $adresse = $_POST["adresse"];
+        if(isset($_POST["places_disponibles"])) $places_disponibles = $_POST["places_disponibles"];
+        if(isset($_POST["nom_entreprise"])) $nom_entreprise = $_POST["nom_entreprise"];
+        if(isset($_POST["titre"])) $titre = $_POST["titre"];
+        if(isset($_POST["desc"])) $desc = $_POST["desc"];
+    } else {
+        $duree = "";
+        $promo_concernees = "";
+        $competences = "";
+        $remuneration = "";
+        $adresse = "";
+        $places_disponibles = "";
+        $nom_entreprise = "";
+        $titre = "";
+        $desc = "";
+    }
 ?>
 
 <form method="POST" class="modif-offre-stage-main">
@@ -50,22 +63,14 @@
                                 }
                             });
                         },
-                        minLength: 2,
                         select: function (event, ui) {
                             $('#autocomplete').val(ui.item.value); // display the selected text
                         },
                     });
-
-                    function split( val ) {
-                        return val.split( /,\s*/ );
-                    }
-                    function extractLast( term ) {
-                        return split( term ).pop();
-                    }
                 </script>
             </div>
             <input type="text" name="titre" value="<?= isset($titre) ? $titre : $stageData["titre"] ?>" placeholder="Intitulé du Stage" class="modif-offre-stage-intitul-stage input" />
-            <textarea placeholder="Description du Stage" name="desc" class="modif-offre-stage-textarea textarea"> <?= isset($desc) ? $desc : $stageData["description"] ?> </textarea>
+            <textarea placeholder="Description du Stage" name="desc" class="modif-offre-stage-textarea textarea"><?= isset($desc) ? $desc : $stageData["description"] ?></textarea>
         </div>
     </div>
 </form>
@@ -73,26 +78,130 @@
 <?php
 if(isset($_POST["poster"])){
     //do the luigi
-    $answer = $controller->mainManager->updateStage($_GET["stage_id"], $_POST);
-    if(!$answer){  
-        echo '
-        <script>
-            let txt;
-            if(confirm("L\'entreprise \"'.$_POST["nom_entreprise"].'\" n\'existe pas... \
-            \nAppuyez sur OK pour la créer, n\'oubliez pas de la remplir par la suite.")){
-                let formData = new FormData();
-                formData.append("nom", "'.$_POST["nom_entreprise"].'");
-                fetch("function--createEmptyEntreprise", {method: "POST", body: formData})
-                .then(res => res.text())
-                .then(function(txt){
-                    //redirect to new entreprise creation page
-                })
-                .catch(err => console.error(err));
-            } else {
-                //go back
-            }
-        </script>
-        ';
+    if(!$isCreation){
+        $answer = $controller->mainManager->updateStage($_GET["stage_id"], $_POST);
+        if(!$answer){  
+            echo '
+            <script>
+                let txt;
+                if(confirm("L\'entreprise \"'.$_POST["nom_entreprise"].'\" n\'existe pas... \
+                \nAppuyez sur OK pour la créer, n\'oubliez pas de la remplir par la suite.")){
+                    let formData = new FormData();
+                    formData.append("nom", "'.$_POST["nom_entreprise"].'");
+                    fetch("function--createEmptyEntreprise", {method: "POST", body: formData})
+                    .then(res => res.text())
+                    .then(function(txt){
+                        //redirect to new entreprise creation page
+                        $.ajax({type: "POST", url: "function--ajaxHandleAlert", 
+                            data: {
+                                message: "L\'entreprise '.$_POST["nom_entreprise"].' a bien été créée.",
+                                type: "success"
+                            },
+                            success: function(){
+                                window.location.replace("modifStage&stage_id='.$_GET["stage_id"].'");
+                            },
+                            error: function(jqXHR, textStatus, errorThrown){
+                                console.log(errorThrown);
+                            }
+                        });
+                    })
+                    .catch(err => console.error(err));
+                } else {
+                    $.ajax({type: "POST", url: "function--ajaxHandleAlert", 
+                        data: {
+                            message: "La modification n\'a pas pu être enregistrée...",
+                            type: "danger"
+                        },
+                        success: function(){
+                            window.location.replace("modifStage&stage_id='.$_GET["stage_id"].'");
+                        },
+                        error: function(jqXHR, textStatus, errorThrown){
+                            console.log(errorThrown);
+                        }
+                    });
+                }
+            </script>
+            ';
+        } else {
+            echo '
+            <script>
+                $.ajax({type: "POST", url: "function--ajaxHandleAlert", 
+                    data: {
+                        message: "La modification a correctement été effectuée!",
+                        type: "success"
+                    },
+                    success: function(){
+                        window.location.replace("affiche&offreID='.$_GET["stage_id"].'&t='.time().'");
+                    },
+                    error: function(jqXHR, textStatus, errorThrown){
+                        console.log(errorThrown);
+                    }
+                });
+            </script>
+            ';
+        }
+    } else {
+        $answer = $controller->mainManager->createStage($_POST);
+        if($answer != "-1"){
+            echo '
+            <script>
+                $.ajax({type: "POST", url: "function--ajaxHandleAlert", 
+                    data: {
+                        message: "La modification a correctement été effectuée!",
+                        type: "success"
+                    },
+                    success: function(){
+                        window.location.replace("affiche&offreID='.$answer.'&t='.time().'");
+                    },
+                    error: function(jqXHR, textStatus, errorThrown){
+                        console.log(errorThrown);
+                    }
+                });
+            </script>
+            ';
+        } else {
+            echo '
+            <script>
+                let txt;
+                if(confirm("L\'entreprise \"'.$_POST["nom_entreprise"].'\" n\'existe pas... \
+                \nAppuyez sur OK pour la créer, n\'oubliez pas de la remplir par la suite.")){
+                    let formData = new FormData();
+                    formData.append("nom", "'.$_POST["nom_entreprise"].'");
+                    fetch("function--createEmptyEntreprise", {method: "POST", body: formData})
+                    .then(res => res.text())
+                    .then(function(txt){
+                        //redirect to new entreprise creation page
+                        $.ajax({type: "POST", url: "function--ajaxHandleAlert", 
+                            data: {
+                                message: "L\'entreprise '.$_POST["nom_entreprise"].' a bien été créée.",
+                                type: "success"
+                            },
+                            success: function(){
+                                //thing
+                            },
+                            error: function(jqXHR, textStatus, errorThrown){
+                                console.log(errorThrown);
+                            }
+                        });
+                    })
+                    .catch(err => console.error(err));
+                } else {
+                    $.ajax({type: "POST", url: "function--ajaxHandleAlert", 
+                        data: {
+                            message: "La modification n\'a pas pu être enregistrée...",
+                            type: "danger"
+                        },
+                        success: function(){
+                            //do nothing
+                        },
+                        error: function(jqXHR, textStatus, errorThrown){
+                            console.log(errorThrown);
+                        }
+                    });
+                }
+            </script>
+            ';
+        }
     }
 }
 ?>
