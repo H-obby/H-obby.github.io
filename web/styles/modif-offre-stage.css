@@ -278,9 +278,9 @@
 .modif-offre-stage-nom-entreprise {
   height: 100%;
   align-self: center;
-  padding-top: 0px;
+  padding-left: var(--dl-space-space-halfunit);
   padding-right: 0px;
-  padding-bottom: 0px;
+  width: 100%;
 }
 .modif-offre-stage-intitul-stage {
   padding: var(--dl-space-space-halfunit);

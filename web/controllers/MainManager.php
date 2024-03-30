@@ -134,7 +134,7 @@ class MainManager {
                         $requete .= "AND (duree = '5 mois' OR duree = '6 mois')";
                         break;
                     case "6+m":
-                        $requete .= "AND (CAST(SUBSTRING(duree, 1, 1) AS INT) >= 6)";
+                        $requete .= "AND (CAST(LEFT(duree, charindex(' ', duree) - 1)  AS INT) >= 6)";
                         break;
                     default:
                         break;
@@ -318,6 +318,138 @@ class MainManager {
             echo '<h1>'.$exception->getMessage().'</h1>';
             echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
             die; // On arrête le code PHP
+        }
+    }
+    
+    public function updateStage(int $id, $postData){
+        try { 
+            $duree = $postData["duree"];
+            $promo_concernees = $postData["promo_concernees"];
+            $competences = $postData["competences"];
+            $remuneration = $postData["remuneration"];
+            $adresse = $postData["adresse"];
+            $places_disponibles = $postData["places_disponibles"];
+            $titre = $postData["titre"];
+            $desc = $postData["desc"];
+            $now = date('Y-m-d H:i:s', time());
+            $entreprise = $this->getEntrepriseIDFromName($postData["nom_entreprise"]);
+            print_r($entreprise);
+            if(sizeof($entreprise) <= 0){
+                return false;
+            }
+
+            $requete ="UPDATE `stage` SET 
+                `titre`= :titre,
+                `competences`= :competences,
+                `adresse`= :adresse,
+                `duree`= :duree,
+                `remuneration`= :remuneration,
+                `date_offre`= :now,
+                `places_disponibles`= :places,
+                `description`= :desc,
+                `promo_concernees`= :promos,
+                `id_entreprise`= :entreprise
+                WHERE (id_stage = :id) LIMIT 1";
+
+            $query = $this->dbConnect->prepare($requete);
+            $query->bindValue(":id",             $id);
+            $query->bindValue(":titre",          $titre);
+            $query->bindValue(":competences",    $competences);
+            $query->bindValue(":adresse",        $adresse);
+            $query->bindValue(":duree",          $duree);
+            $query->bindValue(":remuneration",   $remuneration);
+            $query->bindValue(":now",            $now);
+            $query->bindValue(":places",         $places_disponibles);
+            $query->bindValue(":desc",           $desc);
+            $query->bindValue(":promos",         $promo_concernees);
+            $query->bindValue(":entreprise",     $entreprise[0]["id_entreprise"]);
+            $query->execute();
+            return true;
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
+    public function getEntrepriseName($curSearch){
+        try{
+            $requete = "SELECT nom
+            FROM entreprise 
+            WHERE (MATCH (nom) AGAINST (:relSearch IN BOOLEAN MODE) > 0)
+            ORDER BY MATCH (nom) AGAINST (:relSearch IN BOOLEAN MODE) DESC";
+            
+            $query = $this->dbConnect->prepare($requete);
+            $query->bindValue(":relSearch", '*'.$curSearch.'*');
+            $query->execute();
+
+            $data = array();
+            $data = $query->fetchAll(PDO::FETCH_COLUMN);
+            echo json_encode($data);
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
+    public function getEntrepriseIDFromName($name){
+        try{
+            $requete = "SELECT id_entreprise
+            FROM entreprise 
+            WHERE nom = :name
+            LIMIT 1";
+
+            $query = $this->dbConnect->prepare($requete);
+            $query->bindValue(":name", $name);
+            $query->execute();
+            $id = $query->fetchAll();
+            if(isset($id)){ //entreprise trouvée
+                return $id;
+            } else { //entreprise non-trouvée
+                return false;
+            }
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die;
+        }
+    }
+
+    public function createEmptyEntreprise($name){
+        try{
+            $requete = "INSERT INTO `entreprise`(`nom`)
+            VALUES (':nom')";
+            $query = $this->dbConnect->prepare($requete);
+            $query->bindValue(":name",                 $name);
+            $query->execute();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die;
+        }
+    }
+
+    public function createEntreprise($data){
+        try{
+            $requete = "INSERT INTO `entreprise`(
+                `nom`, `secteur_d_activite`, 
+                `mail`, `addresse_siege`, `description`)
+            VALUES (
+                ':nom',':secteur_d_activite',
+                ':mail',':addresse_siege',':description')
+            ";
+            $query = $this->dbConnect->prepare($requete);
+            $query->bindValue(":name",                 $data["name"]);
+            $query->bindValue(":secteur_d_activite",   $data["secteur_d_activite"]);
+            $query->bindValue(":mail",                 $data["mail"]);
+            $query->bindValue(":addresse_siege",       $data["addresse_siege"]);
+            $query->bindValue(":description",          $data["description"]);
+            $query->execute();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die;
         }
     }
 }

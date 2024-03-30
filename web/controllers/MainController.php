@@ -237,10 +237,6 @@ class MainController extends Render{
         $this->render($data_wishlist);
     }
 
-    public function addWishlist($postData){
-        $this->mainManager->setFavorite($postData["id"]);
-    }
-
     public function assistance()
     {
         $data_assistance = [
@@ -253,4 +249,16 @@ class MainController extends Render{
         $this->render($data_assistance);
     }
 
+    public function addWishlist($postData){
+        $this->mainManager->setFavorite($postData["id"]);
+    }
+
+
+    public function getEntrepriseName($curSearch){
+        $this->mainManager->getEntrepriseName($curSearch["search"]);
+    }
+
+    public function createEmptyEntreprise($name){
+        $this->mainManager->createEmptyEntreprise($name["nom"]);
+    }
 }

@@ -1,4 +1,3 @@
-<!-- Connexion à la base de données-->
 <?php
 /* Configuration des variables d'environnement */
 define('DB_HOST', 'localhost');

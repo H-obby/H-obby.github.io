@@ -1,7 +1,6 @@
 <?php
-
 session_start();
-session_unset();
+unset($_SESSION);
 session_destroy();
-session_start();
-header("Location: ../index");
+header("Location: ../login");
+die;
