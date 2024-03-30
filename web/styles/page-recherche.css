@@ -1,3 +1,309 @@
+.etudiant-card-blog-post-card {
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  max-width: var(--dl-size-size-maxwidth);
+  box-shadow: 0px 0px 20px 0px rgba(21, 21, 21, 0.56);
+  transition: 0.3s;
+  align-items: stretch;
+  border-radius: var(--dl-radius-radius-radius8);
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+.etudiant-card-blog-post-card:hover {
+  transform: scale(1.02);
+}
+.etudiant-card-container {
+  height: auto;
+  width: 100%;
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+  margin-left: var(--dl-space-space-twounits);
+  padding-top: var(--dl-space-space-unit);
+  margin-right: var(--dl-space-space-twounits);
+  padding-left: var(--dl-space-space-unit);
+  padding-right: var(--dl-space-space-unit);
+  flex-direction: row;
+  padding-bottom: var(--dl-space-space-unit);
+  justify-content: space-between;
+}
+.etudiant-card-image {
+  width: auto;
+  max-height: 60%;
+  object-fit: cover;
+  border-color: var(--dl-color-gray-black);
+  border-width: 3px;
+  margin-right: var(--dl-space-space-twounits);
+  border-radius: var(--dl-radius-radius-round);
+}
+.etudiant-card-container1 {
+  gap: var(--dl-space-space-twounits);
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.etudiant-card-text1 {
+  color: var(--dl-color-gray-500);
+  font-size: 2em;
+  font-style: normal;
+  font-weight: 400;
+}
+.etudiant-card-container2 {
+  flex: 0 0 auto;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.etudiant-card-annee {
+  color: var(--dl-color-gray-500);
+  font-size: 1.25em;
+  font-weight: 300;
+}
+.etudiant-card-promo {
+  color: var(--dl-color-gray-500);
+  font-size: 1.25em;
+  font-weight: 300;
+}
+
+.etudiant-card-root-class-name9 {
+  margin-bottom: 16px;
+}
+
+.etudiant-card-root-class-name11 {
+  margin-bottom: 16px;
+}
+.etudiant-card-root-class-name12 {
+  margin-bottom: 32px;
+}
+.etudiant-card-root-class-name13 {
+  margin-bottom: 32px;
+}
+.etudiant-card-root-class-name14 {
+  max-width: auto;
+  align-self: stretch;
+}
+.etudiant-card-root-class-name15 {
+  max-width: auto;
+  align-self: stretch;
+}
+.etudiant-card-root-class-name16 {
+  max-width: auto;
+  align-self: stretch;
+}
+.etudiant-card-root-class-name17 {
+  max-width: auto;
+  align-self: stretch;
+}
+.etudiant-card-root-class-name18 {
+  max-width: auto;
+  align-self: stretch;
+}
+.etudiant-card-root-class-name20 {
+  max-width: auto;
+  align-self: stretch;
+}
+.etudiant-card-root-class-name21 {
+  max-width: auto;
+  align-self: stretch;
+}
+@media(max-width: 991px) {
+  .etudiant-card-blog-post-card {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+@media(max-width: 767px) {
+  .etudiant-card-blog-post-card {
+    flex-direction: column;
+  }
+}
+
+.page-recherche-utilisateur-container {
+  width: 100%;
+  display: flex;
+  overflow: auto;
+  min-height: 100vh;
+  align-items: center;
+  flex-direction: column;
+}
+.page-recherche-utilisateur-container1 {
+  flex: 0 0 auto;
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-self: center;
+  align-items: flex-start;
+  border-color: var(--dl-color-gray-900);
+  border-width: 1px;
+  justify-content: flex-end;
+  border-left-width: 0px;
+  border-right-width: 0px;
+}
+.page-recherche-utilisateur-container2 {
+  flex: 0 0 auto;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  max-width: 30vw;
+  box-shadow: 2px 2px 5px 0px rgba(21, 21, 21, 0.5);
+  align-items: center;
+  border-radius: var(--dl-radius-radius-radius8);
+  flex-direction: column;
+  justify-content: space-between;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.page-recherche-utilisateur-form {
+  gap: var(--dl-space-space-unit);
+  width: auto;
+  height: auto;
+  display: flex;
+  min-width: 80%;
+  margin-top: var(--dl-space-space-unit);
+  min-height: 60%;
+  flex-direction: column;
+}
+.page-recherche-utilisateur-niveau-dtudes {
+  background: transparent;
+  padding-top: 0.5rem;
+  border-color: var(--dl-color-gray-black);
+  border-width: 1px;
+  padding-left: 0.7rem;
+  border-radius: var(--dl-radius-radius-radius4);
+  padding-right: 0.5rem;
+  padding-bottom: 0.5rem;
+  background-color: E7F0F2;
+}
+.page-recherche-utilisateur-default {
+  display: none;
+}
+.page-recherche-utilisateur-campus {
+  background: transparent;
+  padding-top: 0.5rem;
+  border-color: var(--dl-color-gray-black);
+  border-width: 1px;
+  padding-left: 0.7rem;
+  border-radius: var(--dl-radius-radius-radius4);
+  padding-right: 0.5rem;
+  padding-bottom: 0.5rem;
+  background-color: E7F0F2;
+}
+.page-recherche-utilisateur-option05 {
+  display: none;
+}
+.page-recherche-utilisateur-promo {
+  background: transparent;
+  padding-top: 0.5rem;
+  border-color: var(--dl-color-gray-black);
+  border-width: 1px;
+  padding-left: 0.7rem;
+  border-radius: var(--dl-radius-radius-radius4);
+  padding-right: 0.5rem;
+  padding-bottom: 0.5rem;
+  background-color: E7F0F2;
+}
+.page-recherche-utilisateur-option09 {
+  display: none;
+}
+.page-recherche-utilisateur-container3 {
+  flex: 0 0 auto;
+  width: auto;
+  display: flex;
+  min-width: 80%;
+  align-self: center;
+  margin-top: var(--dl-space-space-oneandhalfunits);
+  align-items: flex-start;
+  margin-left: var(--dl-space-space-unit);
+  margin-right: var(--dl-space-space-unit);
+  margin-bottom: var(--dl-space-space-halfunit);
+}
+.page-recherche-utilisateur-button {
+  width: 100%;
+  font-size: 16px;
+  align-self: flex-start;
+  font-style: normal;
+  font-weight: 700;
+  border-width: 3px;
+  border-radius: var(--dl-radius-radius-radius8);
+  margin-bottom: var(--dl-space-space-unit);
+  text-transform: uppercase;
+  background-color: var(--dl-color-gray-white);
+}
+.page-recherche-utilisateur-liste-entreprises {
+  width: 100%;
+  display: flex;
+  max-width: 70vw;
+  align-items: center;
+  padding-top: var(--dl-space-space-unit);
+  padding-left: var(--dl-space-space-threeunits);
+  padding-right: var(--dl-space-space-threeunits);
+  flex-direction: column;
+  padding-bottom: var(--dl-space-space-threeunits);
+  justify-content: space-between;
+}
+.page-recherche-utilisateur-etudiant-container {
+  display: flex;
+  align-self: stretch;
+  align-items: stretch;
+  margin-bottom: var(--dl-space-space-twounits);
+  flex-direction: column;
+  justify-content: space-between;
+}
+.page-recherche-utilisateur-etudiant-container1 {
+  display: flex;
+  align-self: stretch;
+  align-items: stretch;
+  margin-bottom: var(--dl-space-space-twounits);
+  flex-direction: column;
+  justify-content: space-between;
+}
+.page-recherche-utilisateur-etudiant-container2 {
+  display: flex;
+  align-self: stretch;
+  align-items: stretch;
+  margin-bottom: var(--dl-space-space-twounits);
+  flex-direction: column;
+  justify-content: space-between;
+}
+@media(max-width: 991px) {
+  .page-recherche-utilisateur-liste-entreprises {
+    max-width: 70vw;
+  }
+}
+@media(max-width: 767px) {
+  .page-recherche-utilisateur-container2 {
+    display: none;
+  }
+  .page-recherche-utilisateur-form {
+    align-self: center;
+  }
+  .page-recherche-utilisateur-liste-entreprises {
+    max-width: 100vw;
+    padding-left: var(--dl-space-space-twounits);
+    padding-right: var(--dl-space-space-twounits);
+  }
+}
+@media(max-width: 479px) {
+  .page-recherche-utilisateur-form {
+    align-self: center;
+  }
+  .page-recherche-utilisateur-liste-entreprises {
+    padding-top: var(--dl-space-space-twounits);
+    padding-left: var(--dl-space-space-unit);
+    padding-right: var(--dl-space-space-unit);
+    padding-bottom: var(--dl-space-space-twounits);
+  }
+}
+
 .page-recherche-container {
   width: 100%;
   display: flex;
@@ -273,6 +579,13 @@
   margin-bottom: var(--dl-space-space-twounits);
   flex-direction: column;
   justify-content: space-between;
+}
+.number-indicator {
+  color: var(--dl-color-gray-500);
+  font-weight: 600;
+  text-transform: uppercase;
+  align-self: flex-start;
+  margin-bottom: 1rem;
 }
 @media(max-width: 991px) {
   .page-recherche-liste-entreprises {

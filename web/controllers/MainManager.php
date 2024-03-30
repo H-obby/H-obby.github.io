@@ -509,4 +509,56 @@ class MainManager {
             die;
         }
     }
+
+    public function looseGetUser($searchValue, $filters):array{
+        try {
+            $requete = "SELECT id_utilisateur ";
+            if(isset($searchValue) && $searchValue != "") {
+                $requete .= ", MATCH(
+                    nom, prenom, centre) 
+                AGAINST (:relSearch IN BOOLEAN MODE) AS relevancy_score ";
+            }
+            $requete .= "FROM utilisateur WHERE (type = 1) ";
+            if(isset($searchValue) && $searchValue != "") {
+                $requete .= "AND (
+                MATCH (nom, prenom, centre) 
+                AGAINST (:relSearch IN BOOLEAN MODE) > 0) ORDER BY relevancy_score DESC";
+            }
+            
+            $query = $this->dbConnect->prepare($requete);
+            if($searchValue != ""){
+                $splitted = preg_split('/\s+/', $searchValue);
+                foreach ($splitted as $key=>$value){
+                    if(substr($value, 0, 1) != "+") {
+                        $splitted[$key] = "*".$value."*";
+                    }
+                }
+                $query->bindValue(":relSearch", implode(" ", $splitted));
+            } 
+            $query->execute();
+            return $query->fetchAll();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
+    public function getUserFromID(int $id){
+        try {
+            $query = $this->dbConnect->prepare(
+                "SELECT utilisateur.nom as name, utilisateur.prenom as surname, utilisateur.centre as centre, 
+                utilisateur.profilePic as pfp, promotion.promo as promo, promotion.displayName as promoName
+                FROM utilisateur JOIN promotion ON promotion.id_promo = utilisateur.id_promo
+                WHERE :id = id_utilisateur"
+            );
+            $query->bindValue(":id", $id);
+            $query->execute();
+            return $query->fetchAll();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
 }

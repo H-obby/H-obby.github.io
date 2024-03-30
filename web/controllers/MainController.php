@@ -45,37 +45,29 @@ class MainController extends Render{
             ];
             $this->render($data_index);
         } else {
-            $this->login();
+            Toolbox::addAlert("Vous n'êtes pas authentifiés...","warning");
+            header("Location: login");
         }
     }
     
     public function search(){
         if($_SESSION["permissionLevel"] > 0){
             $filter_options = [];
-            if(isset($_POST["date"]) && $_POST["date"] != "null"){
-                $date = $_POST["date"];
-                $filter_options["date"] = $date;
-            }
-            if(isset($_POST["duree"]) && $_POST["duree"] != "null"){
-                $duree = $_POST["duree"];
-                $filter_options["duree"] = $duree;
-            }
-            if(isset($_POST["niv"]) && $_POST["niv"] != "null"){
-                $niv = $_POST["niv"];
-                $filter_options["niv"] = $niv;
-            } 
-            if(isset($_POST["sec"]) && $_POST["sec"] != "null"){
-                $sec = $_POST["sec"];
-                $filter_options["sec"] = $sec;
-            } 
-
-            if(isset($_POST["creation"])){
-                header("Location: modification");
-            }
+            if(isset($_POST["creation"])) header("Location: modification&type=".$_POST["searchType"]);
 
             switch($_POST["searchType"]){
                 case "stage":
+                    if(isset($_POST["date"]) && $_POST["date"] != "null") $filter_options["date"] = $_POST["date"];
+                    if(isset($_POST["duree"]) && $_POST["duree"] != "null") $filter_options["duree"] = $_POST["duree"];
+                    if(isset($_POST["niv"]) && $_POST["niv"] != "null") $filter_options["niv"] = $_POST["niv"];
+                    if(isset($_POST["sec"]) && $_POST["sec"] != "null") $filter_options["sec"] = $_POST["sec"];
                     $datas["stages"] = $this->mainManager->looseGetRechercheStage(
+                        $_POST["searchValue"],
+                        $filter_options
+                    );
+                    break;
+                case "utilisateur":
+                    $datas["users"] = $this->mainManager->looseGetUser(
                         $_POST["searchValue"],
                         $filter_options
                     );
@@ -99,7 +91,8 @@ class MainController extends Render{
             ];
             $this->render($data_search);
         } else {
-            $this->login();
+            Toolbox::addAlert("Vous n'êtes pas authentifiés...","warning");
+            header("Location: login");
         }
     }
 
@@ -109,15 +102,16 @@ class MainController extends Render{
             $data_search = [
                 "page_description" => "Affichage",
                 "page_title" => "Affichage",
-                "page_css" => ["visu-offre-stage.css"],
+                "page_css" => ["visu.css"],
                 "componentCSS" => ["search-bar.css", "logged-in-header.css"],
                 "datas" => $datas,
-                "view" => "views/logged/visustage.php",
+                "view" => "views/logged/visu.php",
                 "template" => "layouts/base.php",
             ];
             $this->render($data_search);
         } else {
-            $this->login();
+            Toolbox::addAlert("Vous n'êtes pas authentifiés...","warning");
+            header("Location: login");
         }
     }
 
@@ -154,7 +148,8 @@ class MainController extends Render{
             ];
             $this->render($data_visuoffre);
         } else {
-            $this->login();
+            Toolbox::addAlert("Vous n'êtes pas authentifiés...","warning");
+            header("Location: login");
         }
     }
 
@@ -169,7 +164,8 @@ class MainController extends Render{
             ];
             $this->render($data_wishlist);
         } else {
-            $this->login();
+            Toolbox::addAlert("Vous n'êtes pas authentifiés...","warning");
+            header("Location: login");
         }
     }
 

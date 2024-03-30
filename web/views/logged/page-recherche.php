@@ -80,139 +80,187 @@
 				$allStageIDs = [];
 				$glIndex = 0;
 
-				foreach($datas["stages"] as &$stageContainer){
-					$stageData = $controller->mainManager->getStageFromID($stageContainer["id_stage"])[0];
-					$desc = $stageData["description"];
-					$allStageIDs[$glIndex] = $stageContainer["id_stage"];
-					if(strlen($desc) > 300){
-						$desc = trim(substr($desc,0,300))." ...";
-					}
-					$jsonDesc = json_encode($desc);
-
-					$datePostee = new DateTime($stageData["date_offre"]);
-					$dateElapsed = humanTiming(strtotime($datePostee->format("Y-m-d H:i:s")));
-
-					$tags = array(
-						!isset($stageData["promo_concernees"]) ? null : ucfirst($stageData["promo_concernees"]), 
-						!isset($stageData["domaine"]) ? null : $stageData["domaine"], 
-						!isset($stageData["duree"]) ? null : $stageData["duree"], 
-						!isset($stageData["remuneration"]) ? null : $stageData["remuneration"]."€");
-					$temp = explode(",", $stageData["competences"]);
-					$tags = array_merge($tags, $temp);
-					$finalHTML = "";
-					foreach($tags as &$tag){
-						if(isset($tag)) {
-						$finalHTML .= '<div class="tag-container">
-							<label class="tag-text">
-								<span>'.$tag.'</span>
-							</label>
-						</div>';
-						}
-					}
-					
-					echo '
-					<div class="offre-stage-blog-post-card" action="" method="post">
-						<div class="offre-stage-container" id="stageCard_'.$stageContainer["id_stage"].'">
-							<div class="offre-stage-container1">
-								<span class="offre-stage-text">
-									'.$stageData["nom_entreprise"].'
-								</span>
-								<span class="offre-stage-text1">
-									<span>Il y a '.$dateElapsed.'</span>
-								</span>
-							</div>
-							<h1 class="offre-stage-text2">
-								<span>'.$stageData["titre"].'</span>
-							</h1>
-							<span class="offre-stage-text3">
-								<span id="id_'.$stageData["titre"].'"></span>
-							</span>
-							<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-							<script>
-								document.getElementById("id_'.$stageData["titre"].'").innerHTML =
-								marked.parse('.$jsonDesc.');
-							</script>
-							<div class="offre-stage-container2">
-								'.$finalHTML.'
-							</div>
-							<div class="offre-stage-container3">
-								<a class="offre-stage-text4">
-									Lire plus -&gt;
-								</a>
-								<button type="button" id="fav_'.$stageContainer["id_stage"].'" class="offre-stage-button button">
-									<img alt="image" src="public/bookmark-svgrepo-com.svg" class="offre-stage-image" />
-								</button>
-							</div>
-						</div>
-					</div>
-					';
-					$glIndex++;
-				}
-
-				$allStageCardIDs = $allStageIDs;
-				$allStageFavIDs = $allStageIDs;
-				foreach($allStageIDs as $key=>$id){
-					$allStageCardIDs[$key] = "stageCard".$id;
-					$allStageFavIDs[$key] = "fav".$id;
-				}
-				$allStageIDsStr = "['".implode("', '", $allStageIDs)."']";
-
-				$perms = $_SESSION["permissionLevel"];
-
-				echo '
-				<script>
-					let cards = [];
-					let favs = [];
-					let whichHovering = -1;
-					let isHoveringFavorite = false;
-
-					for(let x = 0; x < '.$allStageIDsStr.'.length; x++) {
-						cards.push(document.getElementById("stageCard_"+'.$allStageIDsStr.'[x]));
-						console.log("stageCard_"+'.$allStageIDsStr.'[x]);
-						favs.push(document.getElementById("fav_"+'.$allStageIDsStr.'[x]));
-
-						favs.forEach(function(element){
-							element.onmouseover = function(){
-								isHoveringFavorite = true;
-								//console.log(isHoveringFavorite);
+				if($datas["searchType"] == "stage"){
+					if(sizeof($datas["stages"]) > 0){
+						echo '
+						<span class="number-indicator">
+							Nous avons trouvés '.sizeof($datas["stages"]).' stages pour vous!
+						</span>
+						';
+						foreach($datas["stages"] as &$stageContainer){
+							$stageData = $controller->mainManager->getStageFromID($stageContainer["id_stage"])[0];
+							$desc = $stageData["description"];
+							$allStageIDs[$glIndex] = $stageContainer["id_stage"];
+							if(strlen($desc) > 300){
+								$desc = trim(substr($desc,0,300))." ...";
 							}
-							element.onmouseout = function(){
-								isHoveringFavorite = false;
-								//console.log(isHoveringFavorite);
-							}
-						});
-
-						cards.forEach(function(element){
-							element.onmouseover = function(){
-								var parts = element.id.split("_");
-								var result = parts.pop();
-								whichHovering = Number(result);
-								//console.log(whichHovering);
-							}
-							element.onmouseout = function(){
-								whichHovering = Number(-1);
-								//console.log(whichHovering);
-							}
-							element.onclick = function(){
-								var parts = element.id.split("_");
-								var result = parts.pop();
-								if (isHoveringFavorite && whichHovering == Number(result)){
-									if('.$perms.' == 1 || '.$perms.' == 2){
-										let formData = new FormData();
-										formData.append("id", result);
-										fetch("function--addWishlist", {method: "POST", body: formData})
-										.then(res => res.text())
-										.then(txt => console.log(txt))
-										.catch(err => console.error(err));
-									}
-									return false;
-								} else {
-									window.location.href = "affiche&offreID="+result;
+							$jsonDesc = json_encode($desc);
+		
+							$datePostee = new DateTime($stageData["date_offre"]);
+							$dateElapsed = humanTiming(strtotime($datePostee->format("Y-m-d H:i:s")));
+		
+							$tags = array(
+								!isset($stageData["promo_concernees"]) ? null : ucfirst($stageData["promo_concernees"]), 
+								!isset($stageData["domaine"]) ? null : $stageData["domaine"], 
+								!isset($stageData["duree"]) ? null : $stageData["duree"], 
+								!isset($stageData["remuneration"]) ? null : $stageData["remuneration"]."€");
+							$temp = explode(",", $stageData["competences"]);
+							$tags = array_merge($tags, $temp);
+							$finalHTML = "";
+							foreach($tags as &$tag){
+								if(isset($tag)) {
+								$finalHTML .= '<div class="tag-container">
+									<label class="tag-text">
+										<span>'.$tag.'</span>
+									</label>
+								</div>';
 								}
 							}
-						});
+							
+							echo '
+							<div class="offre-stage-blog-post-card" action="" method="post">
+								<div class="offre-stage-container" id="stageCard_'.$stageContainer["id_stage"].'">
+									<div class="offre-stage-container1">
+										<span class="offre-stage-text">
+											'.$stageData["nom_entreprise"].'
+										</span>
+										<span class="offre-stage-text1">
+											<span>Il y a '.$dateElapsed.'</span>
+										</span>
+									</div>
+									<h1 class="offre-stage-text2">
+										<span>'.$stageData["titre"].'</span>
+									</h1>
+									<span class="offre-stage-text3">
+										<span id="id_'.$stageData["titre"].'"></span>
+									</span>
+									<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+									<script>
+										document.getElementById("id_'.$stageData["titre"].'").innerHTML =
+										marked.parse('.$jsonDesc.');
+									</script>
+									<div class="offre-stage-container2">
+										'.$finalHTML.'
+									</div>
+									<div class="offre-stage-container3">
+										<a class="offre-stage-text4">
+											Lire plus -&gt;
+										</a>
+										<button type="button" id="fav_'.$stageContainer["id_stage"].'" class="offre-stage-button button">
+											<img alt="image" src="public/bookmark-svgrepo-com.svg" class="offre-stage-image" />
+										</button>
+									</div>
+								</div>
+							</div>
+							';
+							$glIndex++;
+						}
+		
+						$allStageCardIDs = $allStageIDs;
+						$allStageFavIDs = $allStageIDs;
+						foreach($allStageIDs as $key=>$id){
+							$allStageCardIDs[$key] = "stageCard".$id;
+							$allStageFavIDs[$key] = "fav".$id;
+						}
+						$allStageIDsStr = "['".implode("', '", $allStageIDs)."']";
+		
+						$perms = $_SESSION["permissionLevel"];
+		
+						echo '
+						<script>
+							let cards = [];
+							let favs = [];
+							let whichHovering = -1;
+							let isHoveringFavorite = false;
+		
+							for(let x = 0; x < '.$allStageIDsStr.'.length; x++) {
+								cards.push(document.getElementById("stageCard_"+'.$allStageIDsStr.'[x]));
+								console.log("stageCard_"+'.$allStageIDsStr.'[x]);
+								favs.push(document.getElementById("fav_"+'.$allStageIDsStr.'[x]));
+		
+								favs.forEach(function(element){
+									element.onmouseover = function(){
+										isHoveringFavorite = true;
+										//console.log(isHoveringFavorite);
+									}
+									element.onmouseout = function(){
+										isHoveringFavorite = false;
+										//console.log(isHoveringFavorite);
+									}
+								});
+		
+								cards.forEach(function(element){
+									element.onmouseover = function(){
+										var parts = element.id.split("_");
+										var result = parts.pop();
+										whichHovering = Number(result);
+										//console.log(whichHovering);
+									}
+									element.onmouseout = function(){
+										whichHovering = Number(-1);
+										//console.log(whichHovering);
+									}
+									element.onclick = function(){
+										var parts = element.id.split("_");
+										var result = parts.pop();
+										if (isHoveringFavorite && whichHovering == Number(result)){
+											if('.$perms.' == 1 || '.$perms.' == 2){
+												let formData = new FormData();
+												formData.append("id", result);
+												fetch("function--addWishlist", {method: "POST", body: formData})
+												.then(res => res.text())
+												.then(txt => console.log(txt))
+												.catch(err => console.error(err));
+											}
+											return false;
+										} else {
+											window.location.href = "affiche&offreID="+result;
+										}
+									}
+								});
+							}
+						</script>';
+					} else { //nothing found
+						echo "Nous n'avons pas trouvé de stages pour vous...";
 					}
-				</script>';
+				} else if ($datas["searchType"] == "entreprise") {
+					
+				} else if ($datas["searchType"] == "utilisateur"){
+					if(sizeof($datas["users"]) > 0){
+						echo '
+						<span class="number-indicator">
+							Nous avons trouvés '.sizeof($datas["users"]).' utilisateurs correspondants!
+						</span>
+						';
+						foreach($datas["users"] as &$userContainer){
+							$userData = $controller->mainManager->getUserFromID($userContainer["id_utilisateur"])[0];
+							
+							echo '
+							<div onclick="window.location=\'affiche&userID='.$userContainer["id_utilisateur"].'\';" class="etudiant-card-blog-post-card">
+								<div class="etudiant-card-container">
+									<img
+										src='.URL.'public/'.$userData["pfp"].'
+										class="etudiant-card-image"
+										alt="Photo de '.$userData["name"].' '.$userData["surname"].'"
+									/>
+									<div class="etudiant-card-container1">
+										<h1><span>'.strtoupper($userData["name"]).' '.$userData["surname"].'</span></h1>
+										<span class="etudiant-card-text1"><span>'.$userData["centre"].'</span></span>
+										<div class="etudiant-card-container2">
+											<span class="etudiant-card-annee">'.$userData["promoName"].'</span>
+											<span class="etudiant-card-promo">'.$userData["promo"].'</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							';
+						}
+					} else { //nothing found
+						echo "Nous n'avons pas trouvé d'utilisateurs correspondants à cette recherche...";
+					}
+				} else if ($datas["searchType"] == "tuteur"){
+
+				}
 			?>
 		</div>
 	</div>
