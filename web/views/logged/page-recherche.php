@@ -1,39 +1,42 @@
 <div class="page-recherche-container">
 	<div class="page-recherche-container1">
 		<div class="page-recherche-container2">
+			<?php 
+			if($datas["searchType"] == "stage"){
+				echo '
 			<form class="page-recherche-form" action="" method="post">
 				<select name="date" class="page-recherche-select">
-					<option value="null" <?php echo !isset($_POST["date"]) || $_POST["date"] == "null" ? "selected" : "" ?> disabled class="page-recherche-default"> Dates </option>
-					<option value="24h" <?php echo isset($_POST["date"]) && $_POST["date"] == "24h" ? "selected" : "" ?> >Dernières 24h</option>
-					<option value="3dj" <?php echo isset($_POST["date"]) && $_POST["date"] == "3dj" ? "selected" : "" ?> >3 derniers jours</option>
-					<option value="7dj" <?php echo isset($_POST["date"]) && $_POST["date"] == "7dj" ? "selected" : "" ?> >7 derniers jours</option>
-					<option value="14dj" <?php echo isset($_POST["date"]) && $_POST["date"] == "14dj" ? "selected" : "" ?> >14 derniers jours</option>
+					<option value="null" '.(!isset($_POST["date"]) || $_POST["date"] == "null" ? "selected" : "").' disabled class="page-recherche-default"> Dates </option>
+					<option value="24h" '.(isset($_POST["date"]) && $_POST["date"] == "24h" ? "selected" : "").' >Dernières 24h</option>
+					<option value="3dj" '.(isset($_POST["date"]) && $_POST["date"] == "3dj" ? "selected" : "").' >3 derniers jours</option>
+					<option value="7dj" '.(isset($_POST["date"]) && $_POST["date"] == "7dj" ? "selected" : "").' >7 derniers jours</option>
+					<option value="14dj" '.(isset($_POST["date"]) && $_POST["date"] == "14dj" ? "selected" : "").' >14 derniers jours</option>
 					<option value="null">Ne pas restreindre</option>
 				</select>
 				<select name="duree" class="page-recherche-select">
-					<option value="null" <?php echo !isset($_POST["duree"]) || $_POST["duree"] == "null" ? "selected" : "" ?> disabled class="page-recherche-default"> Durée </option>
-					<option value="2m" <?php echo isset($_POST["duree"]) && $_POST["duree"] == "2m" ? "selected" : "" ?> >2 mois</option>
-					<option value="34m" <?php echo isset($_POST["duree"]) && $_POST["duree"] == "34m" ? "selected" : "" ?> >3-4 mois</option>
-					<option value="56m" <?php echo isset($_POST["duree"]) && $_POST["duree"] == "56m" ? "selected" : "" ?> >5-6 mois</option>
-					<option value="6+m" <?php echo isset($_POST["duree"]) && $_POST["duree"] == "6+m" ? "selected" : "" ?> >6 mois et +</option>
+					<option value="null" '.(!isset($_POST["duree"]) || $_POST["duree"] == "null" ? "selected" : "").' disabled class="page-recherche-default"> Durée </option>
+					<option value="2m" '.(isset($_POST["duree"]) && $_POST["duree"] == "2m" ? "selected" : "").' >2 mois</option>
+					<option value="34m" '.(isset($_POST["duree"]) && $_POST["duree"] == "34m" ? "selected" : "").' >3-4 mois</option>
+					<option value="56m" '.(isset($_POST["duree"]) && $_POST["duree"] == "56m" ? "selected" : "").' >5-6 mois</option>
+					<option value="6+m" '.(isset($_POST["duree"]) && $_POST["duree"] == "6+m" ? "selected" : "").' >6 mois et +</option>
 					<option value="null">Ne pas restreindre</option>
 				</select>
 				<select name="niv" class="page-recherche-select">
-					<option value="null" <?php echo !isset($_POST["niv"]) || $_POST["niv"] == "null" ? "selected" : "" ?>  disabled class="page-recherche-default"> Niveau d'études </option>
-					<option value="b+2" <?php echo isset($_POST["niv"]) && $_POST["niv"] == "b+2" ? "selected" : "" ?> >Bac+2</option>
-					<option value="b+3" <?php echo isset($_POST["niv"]) && $_POST["niv"] == "b+3" ? "selected" : "" ?> >Bac+3</option>
-					<option value="b+4" <?php echo isset($_POST["niv"]) && $_POST["niv"] == "b+4" ? "selected" : "" ?> >Bac+4</option>
-					<option value="b+5" <?php echo isset($_POST["niv"]) && $_POST["niv"] == "b+5" ? "selected" : "" ?> >Bac+5</option>
+					<option value="null" '.(!isset($_POST["niv"]) || $_POST["niv"] == "null" ? "selected" : "").'  disabled class="page-recherche-default"> Niveau d\'études </option>
+					<option value="b+2" '.(isset($_POST["niv"]) && $_POST["niv"] == "b+2" ? "selected" : "").' >Bac+2</option>
+					<option value="b+3" '.(isset($_POST["niv"]) && $_POST["niv"] == "b+3" ? "selected" : "").' >Bac+3</option>
+					<option value="b+4" '.(isset($_POST["niv"]) && $_POST["niv"] == "b+4" ? "selected" : "").' >Bac+4</option>
+					<option value="b+5" '.(isset($_POST["niv"]) && $_POST["niv"] == "b+5" ? "selected" : "").' >Bac+5</option>
 					<option value="null">Ne pas restreindre</option>
 				</select>
 				<select name="sec" class="page-recherche-select">
-					<option value="null" <?php echo !isset($_POST["sec"]) || $_POST["sec"] == "null" ? "selected" : "" ?>  disabled class="page-recherche-default"> Secteur d'activité </option>
-					<option value="info" <?php echo isset($_POST["sec"]) && $_POST["sec"] == "info" ? "selected" : "" ?> >Informatique</option>
-					<option value="btp" <?php echo isset($_POST["sec"]) && $_POST["sec"] == "btp" ? "selected" : "" ?> >BTP</option>
+					<option value="null" '.(!isset($_POST["sec"]) || $_POST["sec"] == "null" ? "selected" : "").'  disabled class="page-recherche-default"> Secteur d\'activité </option>
+					<option value="info" '.(isset($_POST["sec"]) && $_POST["sec"] == "info" ? "selected" : "").' >Informatique</option>
+					<option value="btp" '.(isset($_POST["sec"]) && $_POST["sec"] == "btp" ? "selected" : "").' >BTP</option>
 					<option value="null">Ne pas restreindre</option>
 				</select>
-				<input type="hidden" value="<?=htmlentities($datas["searchType"])?>" name="searchType" />
-				<input type="hidden" value="<?=htmlentities($datas["searchValue"])?>" name="searchValue" />
+				<input type="hidden" value="'.htmlentities($datas["searchType"]).'" name="searchType" />
+				<input type="hidden" value="'.htmlentities($datas["searchValue"]).'" name="searchValue" />
 				<div class="page-recherche-container3">
 					<button type="submit" name="filter" class="page-recherche-button button">
 						FILTRER
@@ -45,6 +48,25 @@
 					</button>
 				</div>
 			</form>
+				';
+			} else if ($datas["searchType"] == "entreprise") {
+
+			} else if ($datas["searchType"] == "utilisateur") {
+				echo '
+			<form class="page-recherche-form" action="" method="post">
+				<input type="hidden" value="'.htmlentities($datas["searchType"]).'" name="searchType" />
+				<input type="hidden" value="'.htmlentities($datas["searchValue"]).'" name="searchValue" />
+				<div class="page-recherche-container3">
+					<button type="submit" name="creation" class="page-recherche-button button">
+						CREER
+					</button>
+				</div>
+			</form>
+				';
+			} else if ($datas["searchType"] == "tuteur"){
+
+			}
+			?>
 		</div>
 		<div class="page-recherche-liste-entreprises">
 			<div class="search-bar-container search-bar-root-class-name3">
@@ -235,8 +257,7 @@
 							
 							echo '
 							<div onclick="window.location=\'affiche&entrepriseID='.$entrepriseContainer["id_entreprise"].'\';" class="entreprise-card-blog-post-card">
-								<div class="entreprise-card-blog-post-card">
-									<div class="entreprise-card-container">
+								<div class="entreprise-card-container">
 									<img
 										alt="Logo de '.$entrepriseData["nom"].'"
 										src="'.URL.'public/'.$entrepriseData["logo"].'"
@@ -245,7 +266,6 @@
 									<div class="entreprise-card-container1">
 										<h1><span>'.$entrepriseData["nom"].'</span></h1>
 										<span class="entreprise-card-text1"><span>'.$entrepriseData["secteur_d_activite"].'</span></span>
-									</div>
 									</div>
 								</div>
 							</div>

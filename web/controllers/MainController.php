@@ -135,7 +135,7 @@ class MainController extends Render{
             "page_description" => "Modification d'offre de stage",
             "page_title" => "Modification de stages",
             "page_css" => ["modif-offre-stage.css"],
-            "view" => "views/Logged/modifstage.php",
+            "view" => "views/Logged/modif.php",
             "template" => "layouts/base.php",
         ];
         $this->render($data_mod);
@@ -203,5 +203,15 @@ class MainController extends Render{
 
     public function ajaxRemoveStage($postData){
         $this->mainManager->removeStage($postData["id"]);
+    }
+    public function ajaxRemoveUser($postData){
+        $this->mainManager->removeUser($postData["id"]);
+    }
+    public function ajaxGetPromoCode($curSearch){
+        $this->mainManager->getPromoCode($curSearch["search"]);
+    }
+
+    public function ajaxCreationCentre($postData){
+        $this->mainManager->createPromo($postData);
     }
 }

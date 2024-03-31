@@ -598,7 +598,7 @@ class MainManager {
     public function getUserFromID(int $id){
         try {
             $query = $this->dbConnect->prepare(
-                "SELECT utilisateur.nom as name, utilisateur.prenom as surname, utilisateur.centre as centre, 
+                "SELECT utilisateur.nom as name, utilisateur.prenom as surname, promotion.centre as centre, 
                 utilisateur.profilePic as pfp, promotion.promo as promo, promotion.displayName as promoName
                 FROM utilisateur JOIN promotion ON promotion.id_promo = utilisateur.id_promo
                 WHERE :id = id_utilisateur"
@@ -610,6 +610,164 @@ class MainManager {
             echo '<h1>'.$exception->getMessage().'</h1>';
             echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
             die; // On arrête le code PHP
+        }
+    }
+
+    public function removeUser($id){
+        try { 
+            $requete ="DELETE FROM utilisateur WHERE id_utilisateur = :id LIMIT 1";
+            $query = $this->dbConnect->prepare($requete);
+            $query->bindValue(":id", $id);
+            $query->execute();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
+    
+    public function updateUser(int $id, $postData){
+        try { 
+            if(isset($postData["login"])) $login = $postData["login"];
+            if(isset($postData["password"])) $password = hash("sha256", $postData["password"]);
+            if(isset($postData["name"])) $name = $postData["name"];
+            if(isset($postData["surname"])) $surname = $postData["surname"];
+            if(isset($postData["image"])) $image = $postData["image"];
+            if(isset($postData["promoCode"])) {
+                $promoCode = $postData["promoCode"];
+                $promoID = $this->getPromoCodeFromName($promoCode);
+                if(sizeof($promoID) <= 0){
+                    return false;
+                }
+            }
+
+            $requete ="UPDATE `utilisateur` SET 
+                ".isset($postData["login"]) ? "`login` = :login," : ""."
+                ".isset($postData["password"]) ? "`mot_de_passe`= :pass, " : ""."
+                ".isset($postData["image"]) ? "`profilePic`= :pfp, " : ""."
+                ".isset($postData["name"]) ? "`nom`= :nom, " : ""."
+                ".isset($postData["surname"]) ? "`prenom`= :prenom, " : ""."
+                ".isset($postData["promoCode"]) ? "`id_promo`= :idpromo, " : ""."
+                `type`= 1, 
+                WHERE (id_stage = :id) LIMIT 1";
+
+            $query = $this->dbConnect->prepare($requete);
+            $query->bindValue(":id",             $id);
+            if(isset($postData["login"]))       $query->bindValue(":login",          $login);
+            if(isset($postData["password"]))    $query->bindValue(":pass",           $password);
+            if(isset($postData["image"]))       $query->bindValue(":pfp",            $image);
+            if(isset($postData["name"]))        $query->bindValue(":nom",            $name);
+            if(isset($postData["surname"]))     $query->bindValue(":prenom",         $surname);
+            if(isset($postData["promoCode"]))   $query->bindValue(":idpromo",        $promoID);
+            $query->execute();
+            return true;
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+    public function createUser($postData):string{
+        try { 
+            if(isset($postData["login"])) $login = $postData["login"];
+            if(isset($postData["password"])) $password = hash("sha256", $postData["password"]);
+            if(isset($postData["name"])) $name = $postData["name"];
+            if(isset($postData["surname"])) $surname = $postData["surname"];
+            if(isset($postData["image"])) $image = $postData["image"];
+            if(isset($postData["promoCode"])) {
+                $promoCode = $postData["promoCode"];
+                $promoID = $this->getPromoCodeFromName($promoCode);
+                if(sizeof($promoID) <= 0){
+                    return false;
+                }
+            }
+
+            $requete ="INSERT INTO 
+                `stage`(`login`, `mot_de_passe`, `profilePic`, `nom`, `prenom`, `id_promo`, `type`)
+                VALUES 
+                (:login,:pass,:pfp,:nom,:prenom,:idpromo,1)";
+
+            
+            $query = $this->dbConnect->prepare($requete);
+            if(isset($postData["login"]))       $query->bindValue(":login",          $login);
+            if(isset($postData["password"]))    $query->bindValue(":pass",           $password);
+            if(isset($postData["image"]))       $query->bindValue(":pfp",            $image);
+            if(isset($postData["name"]))        $query->bindValue(":nom",            $name);
+            if(isset($postData["surname"]))     $query->bindValue(":prenom",         $surname);
+            if(isset($postData["promoCode"]))   $query->bindValue(":idpromo",        $promoID);
+            $query->execute();
+
+            $justCreatedID = $this->dbConnect->lastInsertId("utilisateur");
+            return $justCreatedID;
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
+
+    public function getPromoCode($curSearch){
+        try{
+            $requete = "SELECT promo as label, promo as value, centre
+            FROM promotion 
+            WHERE (MATCH (promo) AGAINST (:relSearch IN BOOLEAN MODE) > 0) 
+            OR (MATCH (displayName) AGAINST (:relSearch IN BOOLEAN MODE) > 0) 
+            ORDER BY MATCH (promo) AGAINST (:relSearch IN BOOLEAN MODE) DESC, 
+            MATCH (displayName) AGAINST (:relSearch IN BOOLEAN MODE) DESC";
+            
+            $query = $this->dbConnect->prepare($requete);
+            $query->bindValue(":relSearch", '*'.$curSearch.'*');
+            $query->execute();
+
+            $data = array();
+            $data = $query->fetchAll(PDO::FETCH_ASSOC);
+            echo json_encode($data);
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
+    
+    public function getPromoCodeFromName($name){
+        try{
+            $requete = "SELECT id_promo
+            FROM promotion 
+            WHERE promo = :name
+            LIMIT 1";
+
+            $query = $this->dbConnect->prepare($requete);
+            $query->bindValue(":name", $name);
+            $query->execute();
+            $id = $query->fetchAll();
+            if(isset($id)){ //promo trouvée
+                return $id;
+            } else { //promo non-trouvée
+                return false;
+            }
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die;
+        }
+    }
+    
+    public function createPromo($postData){
+        try{
+            $requete = "INSERT INTO `promotion`(promo, displayName, centre)
+            VALUES (:promo, :display, :centre)";
+            $query = $this->dbConnect->prepare($requete);
+            $query->bindValue(":promo",                 $postData["promo"]);
+            $query->bindValue(":display",               $postData["display"]);
+            $query->bindValue(":centre",                $postData["centre"]);
+            $query->execute();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die;
         }
     }
 }

@@ -177,7 +177,7 @@
         <script>
           function areYouSure(){
             if(confirm("Voulez-vous vraiment supprimer le compte de '.$userData["name"].' '.$userData["surname"].' ?")){
-              $.ajax({type: "POST", url: "function--ajaxRemoveStage", 
+              $.ajax({type: "POST", url: "function--ajaxRemoveUser", 
                 data: {
                   id:'.$_GET["userID"].'
                 },
