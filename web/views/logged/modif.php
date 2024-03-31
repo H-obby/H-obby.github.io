@@ -1,6 +1,6 @@
 <?php
 $controller = new MainController();
-if(isset($_GET["stage_id"]) || $_GET["type"] == "stage"){
+if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage")){
     $isCreation = !isset($_GET["stage_id"]);
 
     if(!$isCreation){
@@ -205,7 +205,7 @@ if(isset($_GET["stage_id"]) || $_GET["type"] == "stage"){
             }
         }
     }
-} else if (isset($_GET['user_id']) || $_GET["type"] == "utilisateur"){
+} else if (isset($_GET['user_id']) ||  (isset($_GET["type"]) && $_GET["type"] == "utilisateur")){
     $isCreation = !isset($_GET["user_id"]);
     
     if(!$isCreation){
@@ -216,55 +216,67 @@ if(isset($_GET["stage_id"]) || $_GET["type"] == "stage"){
         if(isset($_POST["promoCode"])) $competences = $_POST["promoCode"];
         if(isset($_POST["centre"])) $remuneration = $_POST["centre"];
         if(isset($_POST["image"])) $adresse = $_POST["image"];
+        if(isset($_POST["login"])) $login = $_POST["login"];
     } else {
         $name = "";
         $surname = "";
         $promoCode = "";
         $centre = "";
         $image = "";
+        $password = "";
+        $login = "";
     }
     echo '
-    <form class="modif-etudiant-main">
+    <form class="modif-etudiant-main" method="POST">
         <div class="modif-etudiant-container1">
             <img alt="Photo de profil de l\'utilisateur" src="'.URL.'public/'.(isset($image) ? $image : $userData["pfp"]).'" class="modif-etudiant-image" />
             <button type="button" id="modifierImage" class="modif-etudiant-button button">Modifier l\'image</button>
-            <button type="submit" id="poster" class="modif-etudiant-button1 button">POSTER</button>
+            <hidden type="input" name="imagePath" value="'.URL.'public/'.(isset($image) ? $image : $userData["pfp"]).'"/>
+            <button type="submit" name="poster" class="modif-etudiant-button1 button">POSTER</button>
         </div>
         <div class="modif-etudiant-main-text-content">
             <div class="modif-etudiant-container2">
-                <input type="text" placeholder="Nom de l\'étudiant"
+                <input name="name" type="text" placeholder="Nom de l\'étudiant"
                     class="modif-etudiant-nom-etudiant input" value="'.(isset($name) ? $name : $userData["name"]).'"/>
-                <input type="text" placeholder="Prénom de l\'étudiant"
+                <input name="surname" type="text" placeholder="Prénom de l\'étudiant"
                     class="modif-etudiant-prenom-etudiant input" value="'.(isset($surname) ? $surname : $userData["surname"]).'"/>
             </div>
             <div class="modif-etudiant-form">
-                <input type="text" id="promo" placeholder="Promotion" class="modif-etudiant-promo input" value="'.(isset($promoCode) ? $promoCode : $userData["promo"]).'"/>
-                <input type="text" id="centre" placeholder="Centre" class="modif-etudiant-centre input" value="'.(isset($centre) ? $centre : $userData["centre"]).'"/>
+                <input type="text" name="promo" id="promo" placeholder="Promotion" class="modif-etudiant-promo input" value="'.(isset($promoCode) ? $promoCode : $userData["promo"]).'"/>
+                <input type="text" name="centre" id="centre" placeholder="Centre" class="modif-etudiant-centre input" value="'.(isset($centre) ? $centre : $userData["centre"]).'"/>
                 <script>
-                        $("#promo").autocomplete({
-                            source: function(request, response) { 
-                                $.ajax({
-                                    url:"function--ajaxGetPromoCode",
-                                    type: \'post\',
-                                    dataType: "json",
-                                    data: {
-                                        search: request.term
-                                    },
-                                    success: function(data){
-                                        console.log(data);
-                                        response(data);
-                                    },
-                                    error: function(jqXHR, textStatus, errorThrown){
-                                        console.log(errorThrown);
-                                    }
-                                });
-                            },
-                            select: function (event, ui) {
-                                $(\'#promo\').val(ui.item.label); // display the selected text
-                                $(\'#centre\').val(ui.item.centre);
-                            },
-                        });
-                    </script>
+                    $("#promo").autocomplete({
+                        source: function(request, response) { 
+                            $.ajax({
+                                url:"function--ajaxGetPromoCode",
+                                type: \'post\',
+                                dataType: "json",
+                                data: {
+                                    search: request.term
+                                },
+                                success: function(data){
+                                    console.log(data);
+                                    response(data);
+                                },
+                                error: function(jqXHR, textStatus, errorThrown){
+                                    console.log(errorThrown);
+                                }
+                            });
+                        },
+                        select: function (event, ui) {
+                            $(\'#promo\').val(ui.item.label); // display the selected text
+                            $(\'#centre\').val(ui.item.centre);
+                        },
+                    });
+
+                    '.(!$isCreation ? "function changePassword(){
+                        document.getElementById(\"changePass\").style = \"display:none;\"
+                        document.getElementById(\"passInput\").style = \"display:flex;\"
+                    }" : "").'
+                </script>
+                <input type="text" name="login" placeholder="Email" class="modif-etudiant-promo input" value="'.(isset($login) ? $login : $userData["login"]).'"/>
+                <input type="password" name="pass" id="passInput" placeholder="Mot de Passe" class="modif-etudiant-promo input" value="" '.($isCreation ? "" : "style=\"display:none;\"").'/>
+                <button type="button" id="changePass" name="passwordChange" onclick="changePassword()" class="modif-etudiant-button1 button" '.($isCreation ? "style=\"display:none;\"" : "style=\"cursor:pointer;\"").'>CHANGER LE MOT DE PASSE</button>
             </div>
         </div>
     </form> 
@@ -352,7 +364,7 @@ if(isset($_GET["stage_id"]) || $_GET["type"] == "stage"){
                             type: "success"
                         },
                         success: function(){
-                            window.location.replace("affiche&userID='.$_GET["user_id"].'&t='.time().'");
+                            window.location.replace("affiche&userID='.$answer.'&t='.time().'");
                         },
                         error: function(jqXHR, textStatus, errorThrown){
                             console.log(errorThrown);
@@ -363,33 +375,40 @@ if(isset($_GET["stage_id"]) || $_GET["type"] == "stage"){
             } else {
                 echo '
                 <script>
-                    let txt;
-                    if(confirm("L\'entreprise \"'.$_POST["nom_entreprise"].'\" n\'existe pas... \
-                    \nAppuyez sur OK pour la créer, n\'oubliez pas de la remplir par la suite.")){
-                        let formData = new FormData();
-                        formData.append("nom", "'.$_POST["nom_entreprise"].'");
-                        fetch("function--createEmptyEntreprise", {method: "POST", body: formData})
-                        .then(res => res.text())
-                        .then(function(txt){
-                            //redirect to new entreprise creation page
-                            $.ajax({type: "POST", url: "function--ajaxHandleAlert", 
+                    if(confirm("La promotion '.$_POST["promoCode"].' n\'existe pas... \
+                    \nVoulez-vous la créer ?")){
+                        let promoName = prompt("Veuillez entrer le nom de la promo", "A1 Généraliste");
+                        let centre = prompt("Veuillez entrer le centre de la promo", "Lille");
+                        if(promoName != null && promoName != "" && centre != null && centre != ""){
+                            $.ajax({type: "POST", url: "function--ajaxCreationCentre",
                                 data: {
-                                    message: "L\'entreprise '.$_POST["nom_entreprise"].' a bien été créée.",
-                                    type: "success"
+                                    promo: '.$_POST["promoCode"].'
+                                    display: promoName,
+                                    centre: centre
                                 },
                                 success: function(){
-                                    //thing
+                                    $.ajax({type: "POST", url: "function--ajaxHandleAlert", 
+                                        data: {
+                                            message: "La promotion a bien été créée.",
+                                            type: "success"
+                                        },
+                                        success: function(){
+                                            window.location.replace("modification&user_id='.$_GET["stage_id"].'");
+                                        },
+                                        error: function(jqXHR, textStatus, errorThrown){
+                                            console.log(errorThrown);
+                                        }
+                                    });
                                 },
                                 error: function(jqXHR, textStatus, errorThrown){
                                     console.log(errorThrown);
                                 }
                             });
-                        })
-                        .catch(err => console.error(err));
+                        }
                     } else {
                         $.ajax({type: "POST", url: "function--ajaxHandleAlert", 
                             data: {
-                                message: "La modification n\'a pas pu être enregistrée...",
+                                message: "La création n\'a pas pu être enregistrée...",
                                 type: "danger"
                             },
                             success: function(){

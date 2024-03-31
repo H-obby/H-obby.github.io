@@ -179,7 +179,7 @@
             if(confirm("Voulez-vous vraiment supprimer le compte de '.$userData["name"].' '.$userData["surname"].' ?")){
               $.ajax({type: "POST", url: "function--ajaxRemoveUser", 
                 data: {
-                  id:'.$_GET["userID"].'
+                  id: '.$_GET["userID"].'
                 },
                 success: function(){
                   window.location.replace("index&t='.time().'");

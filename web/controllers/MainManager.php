@@ -87,15 +87,15 @@ class MainManager {
         }
     }
 
-    function getPermissionLevel($type){
+    function getPermissionLevel($login){
         try {
             $query = $this->dbConnect->prepare(
                 "SELECT type
                 FROM utilisateur
-                WHERE type = :type
+                WHERE login = :login
                 limit 1"
             );
-            $query->bindvalue(":type", $type);
+            $query->bindvalue(":login", $login);
             $query->execute();
             return $query->fetchAll();
         } catch (Exception $exception) {
@@ -599,7 +599,8 @@ class MainManager {
         try {
             $query = $this->dbConnect->prepare(
                 "SELECT utilisateur.nom as name, utilisateur.prenom as surname, promotion.centre as centre, 
-                utilisateur.profilePic as pfp, promotion.promo as promo, promotion.displayName as promoName
+                utilisateur.profilePic as pfp, promotion.promo as promo, promotion.displayName as promoName,
+                utilisateur.login as login
                 FROM utilisateur JOIN promotion ON promotion.id_promo = utilisateur.id_promo
                 WHERE :id = id_utilisateur"
             );
@@ -615,6 +616,11 @@ class MainManager {
 
     public function removeUser($id){
         try { 
+            $requete ="DELETE FROM appartenir WHERE id_utilisateur = :id";
+            $query = $this->dbConnect->prepare($requete);
+            $query->bindValue(":id", $id);
+            $query->execute();
+
             $requete ="DELETE FROM utilisateur WHERE id_utilisateur = :id LIMIT 1";
             $query = $this->dbConnect->prepare($requete);
             $query->bindValue(":id", $id);
@@ -630,7 +636,7 @@ class MainManager {
     public function updateUser(int $id, $postData){
         try { 
             if(isset($postData["login"])) $login = $postData["login"];
-            if(isset($postData["password"])) $password = hash("sha256", $postData["password"]);
+            if(isset($postData["pass"]) && $postData["pass"] != "") $password = hash("sha256", $postData["pass"]);
             if(isset($postData["name"])) $name = $postData["name"];
             if(isset($postData["surname"])) $surname = $postData["surname"];
             if(isset($postData["image"])) $image = $postData["image"];
@@ -642,24 +648,24 @@ class MainManager {
                 }
             }
 
-            $requete ="UPDATE `utilisateur` SET 
-                ".isset($postData["login"]) ? "`login` = :login," : ""."
-                ".isset($postData["password"]) ? "`mot_de_passe`= :pass, " : ""."
-                ".isset($postData["image"]) ? "`profilePic`= :pfp, " : ""."
-                ".isset($postData["name"]) ? "`nom`= :nom, " : ""."
-                ".isset($postData["surname"]) ? "`prenom`= :prenom, " : ""."
-                ".isset($postData["promoCode"]) ? "`id_promo`= :idpromo, " : ""."
-                `type`= 1, 
-                WHERE (id_stage = :id) LIMIT 1";
+            $requete ="UPDATE `utilisateur` SET  
+                ".(isset($postData["login"]) ? "`login` = :login," : "")." 
+                ".(isset($postData["pass"]) && $postData["pass"] != "" ? "`mot_de_passe`= :pass, " : "")." 
+                ".(isset($postData["image"]) ? "`profilePic`= :pfp, " : "")." 
+                ".(isset($postData["name"]) ? "`nom`= :nom, " : "")." 
+                ".(isset($postData["surname"]) ? "`prenom`= :prenom, " : "")." 
+                ".(isset($postData["promoCode"]) ? "`id_promo`= :idpromo, " : "")." 
+                `type`= 1
+                WHERE `id_utilisateur` = :id_user";
 
             $query = $this->dbConnect->prepare($requete);
-            $query->bindValue(":id",             $id);
-            if(isset($postData["login"]))       $query->bindValue(":login",          $login);
-            if(isset($postData["password"]))    $query->bindValue(":pass",           $password);
-            if(isset($postData["image"]))       $query->bindValue(":pfp",            $image);
-            if(isset($postData["name"]))        $query->bindValue(":nom",            $name);
-            if(isset($postData["surname"]))     $query->bindValue(":prenom",         $surname);
-            if(isset($postData["promoCode"]))   $query->bindValue(":idpromo",        $promoID);
+            $query->bindValue(":id_user",             $id);
+            if(isset($postData["login"]))                                   $query->bindValue(":login",          $login);
+            if(isset($postData["pass"]) && $postData["pass"] != "")         $query->bindValue(":pass",           $password);
+            if(isset($postData["image"]))                                   $query->bindValue(":pfp",            $image);
+            if(isset($postData["name"]))                                    $query->bindValue(":nom",            $name);
+            if(isset($postData["surname"]))                                 $query->bindValue(":prenom",         $surname);
+            if(isset($postData["promoCode"]))                               $query->bindValue(":idpromo",        $promoID);
             $query->execute();
             return true;
         } catch (Exception $exception) {
@@ -670,37 +676,36 @@ class MainManager {
     }
     public function createUser($postData):string{
         try { 
-            if(isset($postData["login"])) $login = $postData["login"];
-            if(isset($postData["password"])) $password = hash("sha256", $postData["password"]);
-            if(isset($postData["name"])) $name = $postData["name"];
-            if(isset($postData["surname"])) $surname = $postData["surname"];
-            if(isset($postData["image"])) $image = $postData["image"];
-            if(isset($postData["promoCode"])) {
-                $promoCode = $postData["promoCode"];
-                $promoID = $this->getPromoCodeFromName($promoCode);
-                if(sizeof($promoID) <= 0){
-                    return false;
-                }
+            $login = $postData["login"];
+            $password = hash("sha256", $postData["pass"]);
+            $name = $postData["name"];
+            $surname = $postData["surname"];
+            $image = isset($postData["image"]) ? $postData["image"] : "";
+            $promoCode = $postData["promo"];
+            $promoID = $this->getPromoCodeFromName($promoCode);
+            if(sizeof($promoID) <= 0){
+                return false;
             }
 
             $requete ="INSERT INTO 
-                `stage`(`login`, `mot_de_passe`, `profilePic`, `nom`, `prenom`, `id_promo`, `type`)
+                `utilisateur`(`login`, `mot_de_passe`, `profilePic`, `nom`, `prenom`, `id_promo`, `type`)
                 VALUES 
                 (:login,:pass,:pfp,:nom,:prenom,:idpromo,1)";
 
             
             $query = $this->dbConnect->prepare($requete);
-            if(isset($postData["login"]))       $query->bindValue(":login",          $login);
-            if(isset($postData["password"]))    $query->bindValue(":pass",           $password);
-            if(isset($postData["image"]))       $query->bindValue(":pfp",            $image);
-            if(isset($postData["name"]))        $query->bindValue(":nom",            $name);
-            if(isset($postData["surname"]))     $query->bindValue(":prenom",         $surname);
-            if(isset($postData["promoCode"]))   $query->bindValue(":idpromo",        $promoID);
+            $query->bindValue(":login",          $login);
+            $query->bindValue(":pass",           $password);
+            $query->bindValue(":pfp",            $image);
+            $query->bindValue(":nom",            $name);
+            $query->bindValue(":prenom",         $surname);
+            $query->bindValue(":idpromo",        $promoID[0]["id_promo"]);
             $query->execute();
 
             $justCreatedID = $this->dbConnect->lastInsertId("utilisateur");
             return $justCreatedID;
         } catch (Exception $exception) {
+            echo $requete;
             echo '<h1>'.$exception->getMessage().'</h1>';
             echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
             die; // On arrête le code PHP
