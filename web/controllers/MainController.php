@@ -65,6 +65,10 @@ class MainController extends Render{
                         $_POST["searchValue"],
                         $filter_options
                     );
+                case "entreprise":
+                    $datas["entreprises"] = $this->mainManager->looseGetRechercheEntreprise(
+                        $_POST["searchValue"]
+                    );
                     break;
                 case "utilisateur":
                     $datas["users"] = $this->mainManager->looseGetUser(

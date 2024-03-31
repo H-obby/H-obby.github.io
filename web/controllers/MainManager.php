@@ -216,6 +216,40 @@ class MainManager {
         }
     }
 
+    public function looseGetRechercheEntreprise($searchValue):array{
+        try {
+            $requete = "SELECT id_entreprise, MATCH(nom, description) 
+                        AGAINST (:relSearch IN BOOLEAN MODE) AS relevancy_score
+                        FROM entreprise 
+                        WHERE (
+                        MATCH (nom, description) 
+                        AGAINST (:relSearch IN BOOLEAN MODE) > 0
+                        OR addresse_siege    LIKE :search)";
+
+            $requete .= "ORDER BY relevancy_score DESC";
+            
+            $query = $this->dbConnect->prepare($requete);
+            if($searchValue != ""){
+                $splitted = preg_split('/\s+/', $searchValue);
+                foreach ($splitted as $key=>$value){
+                    if(substr($value, 0, 1) != "+") {
+                        $splitted[$key] = "*".$value."*";
+                    }
+                }
+                $query->bindValue(":relSearch", implode(" ", $splitted));
+            } else {
+                $query->bindValue(":relSearch",$searchValue);
+            }
+            $query->bindValue(":search", '%'.$searchValue.'%');
+            $query->execute();
+            return $query->fetchAll();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
     public function getStageFromID(int $id){
         try {
             $query = $this->dbConnect->prepare(
@@ -224,6 +258,23 @@ class MainManager {
                 stage.domaine_activite as domaine, entreprise.nom as nom_entreprise
                 FROM stage JOIN entreprise ON stage.id_entreprise = entreprise.id_entreprise
                 WHERE :id = id_stage"
+            );
+            $query->bindValue(":id", $id);
+            $query->execute();
+            return $query->fetchAll();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
+    public function getEntrepriseFromID(int $id){
+        try {
+            $query = $this->dbConnect->prepare(
+                "SELECT nom, secteur_d_activite, mail, addresse_siege, description, logo
+                FROM entreprise
+                WHERE :id = id_entreprise"
             );
             $query->bindValue(":id", $id);
             $query->execute();

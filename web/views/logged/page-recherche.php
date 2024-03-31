@@ -224,6 +224,36 @@
 						echo "Nous n'avons pas trouvé de stages pour vous...";
 					}
 				} else if ($datas["searchType"] == "entreprise") {
+					if(sizeof($datas["entreprises"]) > 0){
+						echo '
+						<span class="number-indicator">
+							Nous avons trouvés '.sizeof($datas["entreprises"]).' entreprises correspondantes!
+						</span>
+						';
+						foreach($datas["entreprises"] as &$entrepriseContainer){
+							$entrepriseData = $controller->mainManager->getEntrepriseFromID($entrepriseContainer["id_entreprise"])[0];
+							
+							echo '
+							<div onclick="window.location=\'affiche&entrepriseID='.$entrepriseContainer["id_entreprise"].'\';" class="entreprise-card-blog-post-card">
+								<div class="entreprise-card-blog-post-card">
+									<div class="entreprise-card-container">
+									<img
+										alt="Logo de '.$entrepriseData["nom"].'"
+										src="'.URL.'public/'.$entrepriseData["logo"].'"
+										class="entreprise-card-image"
+									/>
+									<div class="entreprise-card-container1">
+										<h1><span>'.$entrepriseData["nom"].'</span></h1>
+										<span class="entreprise-card-text1"><span>'.$entrepriseData["secteur_d_activite"].'</span></span>
+									</div>
+									</div>
+								</div>
+							</div>
+							';
+						}
+					} else { //nothing found
+						echo "Nous n'avons pas trouvé d'entreprises correspondantes à cette recherche...";
+					}
 					
 				} else if ($datas["searchType"] == "utilisateur"){
 					if(sizeof($datas["users"]) > 0){
@@ -239,7 +269,7 @@
 							<div onclick="window.location=\'affiche&userID='.$userContainer["id_utilisateur"].'\';" class="etudiant-card-blog-post-card">
 								<div class="etudiant-card-container">
 									<img
-										src='.URL.'public/'.$userData["pfp"].'
+										src="'.URL.'public/'.$userData["pfp"].'"
 										class="etudiant-card-image"
 										alt="Photo de '.$userData["name"].' '.$userData["surname"].'"
 									/>

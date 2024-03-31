@@ -26,6 +26,7 @@
   $isTuteur = false;
   if(isset($_GET["offreID"])) $isStage = true;
   if(isset($_GET["userID"])) $isUser = true;
+  if(isset($_GET["entrepriseID"])) $isEntreprise = true;
   
   if($isStage){
     $controller = new MainController();
