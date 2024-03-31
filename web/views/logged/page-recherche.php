@@ -64,7 +64,17 @@
 			</form>
 				';
 			} else if ($datas["searchType"] == "tuteur"){
-
+				echo '
+					<form class="page-recherche-form" action="" method="post">
+						<input type="hidden" value="'.htmlentities($datas["searchType"]).'" name="searchType" />
+						<input type="hidden" value="'.htmlentities($datas["searchValue"]).'" name="searchValue" />
+						<div class="page-recherche-container3">
+							<button type="submit" name="creation" class="page-recherche-button button">
+								CREER
+							</button>
+						</div>
+					</form>
+				';
 			}
 			?>
 		</div>
@@ -309,7 +319,34 @@
 						echo "Nous n'avons pas trouvé d'utilisateurs correspondants à cette recherche...";
 					}
 				} else if ($datas["searchType"] == "tuteur"){
-
+					if(sizeof($datas["tuteurs"]) > 0){
+						echo '
+						<span class="number-indicator">
+							Nous avons trouvés '.sizeof($datas["tuteurs"]).' tuteurs correspondants!
+						</span>
+						';
+						foreach($datas["tuteurs"] as &$userContainer){
+							$userData = $controller->mainManager->getUserFromID($userContainer["id_utilisateur"])[0];
+							
+							echo '
+							<div onclick="window.location=\'affiche&tuteurID='.$userContainer["id_utilisateur"].'\';" class="etudiant-card-blog-post-card">
+								<div class="etudiant-card-container">
+									<img
+										src="'.URL.'public/'.$userData["pfp"].'"
+										class="etudiant-card-image"
+										alt="Photo de '.$userData["name"].' '.$userData["surname"].'"
+									/>
+									<div class="etudiant-card-container1">
+										<h1><span>'.strtoupper($userData["name"]).' '.$userData["surname"].'</span></h1>
+										<span class="etudiant-card-text1"><span>'.$userData["centre"].'</span></span>
+									</div>
+								</div>
+							</div>
+							';
+						}
+					} else { //nothing found
+						echo "Nous n'avons pas trouvé de tuteurs correspondants à cette recherche...";
+					}
 				}
 			?>
 		</div>

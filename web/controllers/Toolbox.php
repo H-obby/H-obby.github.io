@@ -20,9 +20,15 @@ class Toolbox {
                     case self::ORANGE:
                     case self::VERTE:
                         echo '
-                        <div class="alert-container-'.$alert["type"].'">
-                            <span class="alert-text">'.$alert["message"].'</span>
+                        <div id="alert" class="alert-container-'.$alert["type"].'">
+                            <span id="alertt" class="alert-text">'.$alert["message"].'</span>
                         </div>
+                        <script>
+                        document.getElementById(\'alert\').onclick = function () {
+                            document.getElementById(\'alert\').classList.toggle(\'fade\');
+                            document.getElementById(\'alertt\').classList.toggle(\'fade\');
+                        }
+                        </script>
                         ';
                         break;
                     default:

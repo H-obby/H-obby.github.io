@@ -27,6 +27,7 @@
   if(isset($_GET["offreID"])) $isStage = true;
   if(isset($_GET["userID"])) $isUser = true;
   if(isset($_GET["entrepriseID"])) $isEntreprise = true;
+  if(isset($_GET["tuteurID"])) $isTuteur = true;
   
   if($isStage){
     $controller = new MainController();
@@ -198,5 +199,80 @@
   } else if ($isEntreprise){
 
   } else if ($isTuteur){
+    $controller = new MainController();
+    $userData = $controller->mainManager->getUserFromID($_GET['tuteurID'])[0];
 
+    $HTMLPromoList = "";
+    $HTMLCentreList = "";
+    $promos = $controller->mainManager->getAllTuteurPromos($_GET["tuteurID"]);
+    foreach ($promos as $promo){
+      $HTMLPromoList .= '
+      <li class="visu-etudiant-li list-item">
+        <span>'.$promo["promo"].', '.$promo["displayName"].', '.$promo["centre"].'</span>
+      </li>
+      ';
+
+      if(strstr($HTMLCentreList, '<span>'.$promo["centre"].'</span>') === false){
+        $HTMLCentreList .= '
+        <li class="visu-etudiant-li1 list-item">
+          <span class="visu-etudiant-first1">Centre :</span>
+          <span>'.$promo["centre"].'</span>
+        </li>';
+      } ;
+    }
+
+    echo '
+      <main class="visu-etudiant-main">
+          <div class="visu-offre-stage-container1">
+            <div class="visu-offre-stage-container2">
+              <div class="visu-offre-stage-container3">
+                <form action="modification&tuteur_id='.$_GET["tuteurID"].'" class="visu-offre-stage-container5">
+                  <button type="submit" class="visu-offre-stage-button2 button">
+                    MODIFIER
+                  </button>
+                </form>
+                <form onsubmit="areYouSure()" action="" class="visu-offre-stage-container5">
+                  <button type="submit" class="visu-offre-stage-button2 button">
+                    SUPPRIMER
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        <img
+          alt="Photo de profil d\''.$userData["surname"].' '.$userData["name"].'"
+          src="'.URL.'public/'.$userData["pfp"].'"
+          class="visu-etudiant-image"
+        />
+        <div class="visu-etudiant-main-text-content">
+          <h1 class="visu-etudiant-text">'.$userData["surname"].' '.$userData["name"].'</h1>
+          <ul class="visu-etudiant-ul list">
+            <h1 class="visu-etudiant-text"> Gère les promos : </h1>
+            '.$HTMLPromoList.'
+            <br/>
+            <h1 class="visu-etudiant-text"> Basé sur le centre de : </h1>
+            '.$HTMLCentreList.'
+          </ul>
+        </div>
+        <script>
+          function areYouSure(){
+            if(confirm("Voulez-vous vraiment supprimer le compte de '.$userData["name"].' '.$userData["surname"].' ?")){
+              $.ajax({type: "POST", url: "function--ajaxRemoveUser", 
+                data: {
+                  id: '.$_GET["tuteurID"].'
+                },
+                success: function(){
+                  window.location.replace("index&t='.time().'");
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                  console.log(errorThrown);
+                }
+              });
+            } else {
+    
+            }
+          }
+        </script>
+      </main>
+    ';
   }

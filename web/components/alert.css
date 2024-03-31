@@ -12,6 +12,8 @@
     flex-direction: column;
     justify-content: center;
     background-color: #c91515;
+    opacity: 1;
+    transition: opacity 1s; 
 }
 
 .alert-container-warning {
@@ -28,6 +30,8 @@
     flex-direction: column;
     justify-content: center;
     background-color: #ff4500;
+    opacity: 1;
+    transition: opacity 1s; 
 }
 
 .alert-container-success {
@@ -44,6 +48,8 @@
     flex-direction: column;
     justify-content: center;
     background-color: #228b22;
+    opacity: 1;
+    transition: opacity 1s; 
 }
 
 .alert-text {
@@ -51,4 +57,13 @@
     margin: var(--dl-space-space-unit);
     font-style: normal;
     font-weight: 800;
+    opacity: 1;
+    transition: opacity 1s; 
+}
+  
+.alert-text.fade,
+.alert-container-success.fade,
+.alert-container-warning.fade,
+.alert-container-danger.fade {
+    opacity: 0;
 }

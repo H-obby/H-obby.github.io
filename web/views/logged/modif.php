@@ -211,11 +211,11 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
     if(!$isCreation){
         $userData = $controller->mainManager->getUserFromID($_GET["user_id"])[0];
     
-        if(isset($_POST["name"])) $duree = $_POST["name"];
-        if(isset($_POST["surname"])) $promo_concernees = $_POST["surname"];
-        if(isset($_POST["promoCode"])) $competences = $_POST["promoCode"];
-        if(isset($_POST["centre"])) $remuneration = $_POST["centre"];
-        if(isset($_POST["image"])) $adresse = $_POST["image"];
+        if(isset($_POST["name"])) $name = $_POST["name"];
+        if(isset($_POST["surname"])) $surname = $_POST["surname"];
+        if(isset($_POST["promoCode"])) $promoCode = $_POST["promoCode"];
+        if(isset($_POST["centre"])) $centre = $_POST["centre"];
+        if(isset($_POST["image"])) $image = $_POST["image"];
         if(isset($_POST["login"])) $login = $_POST["login"];
     } else {
         $name = "";
@@ -424,9 +424,225 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
             }
         }
     }
+} else if (isset($_GET['tuteur_id']) ||  (isset($_GET["type"]) && $_GET["type"] == "tuteur")){
+    $isCreation = !isset($_GET["tuteur_id"]);
+    
+    if(!$isCreation){
+        $userData = $controller->mainManager->getUserFromID($_GET["tuteur_id"])[0];
+        $promos = $controller->mainManager->getAllTuteurPromos($_GET["tuteur_id"]);
+    
+        if(isset($_POST["name"])) $name = $_POST["name"];
+        if(isset($_POST["surname"])) $surname = $_POST["surname"];
+        if(isset($_POST["promos"])) $promos = $_POST["promos"];
+        if(isset($_POST["centre"])) $centre = $_POST["centre"];
+        if(isset($_POST["image"])) $image = $_POST["image"];
+        if(isset($_POST["login"])) $login = $_POST["login"];
+    } else {
+        $name = "";
+        $surname = "";
+        $promos = [];
+        $centre = "";
+        $image = "";
+        $password = "";
+        $login = "";
+    }
+
+    $allPromos = "";
+    foreach($promos as $promo){
+        $allPromos .= '
+        <script> addPromo() </script>';
+    }
+
+    echo '
+    <script>
+    function addPromo() {
+        var div = document.createElement("div");
+        div.setAttribute("class", "modif-etudiant-container2");
+        div.innerHTML = 
+        `
+            <input type="text" name="promo[]" placeholder="Promotion" class="modif-tuteur-promo input" value=""/>
+        `;
+        document.getElementById("allPromos").appendChild(div);
+        SearchText();
+    }
+
+    function removePromo(){
+        document.querySelectorAll(\'#allPromos > div:nth-last-child(-n+1)\').forEach(n => {
+            n.parentNode.removeChild(n)
+        });
+        SearchText();
+    }
+    </script>
+
+    <form class="modif-etudiant-main" method="POST">
+        <div class="modif-etudiant-container1">
+            <img alt="Photo de profil de l\'utilisateur" src="'.URL.'public/'.(isset($image) ? $image : $userData["pfp"]).'" class="modif-etudiant-image" />
+            <button type="button" name="modifierImage" class="modif-etudiant-button button">Modifier l\'image</button>
+            <hidden type="input" name="imagePath" value="'.URL.'public/'.(isset($image) ? $image : $userData["pfp"]).'"/>
+            <button type="button" onclick="addPromo()" name="addPromotion" class="modif-etudiant-button button">Ajouter une promo</button>
+            <button type="button" onclick="removePromo()" name="suppPromo" class="modif-etudiant-button button">Supprimer une promo</button>
+            <button type="submit" name="poster" class="modif-etudiant-button1 button">POSTER</button>
+        </div>
+        <div class="modif-etudiant-main-text-content">
+            <div class="modif-etudiant-container2">
+                <input name="name" type="text" placeholder="Nom du tuteur"
+                    class="modif-etudiant-nom-etudiant input" value="'.(isset($name) ? $name : $userData["name"]).'"/>
+                <input name="surname" type="text" placeholder="Prénom du tuteur"
+                    class="modif-etudiant-prenom-etudiant input" value="'.(isset($surname) ? $surname : $userData["surname"]).'"/>
+            </div>
+            <div id="allPromos" class="modif-etudiant-form">
+            '.$allPromos.'
+            </div>
+                <script>
+                    '.(!$isCreation ? "function changePassword(){
+                        document.getElementById(\"changePass\").style = \"display:none;\"
+                        document.getElementById(\"passInput\").style = \"display:flex;\"
+                    }" : "").'
+                </script>
+                <input type="text" name="login" placeholder="Email" class="modif-etudiant-promo input" value="'.(isset($login) ? $login : $userData["login"]).'"/>
+                <input type="password" name="pass" id="passInput" placeholder="Mot de Passe" class="modif-etudiant-promo input" value="" '.($isCreation ? "" : "style=\"display:none;\"").'/>
+                <button type="button" id="changePass" name="passwordChange" onclick="changePassword()" class="modif-etudiant-button1 button" '.($isCreation ? "style=\"display:none;\"" : "style=\"cursor:pointer;\"").'>CHANGER LE MOT DE PASSE</button>
+            </div>
+        </div>
+    </form> 
+
+    <script>
+    function SearchText() {
+        $(".modif-tuteur-promo").autocomplete({
+            source: function(request, response) { 
+                $.ajax({
+                    url:"function--ajaxGetPromoCode",
+                    type: \'post\',
+                    dataType: "json",
+                    data: {
+                        search: request.term
+                    },
+                    success: function(data){
+                        console.log(data);
+                        response(data);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown){
+                        console.log(errorThrown);
+                    }
+                });
+            },
+            select: function (event, ui) {
+
+            },
+        });
+    }
+    </script>
+    ';
+
+    if(isset($_POST["poster"])){
+        //do the luigi
+        if(!$isCreation){
+            $answer = $controller->mainManager->updateTuteur($_GET["tuteur_id"], $_POST);
+            if(!$answer){  
+                echo '
+                <script>
+                    alert("La promotion '.$_POST["promoCode"].' n\'existe pas.\nVeuillez y assigner un élève pour continuer.")
+                    $.ajax({type: "POST", url: "function--ajaxHandleAlert", 
+                        data: {
+                            message: "La modification n\'a pas pu être enregistrée...",
+                            type: "danger"
+                        },
+                        success: function(){
+                            window.location.replace("modification&tuteur_id='.$_GET["tuteur_id"].'");
+                        },
+                        error: function(jqXHR, textStatus, errorThrown){
+                            console.log(errorThrown);
+                        }
+                    });
+                </script>
+                ';
+            } else {
+                echo '
+                <script>
+                    $.ajax({type: "POST", url: "function--ajaxHandleAlert", 
+                        data: {
+                            message: "La modification a correctement été effectuée!",
+                            type: "success"
+                        },
+                        success: function(){
+                            window.location.replace("affiche&tuteurID='.$_GET["tuteur_id"].'&t='.time().'");
+                        },
+                        error: function(jqXHR, textStatus, errorThrown){
+                            console.log(errorThrown);
+                        }
+                    });
+                </script>
+                ';
+            }
+        } else {
+            $answer = $controller->mainManager->createUser($_POST);
+            if($answer != "-1"){
+                echo '
+                <script>
+                    $.ajax({type: "POST", url: "function--ajaxHandleAlert", 
+                        data: {
+                            message: "La création a correctement été effectuée!",
+                            type: "success"
+                        },
+                        success: function(){
+                            window.location.replace("affiche&userID='.$answer.'&t='.time().'");
+                        },
+                        error: function(jqXHR, textStatus, errorThrown){
+                            console.log(errorThrown);
+                        }
+                    });
+                </script>
+                ';
+            } else {
+                echo '
+                <script>
+                    if(confirm("La promotion '.$_POST["promoCode"].' n\'existe pas... \
+                    \nVoulez-vous la créer ?")){
+                        let promoName = prompt("Veuillez entrer le nom de la promo", "A1 Généraliste");
+                        let centre = prompt("Veuillez entrer le centre de la promo", "Lille");
+                        if(promoName != null && promoName != "" && centre != null && centre != ""){
+                            $.ajax({type: "POST", url: "function--ajaxCreationCentre",
+                                data: {
+                                    promo: '.$_POST["promoCode"].'
+                                    display: promoName,
+                                    centre: centre
+                                },
+                                success: function(){
+                                    $.ajax({type: "POST", url: "function--ajaxHandleAlert", 
+                                        data: {
+                                            message: "La promotion a bien été créée.",
+                                            type: "success"
+                                        },
+                                        success: function(){
+                                            window.location.replace("modification&tuteur_id='.$_GET["stage_id"].'");
+                                        },
+                                        error: function(jqXHR, textStatus, errorThrown){
+                                            console.log(errorThrown);
+                                        }
+                                    });
+                                },
+                                error: function(jqXHR, textStatus, errorThrown){
+                                    console.log(errorThrown);
+                                }
+                            });
+                        }
+                    } else {
+                        $.ajax({type: "POST", url: "function--ajaxHandleAlert", 
+                            data: {
+                                message: "La création n\'a pas pu être enregistrée...",
+                                type: "danger"
+                            },
+                            success: function(){
+                                //do nothing
+                            },
+                            error: function(jqXHR, textStatus, errorThrown){
+                                console.log(errorThrown);
+                            }
+                        });
+                    }
+                </script>
+                ';
+            }
+        }
+    }
 }
-
-?>
-
-<?php
-?>

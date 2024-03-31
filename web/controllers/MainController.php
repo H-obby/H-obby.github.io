@@ -76,6 +76,12 @@ class MainController extends Render{
                         $filter_options
                     );
                     break;
+                case "tuteur":
+                    $datas["tuteurs"] = $this->mainManager->looseGetTuteur(
+                        $_POST["searchValue"],
+                        $filter_options
+                    );
+                    break;
                 default:
                     $datas = [];
                     break;
@@ -205,6 +211,9 @@ class MainController extends Render{
         $this->mainManager->removeStage($postData["id"]);
     }
     public function ajaxRemoveUser($postData){
+        $this->mainManager->removeUser($postData["id"]);
+    }
+    public function ajaxRemoveTuteur($postData){
         $this->mainManager->removeUser($postData["id"]);
     }
     public function ajaxGetPromoCode($curSearch){

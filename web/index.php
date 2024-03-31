@@ -16,6 +16,7 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 
     session_unset();
     session_destroy();
     session_start();
+    Toolbox::addAlert("Vous avez été déconnecté pour cause d'inactivité, \nVeuillez vous reconnecter.", "warning");
 }
 
 if (!isset($_SESSION["logged"])){

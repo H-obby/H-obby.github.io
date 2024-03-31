@@ -656,7 +656,7 @@ class MainManager {
                 ".(isset($postData["surname"]) ? "`prenom`= :prenom, " : "")." 
                 ".(isset($postData["promoCode"]) ? "`id_promo`= :idpromo, " : "")." 
                 `type`= 1
-                WHERE `id_utilisateur` = :id_user";
+                WHERE `id_utilisateur` = :id_user AND `type` = 1";
 
             $query = $this->dbConnect->prepare($requete);
             $query->bindValue(":id_user",             $id);
@@ -674,6 +674,7 @@ class MainManager {
             die; // On arrête le code PHP
         }
     }
+
     public function createUser($postData):string{
         try { 
             $login = $postData["login"];
@@ -717,8 +718,9 @@ class MainManager {
         try{
             $requete = "SELECT promo as label, promo as value, centre
             FROM promotion 
-            WHERE (MATCH (promo) AGAINST (:relSearch IN BOOLEAN MODE) > 0) 
-            OR (MATCH (displayName) AGAINST (:relSearch IN BOOLEAN MODE) > 0) 
+            WHERE ((MATCH (promo) AGAINST (:relSearch IN BOOLEAN MODE) > 0) 
+            OR (MATCH (displayName) AGAINST (:relSearch IN BOOLEAN MODE) > 0)) 
+            AND (NOT id_promo = 500) 
             ORDER BY MATCH (promo) AGAINST (:relSearch IN BOOLEAN MODE) DESC, 
             MATCH (displayName) AGAINST (:relSearch IN BOOLEAN MODE) DESC";
             
@@ -773,6 +775,137 @@ class MainManager {
             echo '<h1>'.$exception->getMessage().'</h1>';
             echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
             die;
+        }
+    }
+    
+    public function looseGetTuteur($searchValue, $filters):array{
+        try {
+            $requete = "SELECT id_utilisateur ";
+            if(isset($searchValue) && $searchValue != "") {
+                $requete .= ", MATCH(
+                    nom, prenom, centre) 
+                AGAINST (:relSearch IN BOOLEAN MODE) AS relevancy_score ";
+            }
+            $requete .= "FROM utilisateur WHERE (type = 2) ";
+            if(isset($searchValue) && $searchValue != "") {
+                $requete .= "AND (
+                MATCH (nom, prenom, centre) 
+                AGAINST (:relSearch IN BOOLEAN MODE) > 0) ORDER BY relevancy_score DESC";
+            }
+            
+            $query = $this->dbConnect->prepare($requete);
+            if($searchValue != ""){
+                $splitted = preg_split('/\s+/', $searchValue);
+                foreach ($splitted as $key=>$value){
+                    if(substr($value, 0, 1) != "+") {
+                        $splitted[$key] = "*".$value."*";
+                    }
+                }
+                $query->bindValue(":relSearch", implode(" ", $splitted));
+            } 
+            $query->execute();
+            return $query->fetchAll();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
+    public function getAllTuteurPromos($id){
+        try{
+            $requete = "SELECT promotion.id_promo, promo, displayName, centre
+            FROM appartenir JOIN promotion ON appartenir.id_promo = promotion.id_promo
+            WHERE appartenir.id_utilisateur = :id";
+
+            $query = $this->dbConnect->prepare($requete);
+            $query->bindValue(":id", $id);
+            $query->execute();
+            $ids = $query->fetchAll();
+            if(isset($ids)){ //trouvé des enregistrements
+                return $ids;
+            } else { //promo non-trouvée
+                return false;
+            }
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die;
+        }
+    }
+    
+    public function updateTuteur(int $id, $postData){
+        try { 
+            if(isset($postData["login"])) $login = $postData["login"];
+            if(isset($postData["pass"]) && $postData["pass"] != "") $password = hash("sha256", $postData["pass"]);
+            if(isset($postData["name"])) $name = $postData["name"];
+            if(isset($postData["surname"])) $surname = $postData["surname"];
+            if(isset($postData["image"])) $image = $postData["image"];
+            $allPromos = [];
+            if(isset($postData["promos"])) {
+                $promoCodes = $postData["promos"];
+                $this->removeAllPromosFromTuteur($id);
+                foreach($promoCodes as $promo){
+                    $promoID = $this->getPromoCodeFromName($promo);
+                    if(sizeof($promoID) <= 0){
+                        return false;
+                    }
+                    $this->createTuteurPromo($id, $promoID);
+                }
+            }
+
+            $requete ="UPDATE `utilisateur` SET  
+                ".(isset($postData["login"]) ? "`login` = :login," : "")." 
+                ".(isset($postData["pass"]) && $postData["pass"] != "" ? "`mot_de_passe`= :pass, " : "")." 
+                ".(isset($postData["image"]) ? "`profilePic`= :pfp, " : "")." 
+                ".(isset($postData["name"]) ? "`nom`= :nom, " : "")." 
+                ".(isset($postData["surname"]) ? "`prenom`= :prenom, " : "")." 
+                `id_promo`= 500, 
+                `type`= 2
+                WHERE `id_utilisateur` = :id_user AND `type` = 2";
+
+            $query = $this->dbConnect->prepare($requete);
+            $query->bindValue(":id_user",             $id);
+            if(isset($postData["login"]))                                   $query->bindValue(":login",          $login);
+            if(isset($postData["pass"]) && $postData["pass"] != "")         $query->bindValue(":pass",           $password);
+            if(isset($postData["image"]))                                   $query->bindValue(":pfp",            $image);
+            if(isset($postData["name"]))                                    $query->bindValue(":nom",            $name);
+            if(isset($postData["surname"]))                                 $query->bindValue(":prenom",         $surname);
+            $query->execute();
+            return true;
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
+    function removeAllPromosFromTuteur($id_user) {
+        try {
+            $query = $this->dbConnect->prepare(
+                "DELETE FROM appartenir WHERE id_utilisateur = :id_user"
+            );
+            $query->bindValue(":id_user", $id_user);
+            $query->execute();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
+    function createTuteurPromo($id_user, $promoID) {
+        try {
+            $query = $this->dbConnect->prepare(
+                "INSERT INTO appartenir VALUES (:id_user, :id_promo)"
+            );
+            $query->bindValue(":id_user", $id_user);
+            $query->bindValue(":id_promo", $promoID);
+            $query->execute();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
         }
     }
 }

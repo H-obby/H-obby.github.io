@@ -428,7 +428,7 @@
 }
 .modif-etudiant-container2 {
   flex: 0 0 auto;
-  height: 100px;
+  height: auto;
   display: flex;
   align-self: stretch;
   align-items: flex-start;
@@ -447,7 +447,7 @@
   margin-bottom: var(--dl-space-space-twounits);
 }
 .modif-etudiant-form {
-  gap: var(--dl-space-space-unit);
+  gap: 1rem;
   width: auto;
   height: auto;
   display: flex;
@@ -609,4 +609,14 @@
     text-align: left;
     font-weight: 700;
   }
+}
+
+
+.modif-tuteur-promo {
+  flex: 1;
+  border-radius: var(--dl-radius-radius-radius4);
+}
+.modif-tuteur-centre {
+  flex: 1;
+  border-radius: var(--dl-radius-radius-radius4);
 }
