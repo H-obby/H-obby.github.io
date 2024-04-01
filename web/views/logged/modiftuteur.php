@@ -13,4 +13,40 @@
             <input type="text" placeholder="Centre" autocomplete="new-password" class="modif-tuteur-centre input" />
         </form>
     </div>
+
+    <script>
+    let field = {
+        nom: /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{2,40}$/,
+        prenom: /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{2,40}$/,
+        promotion: /^[A-Z0-9\s]/,
+        centre: /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{1,30}$/,
+
+    };
+
+    function regex(input, field) {
+        return fields[field].test(input);
+    }
+
+    let fields = ['nom', 'prenom','promotion', 'centre'];
+
+
+    fields.forEach(function(field) {
+        let inputElement = document.querySelector('input[name="' + field + '"]');
+        let errorMessageElement = inputElement.nextElementSibling;
+
+        inputElement.addEventListener('blur', function() {
+            let input = this.value;
+            if (!regex(input, field)) {
+                errorMessageElement.textContent = "Veuillez suivre les règles pour ce champ";
+                errorMessageElement.style.color = "red";
+                inputElement.style.borderColor = "red";
+            } else {
+                errorMessageElement.textContent = "";
+                errorMessageElement.style.color = "";
+                inputElement.style.borderColor = "";
+            }
+        });
+    });
+
+</script>    
 </main>

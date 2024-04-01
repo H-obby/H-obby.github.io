@@ -1,7 +1,7 @@
+<center>
+    <h1>Mentions Légales</h1>
+</center>
 <div class="container">
-    <center>
-        <h1>Mentions Légales</h1>
-    </center>
     <h3>Identification de l'Éditeur :</h3>
     <p>Nom : Practicum</p>
     <p>Adresse : 123 Rue des Fleurs, 75001 Paris, France</p>

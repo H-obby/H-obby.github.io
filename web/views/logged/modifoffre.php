@@ -28,4 +28,40 @@
         <textarea placeholder="Description de l'entreprise" autocomplete="off"
       class="modif-offre-entre-textarea textarea"></textarea>
     </div>
+    
+    <script>
+        let field = {
+            siteEntreprise: /^[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/,
+            adresseSiege: /^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{1,100}$/,
+            numTel: /^(\+\d{1,3}[-\s]?)?\d{10}$/,
+            nomContact: /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{2,40}$/,
+            emailContact: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+            nomEntreprise: /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{2,40}$/,
+            descriptionEntreprise: /^[a-zA-Z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{1,255}$/,
+        };
+
+        function regex(input, field) {
+            return field[field].test(input);
+        }
+
+        let fields = ['siteEntreprise', 'adresseSiege', 'numTel', 'nomContact', 'emailContact', 'nomEntreprise', 'descriptionEntreprise'];
+        fields.forEach(function(field) {
+            let inputElement = document.querySelector('input[placeholder="' + field + '"]');
+            let errorMessageElement = inputElement.nextElementSibling;
+
+            inputElement.addEventListener('blur', function() {
+                let input = this.value;
+                if (!regex(input, field)) {
+                    errorMessageElement.textContent = "Veuillez suivre les règles pour ce champ";
+                    errorMessageElement.style.color = "red";
+                    inputElement.style.borderColor = "red";
+                } else {
+                    errorMessageElement.textContent = "";
+                    errorMessageElement.style.color = "";
+                    inputElement.style.borderColor = "";
+                }
+            });
+        });
+
+    </script>
 </main>
