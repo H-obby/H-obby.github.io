@@ -28,49 +28,16 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
     }
 
     echo '
-    <script>
-    let field = {
-        duree: /^[0-9]+$/,
-        promo_concernees: /^[a-zA-Z0-9\s,\'-]+$/,
-        competences: /^[a-zA-Z\s,\'-]+$/,
-        remuneration: /^[0-9]+(?:.[0-9]{1,2})?$/,
-        adresse: /^[a-zA-Z0-9\s,\'-]+$/,
-        places_disponibles: /^[0-9]+$/,
-    };
-
-    function regex(input, field) {
-        return field[input].test(input);
-    }
-
-    let fields = [\'duree\', \'promo_concernees\', \'competences\', \'remuneration\', \'adresse\', \'places_disponibles\'];
-
-    fields.forEach(function (field) {
-        let inputElement = document.querySelector(\'input[name="\' + field + \'"]\');
-        let errorMessageElement = document.querySelector(\'#\' + inputElement.dataset.error);
-
-        inputElement.addEventListener(\'blur\', function () {
-            let input = this.value;
-            if (!regex(input, field)) {
-                errorMessageElement.textContent = "Veuillez suivre les règles pour ce champ";
-                errorMessageElement.style.color = "red";
-                inputElement.style.borderColor = "red";
-            } else {
-                errorMessageElement.textContent = "";
-                errorMessageElement.style.color = "";
-                inputElement.style.borderColor = "";
-            }
-        });
-    });
-    </script>
-    <form method="POST" class="modif-offre-stage-main">
+    
+    <form action="" method="POST" class="modif-offre-stage-main">
         <div class="modif-offre-stage-container1">
             <div class="modif-offre-stage-form">
-                <input type="text" name="duree"              value="'.(isset($duree) ? $duree : $stageData["duree"]).'" placeholder="Durée" class="modif-offre-stage-dure input" />
-                <input type="text" name="promo_concernees"   value="'.(isset($promo_concernees) ? $promo_concernees : $stageData["promo_concernees"]).'" placeholder="Années concernées" class="modif-offre-stage-annes-concernes input" />
-                <input type="text" name="competences"        value="'.(isset($competences) ? $competences : $stageData["competences"]).'" placeholder="Compétences" class="modif-offre-stage-comptences input" />
-                <input type="text" name="remuneration"       value="'.(isset($remuneration) ? $remuneration : $stageData["remuneration"]).'" placeholder="Rémunération" class="modif-offre-stage-remun input" />
-                <input type="text" name="adresse"            value="'.(isset($adresse) ? $adresse : $stageData["adresse"]).'" placeholder="Adresse" autocomplete="false" class="modif-offre-stage-adresse input" />
-                <input type="text" name="places_disponibles" value="'.(isset($places_disponibles) ? $places_disponibles : $stageData["places_disponibles"]).'" placeholder="Nombre de places disponibles" class="modif-offre-stage-nb-place input" />
+                <input type="text" name="duree" pattern="[a-z0-9\s, \'-]+"                      value="'.(isset($duree) ? $duree : $stageData["duree"]).'" placeholder="Durée" class="modif-offre-stage-dure input"/> 
+                <input type="text" name="promo_concernees" pattern="[a-zA-Z0-9\s,\'-]+"  value="'.(isset($promo_concernees) ? $promo_concernees : $stageData["promo_concernees"]).'" placeholder="Années concernées" class="modif-offre-stage-annes-concernes input" />
+                <input type="text" name="competences" pattern="[a-zA-Z\s,\'-]+"          value="'.(isset($competences) ? $competences : $stageData["competences"]).'" placeholder="Compétences" class="modif-offre-stage-comptences input" />
+                <input type="text" name="remuneration" pattern="[0-9]+(?:\.[0-9]{1,2})?" value="'.(isset($remuneration) ? $remuneration : $stageData["remuneration"]).'" placeholder="Rémunération" class="modif-offre-stage-remun input" />
+                <input type="text" name="adresse" pattern="[a-zA-Z0-9\s,\'-]+"           value="'.(isset($adresse) ? $adresse : $stageData["adresse"]).'" placeholder="Adresse" autocomplete="false" class="modif-offre-stage-adresse input" />
+                <input type="text" name="places_disponibles" pattern="[0-9]+"            value="'.(isset($places_disponibles) ? $places_disponibles : $stageData["places_disponibles"]).'" placeholder="Nombre de places disponibles" class="modif-offre-stage-nb-place input" />
             </div>
             <div class="modif-offre-stage-container2">
                 <button type="submit" name="poster" class="modif-offre-stage-button button">POSTER</button>
