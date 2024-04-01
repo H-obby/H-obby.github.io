@@ -1,43 +1,3 @@
-<script>
-    let field = {
-        duree: /^[0-9]+$/, 
-        promo_concernees: /^[a-zA-Z0-9\s,'-]+$/, 
-        competences: /^[a-zA-Z\s,'-]+$/, 
-        remuneration: /^[0-9]+(?:\.[0-9]{1,2})?$/, 
-        adresse: /^[a-zA-Z0-9\s,'-]+$/, 
-        places_disponibles: /^[0-9]+$/, 
-        nom_entreprise: /^[a-zA-Z\s,'-]+$/, 
-        titre: /^[a-zA-Z\s,'-]+$/, 
-        desc: /^[a-zA-Z0-9\s,'-]+$/, 
-    };
-
-    function regex(input, field) {
-        return fields[field].test(input);
-    }
-
-    let fields = ['duree', 'promo_concernees','competences', 'remuneration','adresse','places_disponibles','nom_entreprise','titre','desc'];
-
-
-    fields.forEach(function(field) {
-        let inputElement = document.querySelector('input[name="' + field + '"]');
-        let errorMessageElement = inputElement.nextElementSibling;
-
-        inputElement.addEventListener('blur', function() {
-            let input = this.value;
-            if (!regex(input, field)) {
-                errorMessageElement.textContent = "Veuillez suivre les règles pour ce champ";
-                errorMessageElement.style.color = "red";
-                inputElement.style.borderColor = "red";
-            } else {
-                errorMessageElement.textContent = "";
-                errorMessageElement.style.color = "";
-                inputElement.style.borderColor = "";
-            }
-        });
-    });
-
-</script>
-
 <?php
 $controller = new MainController();
 if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage")){
@@ -68,6 +28,40 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
     }
 
     echo '
+    <script>
+    let field = {
+        duree: /^[0-9]+$/,
+        promo_concernees: /^[a-zA-Z0-9\s,\'-]+$/,
+        competences: /^[a-zA-Z\s,\'-]+$/,
+        remuneration: /^[0-9]+(?:.[0-9]{1,2})?$/,
+        adresse: /^[a-zA-Z0-9\s,\'-]+$/,
+        places_disponibles: /^[0-9]+$/,
+    };
+
+    function regex(input, field) {
+        return field[input].test(input);
+    }
+
+    let fields = [\'duree\', \'promo_concernees\', \'competences\', \'remuneration\', \'adresse\', \'places_disponibles\'];
+
+    fields.forEach(function (field) {
+        let inputElement = document.querySelector(\'input[name="\' + field + \'"]\');
+        let errorMessageElement = document.querySelector(\'#\' + inputElement.dataset.error);
+
+        inputElement.addEventListener(\'blur\', function () {
+            let input = this.value;
+            if (!regex(input, field)) {
+                errorMessageElement.textContent = "Veuillez suivre les règles pour ce champ";
+                errorMessageElement.style.color = "red";
+                inputElement.style.borderColor = "red";
+            } else {
+                errorMessageElement.textContent = "";
+                errorMessageElement.style.color = "";
+                inputElement.style.borderColor = "";
+            }
+        });
+    });
+    </script>
     <form method="POST" class="modif-offre-stage-main">
         <div class="modif-offre-stage-container1">
             <div class="modif-offre-stage-form">
