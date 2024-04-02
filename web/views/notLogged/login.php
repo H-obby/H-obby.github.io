@@ -27,7 +27,7 @@
         $_SESSION["logged"] = true;
         $_SESSION["loggedAs"] = $login;
         $_SESSION["permissionLevel"] = 3;
-        header("Location: index");
+        header("Location: index&t=".time());
       } else {
         echo "Mauvais nom d'utilisateur ou mot de passe";
       }

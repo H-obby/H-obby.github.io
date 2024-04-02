@@ -2,11 +2,6 @@
 	<link href="../components/logged-in-header.css" rel="stylesheet" />
 	<link href="../components/search-bar.css" rel="stylesheet" />
 
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
-      rel="stylesheet"
-    />
-
 	<header data-role="Header" class="logged-in-header-header">
 		<a href="index" class="logged-in-header-logo-name">
 			<img alt="Logo Practicum" src="../public/practicum2.svg" class="logged-in-header-image" />
@@ -25,23 +20,23 @@
 					<img src="../public/leetram-200h.png" class="profile" alt="profile picture"/>
 					<ul class="dropdown_ul">
 					  <li class="sub-item">
-						<span class="material-icons-outlined"> manage_accounts </span>
+						<span class="material-symbols-outlined"> manage_accounts </span>
 						<p>Profile</p>
 					  </li>
 					  <li class="sub-item">
-						<span class="material-icons-outlined">
+						<span class="material-symbols-outlined">
 							format_list_bulleted
 						</span>
 						<p>Paramètres</p>
 					  </li>
-					  <li class="sub-item" onclick="location.href='wishlist'">
-						<a class="material-icons-outlined" href="wishlist">
+					  <li class="sub-item" onclick="location.href='wishlist&t=<?=time()?>'">
+						<a class="material-symbols-outlined" href="wishlist&t=<?=time()?>">
 							bookmark
 						</a>
 						<p>Wishlist</p>
 					  </li>
 					  <li class="sub-item" onclick="location.href='phpScripts/disconnect.php'">
-						<span class="material-icons-outlined"> logout </span>
+						<span class="material-symbols-outlined"> logout </span>
 						<p>Déconnection</p>
 					  </li>
 					</ul>

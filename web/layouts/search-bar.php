@@ -8,7 +8,9 @@
     <option value="entreprise" <?php echo isset($_POST["searchType"]) && $_POST["searchType"] == "entreprise" ? "selected" : "" ?> >Entreprise</option>
     <?php if ($_SESSION["permissionLevel"] > 1): ?>
       <option value="utilisateur" <?php echo isset($_POST["searchType"]) && $_POST["searchType"] == "utilisateur" ? "selected" : "" ?> >Utilisateur</option>
-      <option value="tuteur" <?php echo isset($_POST["searchType"]) && $_POST["searchType"] == "tuteur" ? "selected" : "" ?> >Tuteur</option>
+      <?php if ($_SESSION["permissionLevel"] > 2): ?>
+        <option value="tuteur" <?php echo isset($_POST["searchType"]) && $_POST["searchType"] == "tuteur" ? "selected" : "" ?> >Tuteur</option>
+      <?php endif; ?>
     <?php endif; ?>
   </select>
 </form>

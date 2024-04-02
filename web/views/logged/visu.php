@@ -40,7 +40,8 @@
     */
   
     $thingList = [
-      "Domaine principal"=> $stageData["promo_concernees"],
+      "Promos concernées"=> $stageData["promo_concernees"],
+      "Domaine d'activité principal"=> $stageData["domaine"],
       "Compétences"=> $stageData["competences"],
       "Durée" => $stageData["duree"],
       "Rémunération" => $stageData["remuneration"],
@@ -53,10 +54,12 @@
       $fullHTMLTagList .= '
         <li class="visu-offre-stage-li tagListItem">
           <span class="visu-offre-stage-text">'.$key.' :</span>
-          <span>'.$data.'</span>
+          <span>'.ucfirst($data).'</span>
         </li>
       ';
     }
+
+    $isFavorite = $controller->mainManager->getFavorite($_GET['offreID']);
   
     $datePostee = new DateTime($stageData["date_offre"]);
     $dateElapsed = humanTiming(strtotime($datePostee->format("Y-m-d H:i:s")));
@@ -73,15 +76,14 @@
                 <button type="button" class="visu-offre-stage-button button">
                   POSTULER
                 </button>
-                <button type="button" class="visu-offre-stage-button1 button">
-                  <img
-                    alt="image"
-                    src="../public/bookmark-svgrepo-com.svg"
-                    class="visu-offre-stage-image"
-                  />
+                <button type="button" id="fav" class="visu-offre-stage-button1 button">
+                  <span class="'.(isset($isFavorite) && $isFavorite ? 'material-symbols-outlined material-symbols-outlined-fill' : 'material-symbols-outlined').' visu-offre-stage-image">
+                    bookmark
+                  </span>
                 </button>
               </form>
-              <form action="modification&stage_id='.$_GET["offreID"].'" class="visu-offre-stage-container5">
+              '.($_SESSION["permissionLevel"] > 1 ? 
+              '<form action="modification&stage_id='.$_GET["offreID"].'" class="visu-offre-stage-container5">
                 <button type="submit" class="visu-offre-stage-button2 button">
                   MODIFIER
                 </button>
@@ -90,7 +92,7 @@
                 <button type="submit" class="visu-offre-stage-button2 button">
                   SUPPRIMER
                 </button>
-              </form>
+              </form>' : '').'
             </div>
           </div>
         </div>
@@ -127,6 +129,28 @@
   
           }
         }
+
+        $("#fav").click(function(e) {
+          $.ajax({
+            url:"function--addWishlist",
+            type: \'post\',
+            dataType: "json",
+            data: {
+              id: '.$_GET["offreID"].'
+            },
+            success: function(data){
+              isNewWishlist = (data[0]["wish_listed"] == 1);
+              if(isNewWishlist){
+                $("#fav > span").addClass("material-symbols-outlined-fill");
+              } else {
+                $("#fav > span").removeClass("material-symbols-outlined-fill");
+              }
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+              console.log(errorThrown);
+            }
+          });
+        });
       </script>
     ';
   } else if ($isUser){
@@ -137,7 +161,7 @@
           <div class="visu-offre-stage-container1">
             <div class="visu-offre-stage-container2">
               <div class="visu-offre-stage-container3">
-                <form action="modification&user_id='.$_GET["userID"].'" class="visu-offre-stage-container5">
+                '.($_SESSION["permissionLevel"] > 1 ? '<form action="modification&user_id='.$_GET["userID"].'" class="visu-offre-stage-container5">
                   <button type="submit" class="visu-offre-stage-button2 button">
                     MODIFIER
                   </button>
@@ -145,7 +169,7 @@
                 <form onsubmit="areYouSure()" action="" class="visu-offre-stage-container5">
                   <button type="submit" class="visu-offre-stage-button2 button">
                     SUPPRIMER
-                  </button>
+                  </button>' : '').'
                 </form>
               </div>
             </div>
@@ -287,6 +311,8 @@
 
     $HTMLPromoList = "";
     $HTMLCentreList = "";
+    $numPromo = 0;
+    $numCentre = 0;
     $promos = $controller->mainManager->getAllTuteurPromos($_GET["tuteurID"]);
     foreach ($promos as $promo){
       $HTMLPromoList .= '
@@ -294,11 +320,12 @@
         <span>'.$promo["promo"].', '.$promo["displayName"].', '.$promo["centre"].'</span>
       </li>
       ';
+      $numPromo++;
 
       if(strstr($HTMLCentreList, '<span>'.$promo["centre"].'</span>') === false){
+        $numCentre++;
         $HTMLCentreList .= '
         <li class="visu-etudiant-li1 list-item">
-          <span class="visu-etudiant-first1">Centre :</span>
           <span>'.$promo["centre"].'</span>
         </li>';
       } ;
@@ -309,6 +336,7 @@
           <div class="visu-offre-stage-container1">
             <div class="visu-offre-stage-container2">
               <div class="visu-offre-stage-container3">
+                '.($_SESSION["permissionLevel"] > 2 ? '
                 <form action="modification&tuteur_id='.$_GET["tuteurID"].'" class="visu-offre-stage-container5">
                   <button type="submit" class="visu-offre-stage-button2 button">
                     MODIFIER
@@ -318,7 +346,7 @@
                   <button type="submit" class="visu-offre-stage-button2 button">
                     SUPPRIMER
                   </button>
-                </form>
+                </form>' : '').'
               </div>
             </div>
           </div>
@@ -330,10 +358,10 @@
         <div class="visu-etudiant-main-text-content">
           <h1 class="visu-etudiant-text">'.$userData["surname"].' '.$userData["name"].'</h1>
           <ul class="visu-etudiant-ul list">
-            <h1 class="visu-etudiant-text"> Gère les promos : </h1>
+            <h1 class="visu-etudiant-text"> Gère le'.($numPromo > 1 ? "s" : "").' promo'.($numPromo > 1 ? "s" : "").' : </h1>
             '.$HTMLPromoList.'
             <br/>
-            <h1 class="visu-etudiant-text"> Basé sur le centre de : </h1>
+            <h1 class="visu-etudiant-text"> Basé sur le'.($numCentre > 1 ? "s" : "").' centre'.($numCentre > 1 ? "s" : "").' de : </h1>
             '.$HTMLCentreList.'
           </ul>
         </div>

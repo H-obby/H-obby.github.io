@@ -131,9 +131,8 @@
   cursor: pointer;
 }
 .visu-offre-stage-image {
-  width: 39px;
-  height: 39px;
   object-fit: cover;
+  font-size:250%;
 }
 .visu-offre-stage-container5 {
   flex: 0 0 auto;

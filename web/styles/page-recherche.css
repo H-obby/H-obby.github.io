@@ -2,7 +2,6 @@
   width: 100%;
   cursor: pointer;
   display: flex;
-  max-width: var(--dl-size-size-maxwidth);
   box-shadow: 0px 0px 20px 0px rgba(21, 21, 21, 0.56);
   transition: 0.3s;
   align-items: stretch;
@@ -329,7 +328,7 @@
   min-width: 60%;
   margin-bottom: 3rem;
   display: flex;
-  max-width: var(--dl-size-size-maxwidth);
+  max-width: 95%;
   box-shadow: 0px 0px 20px 0px rgba(21, 21, 21, 0.56);
   transition: 0.3s;
   align-items: stretch;

@@ -13,12 +13,14 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
         if(isset($_POST["adresse"])) $adresse = $_POST["adresse"];
         if(isset($_POST["places_disponibles"])) $places_disponibles = $_POST["places_disponibles"];
         if(isset($_POST["nom_entreprise"])) $nom_entreprise = $_POST["nom_entreprise"];
+        if(isset($_POST["domaine"])) $domaine = $_POST["domaine"];
         if(isset($_POST["titre"])) $titre = $_POST["titre"];
         if(isset($_POST["desc"])) $desc = $_POST["desc"];
     } else {
         $duree = "";
         $promo_concernees = "";
         $competences = "";
+        $domaine = "";
         $remuneration = "";
         $adresse = "";
         $places_disponibles = "";
@@ -33,12 +35,33 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
     <form action="" method="POST" class="modif-offre-stage-main">
         <div class="modif-offre-stage-container1">
             <div class="modif-offre-stage-form">
-                <input type="text" name="duree" pattern="^[0-9] mois$"                   value="'.(isset($duree) ? $duree : $stageData["duree"]).'" placeholder="Durée" class="modif-offre-stage-dure input"/> 
-                <input type="text" name="promo_concernees" pattern="^bac\+[0-9]$"        value="'.(isset($promo_concernees) ? $promo_concernees : $stageData["promo_concernees"]).'" placeholder="Années concernées" class="modif-offre-stage-annes-concernes input" />
-                <input type="text" name="competences"                                    value="'.(isset($competences) ? $competences : $stageData["competences"]).'" placeholder="Compétences" class="modif-offre-stage-comptences input" />
-                <input type="text" name="remuneration" pattern="[0-9]+(?:\.[0-9]{1,2})?" value="'.(isset($remuneration) ? $remuneration : $stageData["remuneration"]).'" placeholder="Rémunération" class="modif-offre-stage-remun input" />
-                <input type="text" name="adresse"                                        value="'.(isset($adresse) ? $adresse : $stageData["adresse"]).'" placeholder="Adresse" autocomplete="false" class="modif-offre-stage-adresse input" />
-                <input type="text" name="places_disponibles" pattern="[0-9]+"            value="'.(isset($places_disponibles) ? $places_disponibles : $stageData["places_disponibles"]).'" placeholder="Nombre de places disponibles" class="modif-offre-stage-nb-place input" />
+                <input type="text" name="duree" pattern="^[0-9] mois$" title="Vous devez entrer le nombre de mois que dure le stage, puis le mot &quot;mois&quot;"
+                value="'.(isset($duree) ? $duree : $stageData["duree"]).'" required
+                placeholder="Durée" class="modif-offre-stage-dure input"/> 
+
+                <input type="text" name="promo_concernees" pattern="^bac\+[0-9]$" title="Vous devez entrer &quot;bac+&quot; puis le nombre d\'années d\'études"
+                value="'.(isset($promo_concernees) ? $promo_concernees : $stageData["promo_concernees"]).'" required
+                placeholder="Années concernées" class="modif-offre-stage-annes-concernes input" />
+
+                <input type="text" name="competences" required
+                value="'.(isset($competences) ? $competences : $stageData["competences"]).'" 
+                placeholder="Compétences" class="modif-offre-stage-comptences input" />
+
+                <input type="text" name="remuneration" pattern="[0-9]+(?:\.[0-9]{1,2})?" title="Vous devez entrer un nombre, sans le signe € à la fin."
+                value="'.(isset($remuneration) ? $remuneration : $stageData["remuneration"]).'" required
+                placeholder="Rémunération" class="modif-offre-stage-remun input" />
+
+                <input type="text" name="adresse" required
+                value="'.(isset($adresse) ? $adresse : $stageData["adresse"]).'" 
+                placeholder="Adresse" autocomplete="false" class="modif-offre-stage-adresse input" />
+
+                <input type="text" name="places_disponibles" pattern="[0-9]+" title="Vous devez entrer un nombre." required
+                value="'.(isset($places_disponibles) ? $places_disponibles : $stageData["places_disponibles"]).'" 
+                placeholder="Nombre de places disponibles" class="modif-offre-stage-nb-place input" />
+
+                <input type="text" name="domaine" required
+                value="'.(isset($domaine) ? $domaine : $stageData["domaine"]).'" 
+                placeholder="Domaine d\'activité du stage" class="modif-offre-stage-nb-place input" />
             </div>
             <div class="modif-offre-stage-container2">
                 <button type="submit" name="poster" class="modif-offre-stage-button button">POSTER</button>
@@ -46,7 +69,7 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
         </div>
             <div class="modif-offre-stage-main-text-content">
                 <div class="modif-offre-stage-container3">
-                    <input type="text" id="autocomplete" name="nom_entreprise" value="'.(isset($nom_entreprise) ? $nom_entreprise : $stageData["nom_entreprise"]).'" placeholder="Nom d\'Entreprise" class="modif-offre-stage-nom-entreprise input" />
+                    <input type="text" id="autocomplete" name="nom_entreprise" value="'.(isset($nom_entreprise) ? $nom_entreprise : $stageData["nom_entreprise"]).'" placeholder="Nom d\'Entreprise" class="modif-offre-stage-nom-entreprise input" required/>
                     <script>
                         $("#autocomplete").autocomplete({
                             source: function(request, response) { 
@@ -72,8 +95,8 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
                         });
                     </script>
                 </div>
-                <input type="text" name="titre" value="'.(isset($titre) ? $titre : $stageData["titre"]).'" placeholder="Intitulé du Stage" class="modif-offre-stage-intitul-stage input" />
-                <textarea placeholder="Description du Stage" name="desc" class="modif-offre-stage-textarea textarea">'.(isset($desc) ? $desc : $stageData["description"]).'</textarea>
+                <input type="text" name="titre" value="'.(isset($titre) ? $titre : $stageData["titre"]).'" placeholder="Intitulé du Stage" class="modif-offre-stage-intitul-stage input" required/>
+                <textarea placeholder="Description du Stage" name="desc" class="modif-offre-stage-textarea textarea" required>'.(isset($desc) ? $desc : $stageData["description"]).'</textarea>
             </div>
         </div>
     </form>
@@ -87,7 +110,7 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
                 echo '
                 <script>
                     let txt;
-                    if(confirm("L\'entreprise \"'.$_POST["nom_entreprise"].'\" n\'existe pas... \
+                    if(confirm("L\'entreprise &quot;'.$_POST["nom_entreprise"].'&quot; n\'existe pas... \
                     \nAppuyez sur OK pour la créer, n\'oubliez pas de la remplir par la suite.")){
                         let formData = new FormData();
                         formData.append("nom", "'.$_POST["nom_entreprise"].'");
@@ -166,7 +189,7 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
                 echo '
                 <script>
                     let txt;
-                    if(confirm("L\'entreprise \"'.$_POST["nom_entreprise"].'\" n\'existe pas... \
+                    if(confirm("L\'entreprise &quot;'.$_POST["nom_entreprise"].'&quot; n\'existe pas... \
                     \nAppuyez sur OK pour la créer, n\'oubliez pas de la remplir par la suite.")){
                         let formData = new FormData();
                         formData.append("nom", "'.$_POST["nom_entreprise"].'");
@@ -215,7 +238,7 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
     
         if(isset($_POST["name"])) $name = $_POST["name"];
         if(isset($_POST["surname"])) $surname = $_POST["surname"];
-        if(isset($_POST["promoCode"])) $promoCode = $_POST["promoCode"];
+        if(isset($_POST["promo"])) $promoCode = $_POST["promo"];
         if(isset($_POST["centre"])) $centre = $_POST["centre"];
         if(isset($_POST["image"])) $image = $_POST["image"];
         if(isset($_POST["login"])) $login = $_POST["login"];
@@ -277,7 +300,11 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
                     }" : "").'
                 </script>
                 <input type="text" name="login" placeholder="Email" class="modif-etudiant-promo input" value="'.(isset($login) ? $login : $userData["login"]).'"/>
-                <input type="password" name="pass" id="passInput" placeholder="Mot de Passe" class="modif-etudiant-promo input" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" value="" '.($isCreation ? "" : "style=\"display:none;\"").'/>
+                <input type="password" name="pass" id="passInput" placeholder="Mot de Passe" 
+                class="modif-etudiant-promo input" 
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+                title = "Le mot de passe doit avoir une longueur supérieure à 8 caractères\nComporter au moins un chiffre\nComporter au moins un caractère spécial"
+                value="" '.($isCreation ? "" : "style=\"display:none;\"").'/>
                 <button type="button" id="changePass" name="passwordChange" onclick="changePassword()" class="modif-etudiant-button1 button" '.($isCreation ? "style=\"display:none;\"" : "style=\"cursor:pointer;\"").'>CHANGER LE MOT DE PASSE</button>
             </div>
         </div>
@@ -291,14 +318,14 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
             if(!$answer){  
                 echo '
                 <script>
-                    if(confirm("La promotion '.$_POST["promoCode"].' n\'existe pas... \
+                    if(confirm("La promotion '.$_POST["promo"].' n\'existe pas... \
                     \nVoulez-vous la créer ?")){
                         let promoName = prompt("Veuillez entrer le nom de la promo", "A1 Généraliste");
                         let centre = prompt("Veuillez entrer le centre de la promo", "Lille");
                         if(promoName != null && promoName != "" && centre != null && centre != ""){
                             $.ajax({type: "POST", url: "function--ajaxCreationCentre",
                                 data: {
-                                    promo: '.$_POST["promoCode"].'
+                                    promo: '.$_POST["promo"].'
                                     display: promoName,
                                     centre: centre
                                 },
@@ -309,7 +336,7 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
                                             type: "success"
                                         },
                                         success: function(){
-                                            window.location.replace("modification&user_id='.$_GET["stage_id"].'");
+                                            
                                         },
                                         error: function(jqXHR, textStatus, errorThrown){
                                             console.log(errorThrown);
@@ -377,14 +404,14 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
             } else {
                 echo '
                 <script>
-                    if(confirm("La promotion '.$_POST["promoCode"].' n\'existe pas... \
+                    if(confirm("La promotion '.$_POST["promo"].' n\'existe pas... \
                     \nVoulez-vous la créer ?")){
                         let promoName = prompt("Veuillez entrer le nom de la promo", "A1 Généraliste");
                         let centre = prompt("Veuillez entrer le centre de la promo", "Lille");
                         if(promoName != null && promoName != "" && centre != null && centre != ""){
                             $.ajax({type: "POST", url: "function--ajaxCreationCentre",
                                 data: {
-                                    promo: '.$_POST["promoCode"].'
+                                    promo: "'.$_POST["promo"].'",
                                     display: promoName,
                                     centre: centre
                                 },
@@ -395,7 +422,7 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
                                             type: "success"
                                         },
                                         success: function(){
-                                            window.location.replace("modification&user_id='.$_GET["stage_id"].'");
+                                            window.location.replace("index&t='.time().'");
                                         },
                                         error: function(jqXHR, textStatus, errorThrown){
                                             console.log(errorThrown);
@@ -451,18 +478,49 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
 
     $allPromos = "";
     foreach($promos as $promo){
-        $allPromos .= '
-        <script> addPromo() </script>';
+        if(is_string($promo)){
+            $allPromos .= '
+            <script> addPromo("'.$promo.'") </script>';
+        } else {
+            $allPromos .= '
+            <script> addPromo("'.$promo["promo"].'") </script>';
+        }
     }
 
     echo '
+
     <script>
-    function addPromo() {
+    function SearchText() {
+        $(".modif-tuteur-promo").autocomplete({
+            source: function(request, response) { 
+                $.ajax({
+                    url:"function--ajaxGetPromoCode",
+                    type: \'post\',
+                    dataType: "json",
+                    data: {
+                        search: request.term
+                    },
+                    success: function(data){
+                        console.log(data);
+                        response(data);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown){
+                        console.log(errorThrown);
+                    }
+                });
+            },
+            select: function (event, ui) {
+
+            },
+        });
+    }
+    
+    function addPromo(laPromo = "") {
         var div = document.createElement("div");
         div.setAttribute("class", "modif-etudiant-container2");
         div.innerHTML = 
         `
-            <input type="text" name="promo[]" placeholder="Promotion" class="modif-tuteur-promo input" value=""/>
+            <input type="text" name="promos[]" placeholder="Promotion" class="modif-tuteur-promo input" value="${laPromo}" />
         `;
         document.getElementById("allPromos").appendChild(div);
         SearchText();
@@ -475,7 +533,7 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
         SearchText();
     }
     </script>
-
+    
     <form class="modif-etudiant-main" method="POST">
         <div class="modif-etudiant-container1">
             <img alt="Photo de profil de l\'utilisateur" src="'.URL.'public/'.(isset($image) ? $image : $userData["pfp"]).'" class="modif-etudiant-image" />
@@ -507,43 +565,16 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
             </div>
         </div>
     </form> 
-
-    <script>
-    function SearchText() {
-        $(".modif-tuteur-promo").autocomplete({
-            source: function(request, response) { 
-                $.ajax({
-                    url:"function--ajaxGetPromoCode",
-                    type: \'post\',
-                    dataType: "json",
-                    data: {
-                        search: request.term
-                    },
-                    success: function(data){
-                        console.log(data);
-                        response(data);
-                    },
-                    error: function(jqXHR, textStatus, errorThrown){
-                        console.log(errorThrown);
-                    }
-                });
-            },
-            select: function (event, ui) {
-
-            },
-        });
-    }
-    </script>
     ';
 
     if(isset($_POST["poster"])){
         //do the luigi
         if(!$isCreation){
             $answer = $controller->mainManager->updateTuteur($_GET["tuteur_id"], $_POST);
-            if(!$answer){  
+            if(!is_bool($answer)){  
                 echo '
                 <script>
-                    alert("La promotion '.$_POST["promoCode"].' n\'existe pas.\nVeuillez y assigner un élève pour continuer.")
+                    alert("La promotion '.$answer.' n\'existe pas.\nVeuillez y assigner un élève pour continuer.")
                     $.ajax({type: "POST", url: "function--ajaxHandleAlert", 
                         data: {
                             message: "La modification n\'a pas pu être enregistrée...",
@@ -577,8 +608,8 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
                 ';
             }
         } else {
-            $answer = $controller->mainManager->createUser($_POST);
-            if($answer != "-1"){
+            $answer = $controller->mainManager->createTuteur($_POST);
+            if(!is_array($answer)){
                 echo '
                 <script>
                     $.ajax({type: "POST", url: "function--ajaxHandleAlert", 
@@ -598,14 +629,14 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
             } else {
                 echo '
                 <script>
-                    if(confirm("La promotion '.$_POST["promoCode"].' n\'existe pas... \
+                    if(confirm("La promotion '.$answer[1].' n\'existe pas... \
                     \nVoulez-vous la créer ?")){
                         let promoName = prompt("Veuillez entrer le nom de la promo", "A1 Généraliste");
                         let centre = prompt("Veuillez entrer le centre de la promo", "Lille");
                         if(promoName != null && promoName != "" && centre != null && centre != ""){
                             $.ajax({type: "POST", url: "function--ajaxCreationCentre",
                                 data: {
-                                    promo: '.$_POST["promoCode"].'
+                                    promo: "'.$answer[1].'"
                                     display: promoName,
                                     centre: centre
                                 },
@@ -616,7 +647,7 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
                                             type: "success"
                                         },
                                         success: function(){
-                                            window.location.replace("modification&tuteur_id='.$_GET["stage_id"].'");
+                                            window.location.replace("index&t='.time().'");
                                         },
                                         error: function(jqXHR, textStatus, errorThrown){
                                             console.log(errorThrown);

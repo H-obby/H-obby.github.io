@@ -257,8 +257,9 @@ class MainManager {
                 "SELECT stage.titre, stage.competences, stage.adresse, stage.promo_concernees,
                 stage.remuneration, stage.date_offre, stage.places_disponibles, stage.description, stage.duree,
                 stage.domaine_activite as domaine, entreprise.nom as nom_entreprise
-                FROM stage JOIN entreprise ON stage.id_entreprise = entreprise.id_entreprise
-                WHERE :id = id_stage"
+                FROM stage 
+                JOIN entreprise ON stage.id_entreprise = entreprise.id_entreprise
+                WHERE :id = stage.id_stage"
             );
             $query->bindValue(":id", $id);
             $query->execute();
@@ -353,7 +354,7 @@ class MainManager {
         }
     }
 
-    public function getFavorite($id_stage){
+    public function getFavorite($id_stage, $encodeJson = false){
         try {
             $query = $this->dbConnect->prepare(
                 "SELECT wish_listed FROM relation
@@ -365,8 +366,48 @@ class MainManager {
             $query->bindValue(":id_stage", $id_stage);
             $query->bindValue(":login", $_SESSION["loggedAs"]);
             $query->execute();
-            return $query->fetchAll()[0]["wish_listed"];
+            if(!$encodeJson){
+                $isFavorite = $query->fetchAll();
+                if(sizeof($isFavorite) > 0){
+                    return $isFavorite[0]["wish_listed"];
+                } else {
+                    return false;
+                }
+            } else {
+                $data = array();
+                $data = $query->fetchAll(PDO::FETCH_ASSOC);
+                if(sizeof($data) > 0){
+                    echo json_encode($data);
+                } else {
+                    echo json_encode(false);
+                }
+            }
         } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
+    public function getAllFavorites(int $limit, int $offset){
+        try {
+            $query = $this->dbConnect->prepare(
+                "SELECT relation.id_stage FROM relation 
+                JOIN utilisateur ON utilisateur.id_utilisateur = relation.id_utilisateur 
+                JOIN stage ON relation.id_stage = stage.id_stage 
+                WHERE wish_listed = 1 
+                AND (login = :login) 
+                AND (places_disponibles > 0) 
+                ORDER BY stage.date_offre DESC 
+                LIMIT :offset, :limit"
+            );
+            $query->bindValue(":login", $_SESSION["loggedAs"]);
+            $query->bindValue(":limit", $limit, PDO::PARAM_INT);
+            $query->bindValue(":offset", $offset, PDO::PARAM_INT);
+            $query->execute();
+            return $query->fetchAll();
+        } catch (Exception $exception) {
+            print_r($query);
             echo '<h1>'.$exception->getMessage().'</h1>';
             echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
             die; // On arrête le code PHP
@@ -382,6 +423,7 @@ class MainManager {
             $adresse = $postData["adresse"];
             $places_disponibles = $postData["places_disponibles"];
             $titre = $postData["titre"];
+            $domaine = $postData["domaine"];
             $desc = $postData["desc"];
             $now = date('Y-m-d H:i:s', time());
             $entreprise = $this->getEntrepriseIDFromName($postData["nom_entreprise"]);
@@ -399,6 +441,7 @@ class MainManager {
                 `places_disponibles`= :places,
                 `description`= :desc,
                 `promo_concernees`= :promos,
+                `domaine_activite`= :domaine,
                 `id_entreprise`= :entreprise
                 WHERE (id_stage = :id) LIMIT 1";
 
@@ -412,6 +455,7 @@ class MainManager {
             $query->bindValue(":now",            $now);
             $query->bindValue(":places",         $places_disponibles);
             $query->bindValue(":desc",           $desc);
+            $query->bindValue(":domaine",        $domaine);
             $query->bindValue(":promos",         $promo_concernees);
             $query->bindValue(":entreprise",     $entreprise[0]["id_entreprise"]);
             $query->execute();
@@ -425,6 +469,11 @@ class MainManager {
 
     public function removeStage($id){
         try { 
+            $requete ="DELETE FROM relation WHERE id_stage = :id";
+            $query = $this->dbConnect->prepare($requete);
+            $query->bindValue(":id", $id);
+            $query->execute();
+
             $requete ="DELETE FROM stage WHERE id_stage = :id LIMIT 1";
             $query = $this->dbConnect->prepare($requete);
             $query->bindValue(":id", $id);
@@ -645,7 +694,7 @@ class MainManager {
                 $promoCode = $postData["promoCode"];
                 $promoID = $this->getPromoCodeFromName($promoCode);
                 if(sizeof($promoID) <= 0){
-                    return false;
+                    return $promoID;
                 }
             }
 
@@ -685,8 +734,9 @@ class MainManager {
             $image = isset($postData["image"]) ? $postData["image"] : "";
             $promoCode = $postData["promo"];
             $promoID = $this->getPromoCodeFromName($promoCode);
+            print_r($promoID);
             if(sizeof($promoID) <= 0){
-                return false;
+                return "-1";
             }
 
             $requete ="INSERT INTO 
@@ -842,16 +892,15 @@ class MainManager {
             if(isset($postData["name"])) $name = $postData["name"];
             if(isset($postData["surname"])) $surname = $postData["surname"];
             if(isset($postData["image"])) $image = $postData["image"];
-            $allPromos = [];
             if(isset($postData["promos"])) {
                 $promoCodes = $postData["promos"];
                 $this->removeAllPromosFromTuteur($id);
                 foreach($promoCodes as $promo){
                     $promoID = $this->getPromoCodeFromName($promo);
                     if(sizeof($promoID) <= 0){
-                        return false;
+                        return $promo;
                     }
-                    $this->createTuteurPromo($id, $promoID);
+                    $this->createTuteurPromo($id, $promoID[0]["id_promo"]);
                 }
             }
 
@@ -936,6 +985,55 @@ class MainManager {
             $query->execute();
             return $query->fetchAll();
         } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+    public function createTuteur($postData){
+        try { 
+            $login = $postData["login"];
+            $password = hash("sha256", $postData["pass"]);
+            $name = $postData["name"];
+            $surname = $postData["surname"];
+            $image = isset($postData["image"]) ? $postData["image"] : "";
+            if(isset($postData["promos"])) {
+                $promoCodes = $postData["promos"];
+                foreach($promoCodes as $promo){
+                    $promoID = $this->getPromoCodeFromName($promo);
+                    if(sizeof($promoID) <= 0){
+                        return [false, $promo];
+                    }
+                }
+            }
+
+            $requete ="INSERT INTO 
+                `utilisateur`(`login`, `mot_de_passe`, `profilePic`, `nom`, `prenom`, `id_promo`, `type`)
+                VALUES 
+                (:login,:pass,:pfp,:nom,:prenom,500,2)";
+
+            
+            $query = $this->dbConnect->prepare($requete);
+            $query->bindValue(":login",          $login);
+            $query->bindValue(":pass",           $password);
+            $query->bindValue(":pfp",            $image);
+            $query->bindValue(":nom",            $name);
+            $query->bindValue(":prenom",         $surname);
+            $query->execute();
+
+            $justCreatedID = $this->dbConnect->lastInsertId("utilisateur");
+
+            if(isset($postData["promos"])) {
+                $promoCodes = $postData["promos"];
+                foreach($promoCodes as $promo){
+                    $promoID = $this->getPromoCodeFromName($promo);
+                    $this->createTuteurPromo($justCreatedID, $promoID[0]["id_promo"]);
+                }
+            }
+
+            return $justCreatedID;
+        } catch (Exception $exception) {
+            echo $requete;
             echo '<h1>'.$exception->getMessage().'</h1>';
             echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
             die; // On arrête le code PHP

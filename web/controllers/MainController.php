@@ -168,7 +168,7 @@ class MainController extends Render{
             $data_wishlist = [
                 "page_description" => "Wishlist offre stage",
                 "page_title" => "Wishlist",
-                "page_css" => ["wishlist.css"],
+                "page_css" => ["page-recherche.css"],
                 "view" => "views/logged/wishlist.php",
                 "template" => "layouts/base.php",
             ];
@@ -193,6 +193,7 @@ class MainController extends Render{
 
     public function addWishlist($postData){
         $this->mainManager->setFavorite($postData["id"]);
+        $this->mainManager->getFavorite($postData["id"], true);
     }
 
     public function getEntrepriseName($curSearch){

@@ -42,11 +42,12 @@
 						FILTRER
 					</button>
 				</div>
+				'.($_SESSION["permissionLevel"] > 1 ? '
 				<div class="page-recherche-container3">
 					<button type="submit" name="creation" class="page-recherche-button button">
 						CREER
 					</button>
-				</div>
+				</div>': '').'
 			</form>
 				';
 			} else if ($datas["searchType"] == "entreprise") {
@@ -124,7 +125,7 @@
 							$desc = $stageData["description"];
 							$allStageIDs[$glIndex] = $stageContainer["id_stage"];
 							if(strlen($desc) > 300){
-								$desc = trim(substr($desc,0,300))." ...";
+								$desc = explode("$$;;$$", wordwrap($desc, 300, "$$;;$$"))[0]."...";
 							}
 							$jsonDesc = json_encode($desc);
 		
@@ -148,6 +149,8 @@
 								</div>';
 								}
 							}
+
+							$isFavorite = $controller->mainManager->getFavorite($stageContainer["id_stage"]);
 							
 							echo '
 							<div class="offre-stage-blog-post-card" action="" method="post">
@@ -179,7 +182,9 @@
 											Lire plus -&gt;
 										</a>
 										<button type="button" id="fav_'.$stageContainer["id_stage"].'" class="offre-stage-button button">
-											<img alt="image" src="public/bookmark-svgrepo-com.svg" class="offre-stage-image" />
+											<span class="'.(isset($isFavorite) && $isFavorite ? 'material-symbols-outlined material-symbols-outlined-fill' : 'material-symbols-outlined').'">
+												bookmark
+											</span>
 										</button>
 									</div>
 								</div>
@@ -207,17 +212,14 @@
 		
 							for(let x = 0; x < '.$allStageIDsStr.'.length; x++) {
 								cards.push(document.getElementById("stageCard_"+'.$allStageIDsStr.'[x]));
-								console.log("stageCard_"+'.$allStageIDsStr.'[x]);
 								favs.push(document.getElementById("fav_"+'.$allStageIDsStr.'[x]));
 		
 								favs.forEach(function(element){
 									element.onmouseover = function(){
 										isHoveringFavorite = true;
-										//console.log(isHoveringFavorite);
 									}
 									element.onmouseout = function(){
 										isHoveringFavorite = false;
-										//console.log(isHoveringFavorite);
 									}
 								});
 		
@@ -236,14 +238,26 @@
 										var parts = element.id.split("_");
 										var result = parts.pop();
 										if (isHoveringFavorite && whichHovering == Number(result)){
-											if('.$perms.' == 1 || '.$perms.' == 2){
-												let formData = new FormData();
-												formData.append("id", result);
-												fetch("function--addWishlist", {method: "POST", body: formData})
-												.then(res => res.text())
-												.then(txt => console.log(txt))
-												.catch(err => console.error(err));
-											}
+											'.($perms > 0 && $perms < 3 ? '
+											$.ajax({
+												url:"function--addWishlist",
+												type: \'post\',
+												dataType: "json",
+												data: {
+													id: result
+												},
+												success: function(data){
+													isNewWishlist = (data[0]["wish_listed"] == 1);
+													if(isNewWishlist){
+														$("#fav_"+whichHovering+" > span").addClass("material-symbols-outlined-fill");
+													} else {
+														$("#fav_"+whichHovering+" > span").removeClass("material-symbols-outlined-fill");
+													}
+												},
+												error: function(jqXHR, textStatus, errorThrown){
+													console.log(errorThrown);
+												}
+											});' : '').'
 											return false;
 										} else {
 											window.location.href = "affiche&offreID="+result;
@@ -327,6 +341,21 @@
 						';
 						foreach($datas["tuteurs"] as &$userContainer){
 							$userData = $controller->mainManager->getUserFromID($userContainer["id_utilisateur"])[0];
+							$HTMLPromoList = "";
+							$HTMLCentreList = "";
+							$promos = $controller->mainManager->getAllTuteurPromos($userContainer["id_utilisateur"]);
+							foreach ($promos as $promo){
+							  $HTMLPromoList .= '
+							  <li class="visu-etudiant-li list-item">
+								<span>'.$promo["promo"].', '.$promo["displayName"].', '.$promo["centre"].'</span>
+							  </li>
+							  ';
+						
+							  if(strstr($HTMLCentreList, $promo["centre"]) === false){
+								$HTMLCentreList .= $promo["centre"].', ';
+							  }
+							}
+							$HTMLCentreList = substr($HTMLCentreList, 0, -2);
 							
 							echo '
 							<div onclick="window.location=\'affiche&tuteurID='.$userContainer["id_utilisateur"].'\';" class="etudiant-card-blog-post-card">
@@ -338,7 +367,7 @@
 									/>
 									<div class="etudiant-card-container1">
 										<h1><span>'.strtoupper($userData["name"]).' '.$userData["surname"].'</span></h1>
-										<span class="etudiant-card-text1"><span>'.$userData["centre"].'</span></span>
+										<span class="etudiant-card-text1"><span>'.$HTMLCentreList.'</span></span>
 									</div>
 								</div>
 							</div>
