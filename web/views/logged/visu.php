@@ -154,6 +154,7 @@
       </script>
     ';
   } else if ($isUser){
+    if($_SESSION["permissionLevel"] <= 1) header("Location: index");
     $controller = new MainController();
     $userData = $controller->mainManager->getUserFromID($_GET['userID'])[0];
     echo '
@@ -229,6 +230,12 @@
         <div class="visu-offre-stage-container1">
           <div class="visu-offre-stage-container2">
             <div class="visu-offre-stage-container3">
+              <img
+                alt="Logo de '.$entrepriseData["nom"].'"
+                src="'.URL.'public/'.$entrepriseData["logo"].'"
+                class="visu-etudiant-image"
+                style="margin-bottom:2rem;"
+              />
               <ul class="visu-offre-stage-ul list">
                 <li class="visu-offre-stage-li secteur">
                   <span class="visu-offre-stage-text"> Secteur d\'activité :</span>
@@ -306,6 +313,7 @@
       </script>
     ';
   } else if ($isTuteur){
+    if($_SESSION["permissionLevel"] <= 2) header("Location: index");
     $controller = new MainController();
     $userData = $controller->mainManager->getUserFromID($_GET['tuteurID'])[0];
 

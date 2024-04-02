@@ -105,6 +105,19 @@ class MainManager {
         }
     }
 
+    public function get3LatestStages():array{
+        try {
+            $requete = "SELECT id_stage FROM stage ORDER BY date_offre DESC LIMIT 3";
+            $query = $this->dbConnect->prepare($requete);
+            $query->execute();
+            return $query->fetchAll();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
     public function looseGetRechercheStage($searchValue, $filters):array{
         try {
             $requete = "SELECT id_stage, MATCH(
@@ -276,7 +289,7 @@ class MainManager {
             $query = $this->dbConnect->prepare(
                 "SELECT entreprise.nom, entreprise.mail, entreprise.addresse_siege, entreprise.description, entreprise.logo, secteur_activite.secteur
                 FROM entreprise JOIN secteur_activite ON entreprise.secteur_d_activite = secteur_activite.id_secteur
-                WHERE :id = id_entreprise"
+                WHERE id_entreprise = :id"
             );
             $query->bindValue(":id", $id);
             $query->execute();
@@ -590,20 +603,34 @@ class MainManager {
 
     public function createEntreprise($data){
         try{
+            $addresse_siege = $data["addresse_siege"];
+            $mail = $data["mail"];
+            $nom = $data["nom"];
+            $desc = $data["desc"];
+            if(isset($data["logo"])) $logo = $data["logo"];
+            $secteur = $this->getSecteurIDFromName($data["secteur"]);
+            if(sizeof($secteur) <= 0){
+                return [false, $data["secteur"]];
+            }
+
             $requete = "INSERT INTO `entreprise`(
                 `nom`, `secteur_d_activite`, 
-                `mail`, `addresse_siege`, `description`)
+                `mail`, `addresse_siege`, `description`, `logo`)
             VALUES (
-                ':nom',':secteur_d_activite',
-                ':mail',':addresse_siege',':description')
+                :nom,:secteur_d_activite,
+                :mail,:addresse_siege,:description, :logo)
             ";
             $query = $this->dbConnect->prepare($requete);
-            $query->bindValue(":name",                 $data["name"]);
-            $query->bindValue(":secteur_d_activite",   $data["secteur_d_activite"]);
-            $query->bindValue(":mail",                 $data["mail"]);
-            $query->bindValue(":addresse_siege",       $data["addresse_siege"]);
-            $query->bindValue(":description",          $data["description"]);
+            $query->bindValue(":addresse_siege",        $addresse_siege);
+            $query->bindValue(":mail",                  $mail);
+            $query->bindValue(":nom",                   $nom);
+            $query->bindValue(":description",           $desc);
+            $query->bindValue(":logo",                  isset($logo) ? $logo : "");
+            $query->bindValue(":secteur_d_activite",    $secteur[0]["id_secteur"]);
             $query->execute();
+            
+            $justCreatedID = $this->dbConnect->lastInsertId("entreprise");
+            return $justCreatedID;
         } catch (Exception $exception) {
             echo '<h1>'.$exception->getMessage().'</h1>';
             echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
@@ -971,6 +998,68 @@ class MainManager {
             die; // On arrête le code PHP
         }
     }
+    public function updateEntreprise(int $id, $postData){
+        try { 
+            $addresse_siege = $postData["addresse_siege"];
+            $mail = $postData["mail"];
+            $nom = $postData["nom"];
+            $desc = $postData["desc"];
+            if(isset($postData["logo"])) $logo = $postData["logo"];
+            $secteur = $this->getSecteurIDFromName($postData["secteur"]);
+            if(sizeof($secteur) <= 0){
+                return false;
+            }
+
+            $requete ="UPDATE `entreprise` SET 
+                `nom`= :nom,
+                `mail`= :mail,
+                `description`= :desc,
+                `addresse_siege`= :addresse_siege,
+                `nom`= :nom,
+                `secteur_d_activite`= :secteur,
+                `logo`= :logo
+                WHERE (id_entreprise = :id) LIMIT 1";
+
+            $query = $this->dbConnect->prepare($requete);
+            $query->bindValue(":id",             $id);
+            $query->bindValue(":addresse_siege", $addresse_siege);
+            $query->bindValue(":desc",           $desc);
+            $query->bindValue(":mail",           $mail);
+            $query->bindValue(":nom",            $nom);
+            $query->bindValue(":secteur",        $secteur[0]["id_secteur"]);
+            $query->bindValue(":logo",           isset($logo) ? $logo : "");
+            $query->execute();
+            return true;
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
+    public function getSecteurIDFromName($name){
+        try{
+            $requete = "SELECT id_secteur
+            FROM secteur_activite 
+            WHERE secteur = :name
+            LIMIT 1";
+
+            $query = $this->dbConnect->prepare($requete);
+            $query->bindValue(":name", $name);
+            $query->execute();
+            $id = $query->fetchAll();
+            if(isset($id)){ //secteur trouvé
+                return $id;
+            } else { //secteur non-trouvé
+                return false;
+            }
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die;
+        }
+    }
+
 
     public function getStagesFromEntrepriseID(int $id){
         try {
@@ -1034,6 +1123,46 @@ class MainManager {
             return $justCreatedID;
         } catch (Exception $exception) {
             echo $requete;
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
+    public function getSecteurActivite($curSearch){
+        try{
+            $requete = "SELECT secteur as value
+            FROM secteur_activite 
+            WHERE (MATCH (secteur) AGAINST (:relSearch IN BOOLEAN MODE) > 0) 
+            ORDER BY MATCH (secteur) AGAINST (:relSearch IN BOOLEAN MODE) DESC";
+            
+            $query = $this->dbConnect->prepare($requete);
+            $query->bindValue(":relSearch", '*'.$curSearch.'*');
+            $query->execute();
+
+            $data = array();
+            $data = $query->fetchAll(PDO::FETCH_ASSOC);
+            echo json_encode($data);
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
+    public function createSecteurActivite($name){
+        try{
+            $requete = "INSERT INTO `secteur_activite`(
+                    `secteur`
+                ) 
+                VALUES (
+                    :name
+                )";
+            
+            $query = $this->dbConnect->prepare($requete);
+            $query->bindValue(":name", $name);
+            $query->execute();
+        } catch (Exception $exception) {
             echo '<h1>'.$exception->getMessage().'</h1>';
             echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
             die; // On arrête le code PHP

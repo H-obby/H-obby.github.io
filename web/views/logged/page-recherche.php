@@ -51,29 +51,44 @@
 			</form>
 				';
 			} else if ($datas["searchType"] == "entreprise") {
-
-			} else if ($datas["searchType"] == "utilisateur") {
-				echo '
-			<form class="page-recherche-form" action="" method="post">
-				<input type="hidden" value="'.htmlentities($datas["searchType"]).'" name="searchType" />
-				<input type="hidden" value="'.htmlentities($datas["searchValue"]).'" name="searchValue" />
-				<div class="page-recherche-container3">
-					<button type="submit" name="creation" class="page-recherche-button button">
-						CREER
-					</button>
-				</div>
-			</form>
-				';
-			} else if ($datas["searchType"] == "tuteur"){
 				echo '
 					<form class="page-recherche-form" action="" method="post">
 						<input type="hidden" value="'.htmlentities($datas["searchType"]).'" name="searchType" />
 						<input type="hidden" value="'.htmlentities($datas["searchValue"]).'" name="searchValue" />
+						'.($_SESSION["permissionLevel"] > 1 ? '
 						<div class="page-recherche-container3">
 							<button type="submit" name="creation" class="page-recherche-button button">
 								CREER
 							</button>
-						</div>
+						</div>': '').'
+					</form>
+				';
+			} else if ($datas["searchType"] == "utilisateur") {
+				if($_SESSION["permissionLevel"] <= 1) header("Location: index");
+				echo '
+			<form class="page-recherche-form" action="" method="post">
+				<input type="hidden" value="'.htmlentities($datas["searchType"]).'" name="searchType" />
+				<input type="hidden" value="'.htmlentities($datas["searchValue"]).'" name="searchValue" />
+				'.($_SESSION["permissionLevel"] > 1 ? '
+				<div class="page-recherche-container3">
+					<button type="submit" name="creation" class="page-recherche-button button">
+						CREER
+					</button>
+				</div>': '').'
+			</form>
+				';
+			} else if ($datas["searchType"] == "tuteur"){
+				if($_SESSION["permissionLevel"] <= 2) header("Location: index");
+				echo '
+					<form class="page-recherche-form" action="" method="post">
+						<input type="hidden" value="'.htmlentities($datas["searchType"]).'" name="searchType" />
+						<input type="hidden" value="'.htmlentities($datas["searchValue"]).'" name="searchValue" />
+						'.($_SESSION["permissionLevel"] > 2 ? '
+						<div class="page-recherche-container3">
+							<button type="submit" name="creation" class="page-recherche-button button">
+								CREER
+							</button>
+						</div>': '').'
 					</form>
 				';
 			}
@@ -298,7 +313,6 @@
 					} else { //nothing found
 						echo "Nous n'avons pas trouvé d'entreprises correspondantes à cette recherche...";
 					}
-					
 				} else if ($datas["searchType"] == "utilisateur"){
 					if(sizeof($datas["users"]) > 0){
 						echo '

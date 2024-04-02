@@ -227,4 +227,11 @@ class MainController extends Render{
     public function ajaxCreationCentre($postData){
         $this->mainManager->createPromo($postData);
     }
+    public function ajaxGetSecteur($curSearch){
+        $this->mainManager->getSecteurActivite($curSearch["search"]);
+    }
+
+    public function ajaxCreateSecteur($postData){
+        $this->mainManager->createSecteurActivite($postData["secteur"]);
+    }
 }

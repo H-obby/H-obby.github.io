@@ -1,6 +1,7 @@
 <?php
 $controller = new MainController();
 if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage")){
+    if($_SESSION["permissionLevel"] <= 1) header("Location: index");
     $isCreation = !isset($_GET["stage_id"]);
 
     if(!$isCreation){
@@ -230,7 +231,178 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
             }
         }
     }
+} else if (isset($_GET['entreprise_id']) ||  (isset($_GET["type"]) && $_GET["type"] == "entreprise")){
+    if($_SESSION["permissionLevel"] <= 2) header("Location: index");
+    $isCreation = !isset($_GET["entreprise_id"]);
+
+    if(!$isCreation){
+        $entrepriseData = $controller->mainManager->getEntrepriseFromID($_GET["entreprise_id"])[0];
+    } else {
+        $secteur = "";
+        $addresse_siege = "";
+        $mail = "";
+        $nom = "";
+        $desc = "";
+        $logo = "";
+    }
+    
+    if(isset($_POST["secteur"])) $secteur = $_POST["secteur"];
+    if(isset($_POST["addresse_siege"])) $adresse_siege = $_POST["addresse_siege"];
+    if(isset($_POST["mail"])) $contact = $_POST["mail"];
+    if(isset($_POST["nom"])) $nom = $_POST["nom"];
+    if(isset($_POST["desc"])) $desc = $_POST["desc"];
+    if(isset($_POST["logo"])) $logo = $_POST["logo"];
+    
+    echo '
+    <form action="" method="POST" class="modif-offre-stage-main">
+        <div class="modif-offre-stage-container1">
+            <div class="modif-offre-stage-form">
+                <input type="text" id="autocomplete" name="secteur" required
+                value="'.(isset($secteur) ? $secteur : $entrepriseData["secteur"]).'" 
+                placeholder="Secteur d\'activité de l\'entreprise" class="modif-offre-stage-nb-place input"/>
+                <script>
+                    $("#autocomplete").autocomplete({
+                        source: function(request, response) { 
+                            $.ajax({
+                                url:"function--ajaxGetSecteur",
+                                type: \'post\',
+                                dataType: "json",
+                                data: {
+                                    search: request.term
+                                },
+                                success: function(data){
+                                    console.log(data);
+                                    response(data);
+                                },
+                                error: function(jqXHR, textStatus, errorThrown){
+                                    console.log(errorThrown);
+                                }
+                            });
+                        },
+                        select: function (event, ui) {
+                            $(\'#autocomplete\').val(ui.item.value); // display the selected text
+                        },
+                    });
+                </script>
+                
+                <input type="text" id="addr" name="addresse_siege" required
+                value="'.(isset($addresse_siege) ? $addresse_siege : $entrepriseData["addresse_siege"]).'" 
+                placeholder="Adresse du siège de l\'entreprise" class="modif-offre-stage-nb-place input"/>
+                
+                <input type="text" id="mail" name="mail" required
+                value="'.(isset($mail) ? $mail : $entrepriseData["mail"]).'" 
+                placeholder="Adresse mail de l\'entreprise" class="modif-offre-stage-nb-place input"/>
+
+                <img alt="Logo de l\'entreprise" id="img" src="'.URL.'public/'.(isset($logo) ? $logo : $entrepriseData["logo"]).'" class="modif-etudiant-image" />
+                <button type="file" id="modifierImage" name="logo" accept="image/*" class="modif-etudiant-button button">Modifier le logo</button>
+            </div>
+            <div class="modif-offre-stage-container2">
+                <button type="submit" name="poster" class="modif-offre-stage-button button">POSTER</button>
+            </div>
+        </div>
+            <div class="modif-offre-stage-main-text-content">
+                <input type="text" name="nom" id="name"
+                value="'.(isset($nom) ? $nom : $entrepriseData["nom"]).'" 
+                placeholder="Intitulé du Stage" class="modif-offre-stage-intitul-stage input" required/>
+
+                <textarea placeholder="Description du Stage" name="desc" id="desc"
+                class="modif-offre-stage-textarea textarea" 
+                required>'.(isset($desc) ? $desc : $entrepriseData["description"]).'
+                </textarea>
+            </div>
+        </div>
+    </form>
+    ';
+
+    if(isset($_POST["poster"])){
+        //do the luigi
+        if(!$isCreation){
+            $answer = $controller->mainManager->updateEntreprise($_GET["entreprise_id"], $_POST);
+            if(!$answer){  
+                echo '
+                <script>
+                    let txt;
+                    if(confirm("Le secteur d\'activité &quot;'.$_POST["secteur"].'&quot; n\'existe pas dans notre base de donnée... \
+                    \nAppuyez sur OK pour le rajouter.")){
+                        $.ajax({type: "POST", url: "function--ajaxCreationSecteur",
+                            data: {
+                                secteur: '.$_POST["secteur"].'
+                            },
+                            success: function(){
+
+                            },
+                            error: function(jqXHR, textStatus, errorThrown){
+                                console.log(errorThrown);
+                            }
+                        });
+                    } else {
+                    }
+                </script>
+                ';
+            } else {
+                echo '
+                <script>
+                    $.ajax({type: "POST", url: "function--ajaxHandleAlert", 
+                        data: {
+                            message: "La modification a correctement été effectuée!",
+                            type: "success"
+                        },
+                        success: function(){
+                            window.location.replace("affiche&entrepriseID='.$_GET["entreprise_id"].'&t='.time().'");
+                        },
+                        error: function(jqXHR, textStatus, errorThrown){
+                            console.log(errorThrown);
+                        }
+                    });
+                </script>
+                ';
+            }
+        } else {
+            $answer = $controller->mainManager->createEntreprise($_POST);
+            if(!is_array($answer)){
+                echo '
+                <script>
+                    $.ajax({type: "POST", url: "function--ajaxHandleAlert", 
+                        data: {
+                            message: "La création a correctement été effectuée!",
+                            type: "success"
+                        },
+                        success: function(){
+                            window.location.replace("affiche&entrepriseID='.$answer.'&t='.time().'");
+                        },
+                        error: function(jqXHR, textStatus, errorThrown){
+                            console.log(errorThrown);
+                        }
+                    });
+                </script>
+                ';
+            } else {
+                print_r($answer);
+                echo '
+                <script>
+                let txt;
+                    if(confirm("Le secteur d\'activité \"'.$answer[1].'\" n\'existe pas dans notre base de donnée... \
+                    \nAppuyez sur OK pour le rajouter.")){
+                        $.ajax({type: "POST", url: "function--ajaxCreateSecteur",
+                            data: {
+                                secteur: "'.$answer[1].'"
+                            },
+                            success: function(){
+
+                            },
+                            error: function(jqXHR, textStatus, errorThrown){
+                                console.log(errorThrown);
+                            }
+                        });
+                    } else {
+                    }
+                </script>
+                ';
+            }
+        }
+    }
 } else if (isset($_GET['user_id']) ||  (isset($_GET["type"]) && $_GET["type"] == "utilisateur")){
+    if($_SESSION["permissionLevel"] <= 2) header("Location: index");
     $isCreation = !isset($_GET["user_id"]);
     
     if(!$isCreation){
@@ -454,6 +626,7 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
         }
     }
 } else if (isset($_GET['tuteur_id']) ||  (isset($_GET["type"]) && $_GET["type"] == "tuteur")){
+    if($_SESSION["permissionLevel"] <= 3) header("Location: index");
     $isCreation = !isset($_GET["tuteur_id"]);
     
     if(!$isCreation){
