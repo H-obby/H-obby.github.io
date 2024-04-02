@@ -26,17 +26,18 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
         $titre = "";
         $desc = "";
     }
+    
 
     echo '
     
     <form action="" method="POST" class="modif-offre-stage-main">
         <div class="modif-offre-stage-container1">
             <div class="modif-offre-stage-form">
-                <input type="text" name="duree" pattern="[a-z0-9\s, \'-]+"                      value="'.(isset($duree) ? $duree : $stageData["duree"]).'" placeholder="Durée" class="modif-offre-stage-dure input"/> 
-                <input type="text" name="promo_concernees" pattern="[a-zA-Z0-9\s,\'-]+"  value="'.(isset($promo_concernees) ? $promo_concernees : $stageData["promo_concernees"]).'" placeholder="Années concernées" class="modif-offre-stage-annes-concernes input" />
-                <input type="text" name="competences" pattern="[a-zA-Z\s,\'-]+"          value="'.(isset($competences) ? $competences : $stageData["competences"]).'" placeholder="Compétences" class="modif-offre-stage-comptences input" />
+                <input type="text" name="duree" pattern="^[0-9] mois$"                   value="'.(isset($duree) ? $duree : $stageData["duree"]).'" placeholder="Durée" class="modif-offre-stage-dure input"/> 
+                <input type="text" name="promo_concernees" pattern="^bac\+[0-9]$"        value="'.(isset($promo_concernees) ? $promo_concernees : $stageData["promo_concernees"]).'" placeholder="Années concernées" class="modif-offre-stage-annes-concernes input" />
+                <input type="text" name="competences"                                    value="'.(isset($competences) ? $competences : $stageData["competences"]).'" placeholder="Compétences" class="modif-offre-stage-comptences input" />
                 <input type="text" name="remuneration" pattern="[0-9]+(?:\.[0-9]{1,2})?" value="'.(isset($remuneration) ? $remuneration : $stageData["remuneration"]).'" placeholder="Rémunération" class="modif-offre-stage-remun input" />
-                <input type="text" name="adresse" pattern="[a-zA-Z0-9\s,\'-]+"           value="'.(isset($adresse) ? $adresse : $stageData["adresse"]).'" placeholder="Adresse" autocomplete="false" class="modif-offre-stage-adresse input" />
+                <input type="text" name="adresse"                                        value="'.(isset($adresse) ? $adresse : $stageData["adresse"]).'" placeholder="Adresse" autocomplete="false" class="modif-offre-stage-adresse input" />
                 <input type="text" name="places_disponibles" pattern="[0-9]+"            value="'.(isset($places_disponibles) ? $places_disponibles : $stageData["places_disponibles"]).'" placeholder="Nombre de places disponibles" class="modif-offre-stage-nb-place input" />
             </div>
             <div class="modif-offre-stage-container2">
@@ -238,13 +239,13 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
         <div class="modif-etudiant-main-text-content">
             <div class="modif-etudiant-container2">
                 <input name="name" type="text" placeholder="Nom de l\'étudiant"
-                    class="modif-etudiant-nom-etudiant input" value="'.(isset($name) ? $name : $userData["name"]).'"/>
+                    class="modif-etudiant-nom-etudiant input" pattern="[a-zA-Z\s,\',]+" value="'.(isset($name) ? $name : $userData["name"]).'"/>
                 <input name="surname" type="text" placeholder="Prénom de l\'étudiant"
-                    class="modif-etudiant-prenom-etudiant input" value="'.(isset($surname) ? $surname : $userData["surname"]).'"/>
+                    class="modif-etudiant-prenom-etudiant input" pattern="[a-zA-Z\s,\',]+" value="'.(isset($surname) ? $surname : $userData["surname"]).'"/>
             </div>
             <div class="modif-etudiant-form">
-                <input type="text" name="promo" id="promo" placeholder="Promotion" class="modif-etudiant-promo input" value="'.(isset($promoCode) ? $promoCode : $userData["promo"]).'"/>
-                <input type="text" name="centre" id="centre" placeholder="Centre" class="modif-etudiant-centre input" value="'.(isset($centre) ? $centre : $userData["centre"]).'"/>
+                <input type="text" name="promo" id="promo" placeholder="Promotion" class="modif-etudiant-promo input" pattern="[a-zA-Z0-9\s,\',]+" value="'.(isset($promoCode) ? $promoCode : $userData["promo"]).'"/>
+                <input type="text" name="centre" id="centre" placeholder="Centre" class="modif-etudiant-centre input" pattern="[a-zA-Z\s,\',]+" value="'.(isset($centre) ? $centre : $userData["centre"]).'"/>
                 <script>
                     $("#promo").autocomplete({
                         source: function(request, response) { 
@@ -276,7 +277,7 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
                     }" : "").'
                 </script>
                 <input type="text" name="login" placeholder="Email" class="modif-etudiant-promo input" value="'.(isset($login) ? $login : $userData["login"]).'"/>
-                <input type="password" name="pass" id="passInput" placeholder="Mot de Passe" class="modif-etudiant-promo input" value="" '.($isCreation ? "" : "style=\"display:none;\"").'/>
+                <input type="password" name="pass" id="passInput" placeholder="Mot de Passe" class="modif-etudiant-promo input" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" value="" '.($isCreation ? "" : "style=\"display:none;\"").'/>
                 <button type="button" id="changePass" name="passwordChange" onclick="changePassword()" class="modif-etudiant-button1 button" '.($isCreation ? "style=\"display:none;\"" : "style=\"cursor:pointer;\"").'>CHANGER LE MOT DE PASSE</button>
             </div>
         </div>
@@ -487,9 +488,9 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
         <div class="modif-etudiant-main-text-content">
             <div class="modif-etudiant-container2">
                 <input name="name" type="text" placeholder="Nom du tuteur"
-                    class="modif-etudiant-nom-etudiant input" value="'.(isset($name) ? $name : $userData["name"]).'"/>
+                    class="modif-etudiant-nom-etudiant input" pattern="[a-zA-Z\s,\',]+" value="'.(isset($name) ? $name : $userData["name"]).'"/>
                 <input name="surname" type="text" placeholder="Prénom du tuteur"
-                    class="modif-etudiant-prenom-etudiant input" value="'.(isset($surname) ? $surname : $userData["surname"]).'"/>
+                    class="modif-etudiant-prenom-etudiant input" pattern="[a-zA-Z\s,\',]+" value="'.(isset($surname) ? $surname : $userData["surname"]).'"/>
             </div>
             <div id="allPromos" class="modif-etudiant-form">
             '.$allPromos.'
@@ -501,7 +502,7 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
                     }" : "").'
                 </script>
                 <input type="text" name="login" placeholder="Email" class="modif-etudiant-promo input" value="'.(isset($login) ? $login : $userData["login"]).'"/>
-                <input type="password" name="pass" id="passInput" placeholder="Mot de Passe" class="modif-etudiant-promo input" value="" '.($isCreation ? "" : "style=\"display:none;\"").'/>
+                <input type="password" name="pass" id="passInput" placeholder="Mot de Passe" class="modif-etudiant-promo input" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" value="" '.($isCreation ? "" : "style=\"display:none;\"").'/>
                 <button type="button" id="changePass" name="passwordChange" onclick="changePassword()" class="modif-etudiant-button1 button" '.($isCreation ? "style=\"display:none;\"" : "style=\"cursor:pointer;\"").'>CHANGER LE MOT DE PASSE</button>
             </div>
         </div>
