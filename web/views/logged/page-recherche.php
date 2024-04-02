@@ -129,10 +129,10 @@
 				$glIndex = 0;
 
 				if($datas["searchType"] == "stage"){
-					if(sizeof($datas["stages"]) > 0){
+					if($datas["totalMatching"] > 0){
 						echo '
 						<span class="number-indicator">
-							Nous avons trouvés '.sizeof($datas["stages"]).' stages pour vous!
+							Nous avons trouvés '.$datas["totalMatching"].' stages pour vous!
 						</span>
 						';
 						foreach($datas["stages"] as &$stageContainer){
@@ -281,14 +281,16 @@
 								});
 							}
 						</script>';
+
+						require_once("layouts/pagination.php");
 					} else { //nothing found
 						echo "Nous n'avons pas trouvé de stages pour vous...";
 					}
 				} else if ($datas["searchType"] == "entreprise") {
-					if(sizeof($datas["entreprises"]) > 0){
+					if($datas["totalMatching"] > 0){
 						echo '
 						<span class="number-indicator">
-							Nous avons trouvés '.sizeof($datas["entreprises"]).' entreprises correspondantes!
+							Nous avons trouvés '.$datas["totalMatching"].' entreprises correspondantes!
 						</span>
 						';
 						foreach($datas["entreprises"] as &$entrepriseContainer){
@@ -310,14 +312,15 @@
 							</div>
 							';
 						}
+						require_once("layouts/pagination.php");
 					} else { //nothing found
 						echo "Nous n'avons pas trouvé d'entreprises correspondantes à cette recherche...";
 					}
 				} else if ($datas["searchType"] == "utilisateur"){
-					if(sizeof($datas["users"]) > 0){
+					if($datas["totalMatching"] > 0){
 						echo '
 						<span class="number-indicator">
-							Nous avons trouvés '.sizeof($datas["users"]).' utilisateurs correspondants!
+							Nous avons trouvés '.$datas["totalMatching"].' utilisateurs correspondants!
 						</span>
 						';
 						foreach($datas["users"] as &$userContainer){
@@ -343,14 +346,15 @@
 							</div>
 							';
 						}
+						require_once("layouts/pagination.php");
 					} else { //nothing found
 						echo "Nous n'avons pas trouvé d'utilisateurs correspondants à cette recherche...";
 					}
 				} else if ($datas["searchType"] == "tuteur"){
-					if(sizeof($datas["tuteurs"]) > 0){
+					if($datas["totalMatching"] > 0){
 						echo '
 						<span class="number-indicator">
-							Nous avons trouvés '.sizeof($datas["tuteurs"]).' tuteurs correspondants!
+							Nous avons trouvés '.$datas["totalMatching"].' tuteurs correspondants!
 						</span>
 						';
 						foreach($datas["tuteurs"] as &$userContainer){
@@ -387,6 +391,7 @@
 							</div>
 							';
 						}
+						require_once("layouts/pagination.php");
 					} else { //nothing found
 						echo "Nous n'avons pas trouvé de tuteurs correspondants à cette recherche...";
 					}

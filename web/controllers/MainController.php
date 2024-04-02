@@ -53,32 +53,58 @@ class MainController extends Render{
     public function search(){
         if($_SESSION["permissionLevel"] > 0){
             $filter_options = [];
-            if(isset($_POST["creation"])) header("Location: modification&type=".$_POST["searchType"]);
+            if(isset($_POST["creation"])) header("Location: modification&type=".$_GET["type"]);
 
-            switch($_POST["searchType"]){
+            $limit = 5;
+            $offset = isset($_GET["curPage"]) ? ($_GET["curPage"] - 1)*$limit : 0;
+
+            switch($_GET["type"]){
                 case "stage":
                     if(isset($_POST["date"]) && $_POST["date"] != "null") $filter_options["date"] = $_POST["date"];
                     if(isset($_POST["duree"]) && $_POST["duree"] != "null") $filter_options["duree"] = $_POST["duree"];
                     if(isset($_POST["niv"]) && $_POST["niv"] != "null") $filter_options["niv"] = $_POST["niv"];
                     if(isset($_POST["sec"]) && $_POST["sec"] != "null") $filter_options["sec"] = $_POST["sec"];
                     $datas["stages"] = $this->mainManager->looseGetRechercheStage(
-                        $_POST["searchValue"],
+                        $_GET["search"],
+                        $filter_options,
+                        $offset,
+                        $limit
+                    );
+                    $datas["totalMatching"] = $this->mainManager->getTotalMatchingStage(
+                        $_GET["search"],
                         $filter_options
                     );
                 case "entreprise":
                     $datas["entreprises"] = $this->mainManager->looseGetRechercheEntreprise(
-                        $_POST["searchValue"]
+                        $_GET["search"],
+                        $offset,
+                        $limit
+                    );
+                    $datas["totalMatching"] = $this->mainManager->getTotalMatchingEntreprise(
+                        $_GET["search"]
                     );
                     break;
                 case "utilisateur":
                     $datas["users"] = $this->mainManager->looseGetUser(
-                        $_POST["searchValue"],
+                        $_GET["search"],
+                        $filter_options,
+                        $offset,
+                        $limit
+                    );
+                    $datas["totalMatching"] = $this->mainManager->getTotalMatchingUser(
+                        $_GET["search"],
                         $filter_options
                     );
                     break;
                 case "tuteur":
                     $datas["tuteurs"] = $this->mainManager->looseGetTuteur(
-                        $_POST["searchValue"],
+                        $_GET["search"],
+                        $filter_options,
+                        $offset,
+                        $limit
+                    );
+                    $datas["totalMatching"] = $this->mainManager->getTotalMatchingTuteur(
+                        $_GET["search"],
                         $filter_options
                     );
                     break;
@@ -87,15 +113,16 @@ class MainController extends Render{
                     break;
             }
 
-            $datas["searchType"] = $_POST["searchType"];
-            $datas["searchValue"] = $_POST["searchValue"];
+            $datas["searchType"] = $_GET["type"];
+            $datas["searchValue"] = $_GET["search"];
 
             $data_search = [
-                "page_description" => "Recherche de ".$_POST["searchType"],
-                "page_title" => "Recherche ".$_POST["searchType"],
+                "page_description" => "Recherche de ".$_GET["type"],
+                "page_title" => "Recherche ".$_GET["type"],
                 "page_css" => ["page-recherche.css"],
-                "componentCSS" => ["offre-stage.css", "search-bar.css", "logged-in-header.css"],
+                "componentCSS" => ["offre-stage.css", "search-bar.css", "logged-in-header.css", "pagination.css"],
                 "datas" => $datas,
+                "limit" => $limit,
                 "view" => "views/logged/page-recherche.php",
                 "template" => "layouts/base.php",
             ];

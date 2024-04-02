@@ -1,4 +1,5 @@
-<link href="../components/header.css" rel="stylesheet" />
+<?php
+echo '
 <header class="header-header">
 	<a href="index" class="header-logo-name">
 		<img src="../public/practicum2.svg" class="header-image" alt="Logo Practicum" />
@@ -9,3 +10,4 @@
 		</a>
 	</div>
 </header>
+';

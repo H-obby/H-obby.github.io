@@ -27,8 +27,14 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
         data-tag="font"
     />
-        <link href='../components/alert.css' rel='stylesheet' />
+    <link href='../components/alert.css' rel='stylesheet' />
     <link href='../styles/style.css' rel='stylesheet' />
+    <link href='../components/logged-in-header.css' rel='stylesheet' />
+    <link href='../components/footer.css' rel='stylesheet' />
+    <link href='../components/header.css' rel='stylesheet' />
+    <link href='../components/search-bar.css' rel='stylesheet' />
+    <link href='../components/pagination.css' rel='stylesheet' />
+    
     <?php if(!empty($page_css)) : ?>
         <?php foreach($page_css as $fichier_css) : ?>
             <link href="<?= URL ?>styles/<?= $fichier_css ?>" rel='stylesheet' />
@@ -46,12 +52,12 @@
             if($_SESSION["logged"]) {
                 require_once("loggedHeader.php"); 
             } else {
-                require_once("header.html");
+                require_once("header.php");
             }
         
         ?>
         <?= $page_content; ?>
-        <?php require_once("footer.html"); ?>
+        <?php require_once("footer.php"); ?>
     </body>
 
     <?php

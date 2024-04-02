@@ -232,7 +232,7 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
         }
     }
 } else if (isset($_GET['entreprise_id']) ||  (isset($_GET["type"]) && $_GET["type"] == "entreprise")){
-    if($_SESSION["permissionLevel"] <= 2) header("Location: index");
+    if($_SESSION["permissionLevel"] <= 1) header("Location: index");
     $isCreation = !isset($_GET["entreprise_id"]);
 
     if(!$isCreation){
@@ -402,7 +402,7 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
         }
     }
 } else if (isset($_GET['user_id']) ||  (isset($_GET["type"]) && $_GET["type"] == "utilisateur")){
-    if($_SESSION["permissionLevel"] <= 2) header("Location: index");
+    if($_SESSION["permissionLevel"] <= 1) header("Location: index");
     $isCreation = !isset($_GET["user_id"]);
     
     if(!$isCreation){
@@ -626,7 +626,7 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
         }
     }
 } else if (isset($_GET['tuteur_id']) ||  (isset($_GET["type"]) && $_GET["type"] == "tuteur")){
-    if($_SESSION["permissionLevel"] <= 3) header("Location: index");
+    if($_SESSION["permissionLevel"] <= 2) header("Location: index");
     $isCreation = !isset($_GET["tuteur_id"]);
     
     if(!$isCreation){

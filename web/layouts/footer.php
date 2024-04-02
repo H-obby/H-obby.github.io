@@ -1,5 +1,5 @@
-<link href="../components/footer.css" rel="stylesheet" />
-<footer class="footer-footer">
+<?php
+echo '<footer class="footer-footer">
 	<span class="footer-tdr">© 2024 Practicum, Tous droits réservés.</span>
 	<span class="footer-mentions-lgales">
 		<a href="mentions">Mentions légales</a>
@@ -9,4 +9,4 @@
 			<a href="assistance">Assistance</a>
 		</button>
 	</div>
-</footer>
+</footer>';

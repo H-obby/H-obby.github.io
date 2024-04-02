@@ -24,7 +24,8 @@ function humanTiming($time)
 
 $glIndex = 0;
 $curPage = isset($_GET["curPage"]) ? $_GET["curPage"] : 0;
-$wishlists = $controller->mainManager->getAllFavorites(10, $curPage);
+$wishlists = $controller->mainManager->getAllFavorites(10, $curPage*10);
+
 echo '<div class="page-recherche-liste-entreprises" style="max-width:fit-content;">';
 if(sizeof($wishlists) > 0) {
     foreach ($wishlists as &$stageContainer) {

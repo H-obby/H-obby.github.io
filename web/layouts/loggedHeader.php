@@ -1,7 +1,4 @@
 <div>
-	<link href="../components/logged-in-header.css" rel="stylesheet" />
-	<link href="../components/search-bar.css" rel="stylesheet" />
-
 	<header data-role="Header" class="logged-in-header-header">
 		<a href="index" class="logged-in-header-logo-name">
 			<img alt="Logo Practicum" src="../public/practicum2.svg" class="logged-in-header-image" />

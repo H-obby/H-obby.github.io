@@ -118,7 +118,7 @@ class MainManager {
         }
     }
 
-    public function looseGetRechercheStage($searchValue, $filters):array{
+    public function looseGetRechercheStage($searchValue, $filters, $offset, $limit):array{
         try {
             $requete = "SELECT id_stage, MATCH(
                             stage.titre, stage.competences, stage.adresse,
@@ -206,7 +206,118 @@ class MainManager {
                 }
                 $requete .= " ";
             }
-            $requete .= "ORDER BY relevancy_score DESC, date_offre DESC";
+            $requete .= "ORDER BY relevancy_score DESC, date_offre DESC 
+            LIMIT :offset, :limit";
+            
+            $query = $this->dbConnect->prepare($requete);
+            if($searchValue != ""){
+                $splitted = preg_split('/\s+/', $searchValue);
+                foreach ($splitted as $key=>$value){
+                    if(substr($value, 0, 1) != "+") {
+                        $splitted[$key] = "*".$value."*";
+                    }
+                }
+                $query->bindValue(":relSearch", implode(" ", $splitted));
+            } else {
+                $query->bindValue(":relSearch",$searchValue);
+            }
+            $query->bindValue(":search", '%'.$searchValue.'%');
+            $query->bindValue(":offset", $offset, PDO::PARAM_INT);
+            $query->bindValue(":limit",  $limit, PDO::PARAM_INT);
+            $query->execute();
+            return $query->fetchAll();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+    
+    public function getTotalMatchingStage($searchValue, $filters):int{
+        try {
+            $requete = "SELECT COUNT(id_stage) as total
+                        FROM stage JOIN entreprise ON stage.id_entreprise = entreprise.id_entreprise
+                        WHERE 
+                        (
+                        MATCH (stage.titre, stage.competences, stage.adresse,
+                            stage.domaine_activite, stage.description) 
+                        AGAINST (:relSearch IN BOOLEAN MODE) > 0
+                        OR stage.promo_concernees    LIKE :search 
+                        OR stage.duree               LIKE :search 
+                        OR stage.remuneration        LIKE :search 
+                        OR stage.date_offre          LIKE :search
+                        OR entreprise.nom            LIKE :search)";
+            
+			if(isset($filters["duree"])) {
+                switch($filters["duree"]){
+                    case "2m":
+                        $requete .= "AND (duree = '2 mois')";
+                        break;
+                    case "34m":
+                        $requete .= "AND (duree = '3 mois' OR duree = '4 mois')";
+                        break;
+                    case "56m":
+                        $requete .= "AND (duree = '5 mois' OR duree = '6 mois')";
+                        break;
+                    case "6+m":
+                        $requete .= "AND (CAST(LEFT(duree, charindex(' ', duree) - 1)  AS INT) >= 6)";
+                        break;
+                    default:
+                        break;
+                }
+                $requete .= " ";
+            }
+            if(isset($filters["date"])) {
+                switch($filters["date"]){
+                    case "24h":
+                        $requete .= "AND (TIMESTAMPDIFF(HOUR, date_offre, NOW()) < 24)";
+                        break;
+                    case "3dj":
+                        $requete .= "AND (TIMESTAMPDIFF(DAY, date_offre, NOW()) < 3)";
+                        break;
+                    case "7dj":
+                        $requete .= "AND (TIMESTAMPDIFF(DAY, date_offre, NOW()) < 7)";
+                        break;
+                    case "14dj":
+                        $requete .= "AND (TIMESTAMPDIFF(DAY, date_offre, NOW()) < 14)";
+                        break;
+                    default:
+                        break;
+                }
+                $requete .= " ";
+            }
+            if(isset($filters["niv"])) {
+                switch($filters["niv"]){
+                    case "b+2":
+                        $requete .= "AND (promo_concernees = 'bac+2')";
+                        break;
+                    case "b+3":
+                        $requete .= "AND (promo_concernees = 'bac+3')";
+                        break;
+                    case "b+4":
+                        $requete .= "AND (promo_concernees = 'bac+4')";
+                        break;
+                    case "b+5":
+                        $requete .= "AND (promo_concernees = 'bac+5')";
+                        break;
+                    default:
+                        break;
+                }
+                $requete .= " ";
+            }
+            if(isset($filters["sec"])) {
+                switch($filters["sec"]){
+                    case "info":
+                        $requete .= "AND (domaine_activite = 'Informatique')";
+                        break;
+                    case "btp":
+                        $requete .= "AND (domaine_activite = 'BTP')";
+                        break;
+                    default:
+                        break;
+                }
+                $requete .= " ";
+            }
             
             $query = $this->dbConnect->prepare($requete);
             if($searchValue != ""){
@@ -222,7 +333,7 @@ class MainManager {
             }
             $query->bindValue(":search", '%'.$searchValue.'%');
             $query->execute();
-            return $query->fetchAll();
+            return $query->fetchAll()[0]["total"];
         } catch (Exception $exception) {
             echo '<h1>'.$exception->getMessage().'</h1>';
             echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
@@ -230,7 +341,7 @@ class MainManager {
         }
     }
 
-    public function looseGetRechercheEntreprise($searchValue):array{
+    public function looseGetRechercheEntreprise($searchValue, $offset, $limit):array{
         try {
             $requete = "SELECT id_entreprise, MATCH(nom, description) 
                         AGAINST (:relSearch IN BOOLEAN MODE) AS relevancy_score
@@ -240,7 +351,40 @@ class MainManager {
                         AGAINST (:relSearch IN BOOLEAN MODE) > 0
                         OR addresse_siege    LIKE :search)";
 
-            $requete .= "ORDER BY relevancy_score DESC";
+            $requete .= "ORDER BY relevancy_score DESC LIMIT :offset, :limit";
+            
+            $query = $this->dbConnect->prepare($requete);
+            if($searchValue != ""){
+                $splitted = preg_split('/\s+/', $searchValue);
+                foreach ($splitted as $key=>$value){
+                    if(substr($value, 0, 1) != "+") {
+                        $splitted[$key] = "*".$value."*";
+                    }
+                }
+                $query->bindValue(":relSearch", implode(" ", $splitted));
+            } else {
+                $query->bindValue(":relSearch",$searchValue);
+            }
+            $query->bindValue(":search", '%'.$searchValue.'%');
+            $query->bindValue(":offset", $offset, PDO::PARAM_INT);
+            $query->bindValue(":limit",  $limit, PDO::PARAM_INT);
+            $query->execute();
+            return $query->fetchAll();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
+    public function getTotalMatchingEntreprise($searchValue):int{
+        try {
+            $requete = "SELECT COUNT(id_entreprise) as total
+                        FROM entreprise 
+                        WHERE (
+                        MATCH (nom, description) 
+                        AGAINST (:relSearch IN BOOLEAN MODE) > 0
+                        OR addresse_siege    LIKE :search)";
             
             $query = $this->dbConnect->prepare($requete);
             if($searchValue != ""){
@@ -256,7 +400,7 @@ class MainManager {
             }
             $query->bindValue(":search", '%'.$searchValue.'%');
             $query->execute();
-            return $query->fetchAll();
+            return $query->fetchAll()[0]["total"];
         } catch (Exception $exception) {
             echo '<h1>'.$exception->getMessage().'</h1>';
             echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
@@ -638,7 +782,7 @@ class MainManager {
         }
     }
 
-    public function looseGetUser($searchValue, $filters):array{
+    public function looseGetUser($searchValue, $filters, $offset, $limit):array{
         try {
             $requete = "SELECT id_utilisateur ";
             if(isset($searchValue) && $searchValue != "") {
@@ -652,6 +796,38 @@ class MainManager {
                 MATCH (nom, prenom, centre) 
                 AGAINST (:relSearch IN BOOLEAN MODE) > 0) ORDER BY relevancy_score DESC";
             }
+            $requete .= " LIMIT :offset, :limit";
+            
+            $query = $this->dbConnect->prepare($requete);
+            if($searchValue != ""){
+                $splitted = preg_split('/\s+/', $searchValue);
+                foreach ($splitted as $key=>$value){
+                    if(substr($value, 0, 1) != "+") {
+                        $splitted[$key] = "*".$value."*";
+                    }
+                }
+                $query->bindValue(":relSearch", implode(" ", $splitted));
+            } 
+            $query->bindValue(":offset", $offset, PDO::PARAM_INT);
+            $query->bindValue(":limit",  $limit, PDO::PARAM_INT);
+            $query->execute();
+            return $query->fetchAll();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
+    public function getTotalMatchingUser($searchValue, $filters):int{
+        try {
+            $requete = "SELECT COUNT(id_utilisateur) as total ";
+            $requete .= "FROM utilisateur WHERE (type = 1) ";
+            if(isset($searchValue) && $searchValue != "") {
+                $requete .= "AND (
+                MATCH (nom, prenom, centre) 
+                AGAINST (:relSearch IN BOOLEAN MODE) > 0)";
+            }
             
             $query = $this->dbConnect->prepare($requete);
             if($searchValue != ""){
@@ -664,7 +840,7 @@ class MainManager {
                 $query->bindValue(":relSearch", implode(" ", $splitted));
             } 
             $query->execute();
-            return $query->fetchAll();
+            return $query->fetchAll()[0]["total"];
         } catch (Exception $exception) {
             echo '<h1>'.$exception->getMessage().'</h1>';
             echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
@@ -856,7 +1032,7 @@ class MainManager {
         }
     }
     
-    public function looseGetTuteur($searchValue, $filters):array{
+    public function looseGetTuteur($searchValue, $filters, $offset, $limit):array{
         try {
             $requete = "SELECT id_utilisateur ";
             if(isset($searchValue) && $searchValue != "") {
@@ -864,6 +1040,38 @@ class MainManager {
                     nom, prenom, centre) 
                 AGAINST (:relSearch IN BOOLEAN MODE) AS relevancy_score ";
             }
+            $requete .= "FROM utilisateur WHERE (type = 2) ";
+            if(isset($searchValue) && $searchValue != "") {
+                $requete .= "AND (
+                MATCH (nom, prenom, centre) 
+                AGAINST (:relSearch IN BOOLEAN MODE) > 0) ORDER BY relevancy_score DESC";
+            }
+            $requete .= " LIMIT :offset, :limit";
+            
+            $query = $this->dbConnect->prepare($requete);
+            if($searchValue != ""){
+                $splitted = preg_split('/\s+/', $searchValue);
+                foreach ($splitted as $key=>$value){
+                    if(substr($value, 0, 1) != "+") {
+                        $splitted[$key] = "*".$value."*";
+                    }
+                }
+                $query->bindValue(":relSearch", implode(" ", $splitted));
+            } 
+            $query->bindValue(":offset", $offset, PDO::PARAM_INT);
+            $query->bindValue(":limit",  $limit, PDO::PARAM_INT);
+            $query->execute();
+            return $query->fetchAll();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+    
+    public function getTotalMatchingTuteur($searchValue, $filters):int{
+        try {
+            $requete = "SELECT COUNT(id_utilisateur) as total ";
             $requete .= "FROM utilisateur WHERE (type = 2) ";
             if(isset($searchValue) && $searchValue != "") {
                 $requete .= "AND (
@@ -882,7 +1090,7 @@ class MainManager {
                 $query->bindValue(":relSearch", implode(" ", $splitted));
             } 
             $query->execute();
-            return $query->fetchAll();
+            return $query->fetchAll()[0]["total"];
         } catch (Exception $exception) {
             echo '<h1>'.$exception->getMessage().'</h1>';
             echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
