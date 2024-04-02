@@ -201,7 +201,7 @@
     $entrepriseData = $controller->mainManager->getEntrepriseFromID($_GET['entrepriseID'])[0];
     $jsonDesc = json_encode($entrepriseData["description"]);
     echo '
-      <main class="visu-entreprise-main">
+      <main class="visu-offre-stage-main">
         <div class="visu-offre-stage-container1">
           <div class="visu-offre-stage-container2">
             <div class="visu-offre-stage-container3">
@@ -219,18 +219,6 @@
                   <span>'.$entrepriseData["mail"].'</span>
                 </li>
               </ul>
-              <form class="visu-offre-stage-container4">
-                <button type="button" class="visu-offre-stage-button button">
-                  POSTULER
-                </button>
-                <button type="button" class="visu-offre-stage-button1 button">
-                  <img
-                    alt="image"
-                    src="../public/bookmark-svgrepo-com.svg"
-                    class="visu-offre-stage-image"
-                  />
-                </button>
-              </form>
               <form action="modification&entreprise_id='.$_GET["entrepriseID"].'" class="visu-offre-stage-container5">
                 <button type="submit" class="visu-offre-stage-button2 button">
                   MODIFIER
@@ -257,20 +245,38 @@
   
       <script>
         function areYouSure(){
-          if(confirm("Voulez-vous vraiment supprimer le stage \"'.$stageData["titre"].'\" ?")){
-            $.ajax({type: "POST", url: "function--ajaxRemoveStage", 
-              data: {
-                id:'.$_GET["offreID"].'
-              },
-              success: function(){
-                window.location.replace("index&t='.time().'");
-              },
-              error: function(jqXHR, textStatus, errorThrown){
-                console.log(errorThrown);
+          isThereStages = false;
+          $.ajax({type: "POST", url: "function--getStagesFromEntrepriseID", 
+            data: {
+              id:'.$_GET["entrepriseID"].'
+            },
+            success: function(data){
+              if (data != null) {
+                isThereStages = true;
               }
-            });
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+              console.log(errorThrown);
+            }
+          });
+          if (isThereStages == true) {
+            alert("Il y a des stages associés à cette entreprise, veuillez les supprimer avant de supprimer l\'entreprise.");
           } else {
-  
+            if(confirm("Voulez-vous vraiment supprimer l\'entreprise \"'.$entrepriseData["nom"].'\" ?")){
+              $.ajax({type: "POST", url: "function--ajaxRemoveEntreprise", 
+                data: {
+                  id:'.$_GET["entrepriseID"].'
+                },
+                success: function(){
+                  window.location.replace("index&t='.time().'");
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                  console.log(errorThrown);
+                }
+              });
+            } else {
+    
+            }
           }
         }
       </script>

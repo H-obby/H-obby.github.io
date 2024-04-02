@@ -213,6 +213,9 @@ class MainController extends Render{
     public function ajaxRemoveUser($postData){
         $this->mainManager->removeUser($postData["id"]);
     }
+    public function ajaxRemoveEntreprise($postData){
+        $this->mainManager->removeEntreprise($postData["id"]);
+    }
     public function ajaxRemoveTuteur($postData){
         $this->mainManager->removeUser($postData["id"]);
     }

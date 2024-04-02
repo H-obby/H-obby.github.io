@@ -108,19 +108,20 @@ class MainManager {
     public function looseGetRechercheStage($searchValue, $filters):array{
         try {
             $requete = "SELECT id_stage, MATCH(
-                            titre, competences, adresse,
-                            domaine_activite, description) 
+                            stage.titre, stage.competences, stage.adresse,
+                            stage.domaine_activite, stage.description) 
                         AGAINST (:relSearch IN BOOLEAN MODE) AS relevancy_score
-                        FROM stage 
+                        FROM stage JOIN entreprise ON stage.id_entreprise = entreprise.id_entreprise
                         WHERE 
                         (
-                        MATCH (titre, competences, adresse,
-                               domaine_activite, description) 
+                        MATCH (stage.titre, stage.competences, stage.adresse,
+                            stage.domaine_activite, stage.description) 
                         AGAINST (:relSearch IN BOOLEAN MODE) > 0
-                        OR promo_concernees    LIKE :search 
-                        OR duree               LIKE :search 
-                        OR remuneration        LIKE :search 
-                        OR date_offre          LIKE :search)";
+                        OR stage.promo_concernees    LIKE :search 
+                        OR stage.duree               LIKE :search 
+                        OR stage.remuneration        LIKE :search 
+                        OR stage.date_offre          LIKE :search
+                        OR entreprise.nom            LIKE :search)";
             
 			if(isset($filters["duree"])) {
                 switch($filters["duree"]){
@@ -902,6 +903,38 @@ class MainManager {
             $query->bindValue(":id_user", $id_user);
             $query->bindValue(":id_promo", $promoID);
             $query->execute();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
+    public function removeEntreprise($id){
+        try { 
+            $requete ="DELETE FROM entreprise WHERE id_entreprise = :id LIMIT 1";
+            $query = $this->dbConnect->prepare($requete);
+            $query->bindValue(":id", $id);
+            $query->execute();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
+    public function getStagesFromEntrepriseID(int $id){
+        try {
+            $query = $this->dbConnect->prepare(
+                "SELECT stage.titre, stage.competences, stage.adresse, stage.promo_concernees,
+                stage.remuneration, stage.date_offre, stage.places_disponibles, stage.description, stage.duree,
+                stage.domaine_activite as domaine, entreprise.nom as nom_entreprise
+                FROM stage JOIN entreprise ON stage.id_entreprise = entreprise.id_entreprise
+                WHERE :id = id_entrerpise"
+            );
+            $query->bindValue(":id", $id);
+            $query->execute();
+            return $query->fetchAll();
         } catch (Exception $exception) {
             echo '<h1>'.$exception->getMessage().'</h1>';
             echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
