@@ -272,8 +272,8 @@ class MainManager {
     public function getEntrepriseFromID(int $id){
         try {
             $query = $this->dbConnect->prepare(
-                "SELECT nom, secteur_d_activite, mail, addresse_siege, description, logo
-                FROM entreprise
+                "SELECT entreprise.nom, entreprise.mail, entreprise.addresse_siege, entreprise.description, entreprise.logo, secteur_activite.secteur
+                FROM entreprise JOIN secteur_activite ON entreprise.secteur_d_activite = secteur_activite.id_secteur
                 WHERE :id = id_entreprise"
             );
             $query->bindValue(":id", $id);

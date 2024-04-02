@@ -275,7 +275,7 @@
 									/>
 									<div class="entreprise-card-container1">
 										<h1><span>'.$entrepriseData["nom"].'</span></h1>
-										<span class="entreprise-card-text1"><span>'.$entrepriseData["secteur_d_activite"].'</span></span>
+										<span class="entreprise-card-text1"><span>'.$entrepriseData["secteur"].'</span></span>
 									</div>
 								</div>
 							</div>

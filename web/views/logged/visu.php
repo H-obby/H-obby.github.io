@@ -197,7 +197,84 @@
       </main>
     ';
   } else if ($isEntreprise){
-
+    $controller = new MainController();
+    $entrepriseData = $controller->mainManager->getEntrepriseFromID($_GET['entrepriseID'])[0];
+    $jsonDesc = json_encode($entrepriseData["description"]);
+    echo '
+      <main class="visu-entreprise-main">
+        <div class="visu-offre-stage-container1">
+          <div class="visu-offre-stage-container2">
+            <div class="visu-offre-stage-container3">
+              <ul class="visu-offre-stage-ul list">
+                <li class="visu-offre-stage-li secteur">
+                  <span class="visu-offre-stage-text"> Secteur d\'activité :</span>
+                  <span>'.$entrepriseData["secteur"].'</span>
+                </li>
+                <li class="visu-offre-stage-li adresse">
+                  <span class="visu-offre-stage-text"> Adresse du siège :</span>
+                  <span>'.$entrepriseData["addresse_siege"].'</span>
+                </li>
+                <li class="visu-offre-stage-li mail">
+                  <span class="visu-offre-stage-text"> Contact :</span>
+                  <span>'.$entrepriseData["mail"].'</span>
+                </li>
+              </ul>
+              <form class="visu-offre-stage-container4">
+                <button type="button" class="visu-offre-stage-button button">
+                  POSTULER
+                </button>
+                <button type="button" class="visu-offre-stage-button1 button">
+                  <img
+                    alt="image"
+                    src="../public/bookmark-svgrepo-com.svg"
+                    class="visu-offre-stage-image"
+                  />
+                </button>
+              </form>
+              <form action="modification&entreprise_id='.$_GET["entrepriseID"].'" class="visu-offre-stage-container5">
+                <button type="submit" class="visu-offre-stage-button2 button">
+                  MODIFIER
+                </button>
+              </form>
+              <form onsubmit="areYouSure()" action="" class="visu-offre-stage-container5">
+                <button type="submit" class="visu-offre-stage-button2 button">
+                  SUPPRIMER
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="visu-offre-stage-main-text-content">
+          <h1 class="visu-offre-stage-text08">'.$entrepriseData["nom"].'</h1>
+          <span id="desc" class="visu-offre-stage-text09"></span>
+          <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+          <script>
+            document.getElementById("desc").innerHTML =
+            marked.parse('.$jsonDesc.');
+          </script>
+        </div>
+      </main>
+  
+      <script>
+        function areYouSure(){
+          if(confirm("Voulez-vous vraiment supprimer le stage \"'.$stageData["titre"].'\" ?")){
+            $.ajax({type: "POST", url: "function--ajaxRemoveStage", 
+              data: {
+                id:'.$_GET["offreID"].'
+              },
+              success: function(){
+                window.location.replace("index&t='.time().'");
+              },
+              error: function(jqXHR, textStatus, errorThrown){
+                console.log(errorThrown);
+              }
+            });
+          } else {
+  
+          }
+        }
+      </script>
+    ';
   } else if ($isTuteur){
     $controller = new MainController();
     $userData = $controller->mainManager->getUserFromID($_GET['tuteurID'])[0];
