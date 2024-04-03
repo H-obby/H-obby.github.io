@@ -36,8 +36,8 @@
     <link href='../components/header.css' rel='stylesheet' />
     <link href='../components/search-bar.css' rel='stylesheet' />
     <link href='../components/pagination.css' rel='stylesheet' />
-    <link href='../views/manifest.json' rel='manifest' />
-    <link href='../views/c' rel='script' />
+    <link href='..//manifest.json' rel='manifest' />
+    <link href='../c' rel='script' />
     
     <?php if(!empty($page_css)) : ?>
         <?php foreach($page_css as $fichier_css) : ?>

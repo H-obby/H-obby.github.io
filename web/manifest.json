@@ -2,7 +2,7 @@
     "name": "Practicum",
     "short_name": "Practicum",
     "description": "Appli pour rercherche de stage",
-    "start_url": "./index.php",
+    "start_url": "index",
     "display": "standalone",
     "background_color": "#E7F0F2",
     "orientation": "portrait-primary",
@@ -10,27 +10,10 @@
     "icons": [
         {
             "src": "../public/practicum.svg",
-            "sizes": "72x72",
-            "type": "image/svg+xml"
+            "sizes": "any"
         },
         {
-            "src": "../public/practicum.svg",
-            "sizes": "96x96",
-            "type": "image/svg+xml",
-            "purpose": "maskable"
-        },
-        {
-            "src": "../public/practicum.svg",
-            "sizes": "144x144",
-            "type": "image/svg+xml"
-        },
-        {
-            "src": "../public/practicum.svg",
-            "sizes": "152x152",
-            "type": "image/svg+xml"
-        },
-        {
-            "src": "./img/practicum.png",
+            "src": "../img/practicum.png",
             "sizes": "512x512",
             "type": "image/png"
         }
