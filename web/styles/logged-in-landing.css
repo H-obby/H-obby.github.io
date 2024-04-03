@@ -118,6 +118,7 @@
 }
 @media(max-width: 767px) {
   .offre-stage-blog-post-card {
+
     flex-direction: column;
   }
 }
@@ -278,7 +279,9 @@
 }
 @media(max-width: 767px) {
   .logged-in-landing-container1 {
+    width: auto;
     flex-direction: column;
+    margin: 0 1rem 0 1rem;
   }
   .logged-in-landing-container6 {
     width: 100%;

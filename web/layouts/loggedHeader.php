@@ -2,7 +2,7 @@
 if($_SESSION["permissionLevel"] < 3){
 	$pfp = $controller->mainManager->getUserFromID($controller->mainManager->getUserIDFromLogin()[0]["id_utilisateur"])[0]["pfp"];
 } else {
-	$pfp = "../public/leetram-200h.png";
+	$pfp = "car.jpg";
 }
 ?>
 
@@ -12,7 +12,7 @@ if($_SESSION["permissionLevel"] < 3){
 			<img alt="Logo Practicum" src="../public/practicum2.svg" class="logged-in-header-image" />
 		</a>
 		<div class="search-bar-container search-bar-root-class-name2">
-			<?php require_once("layouts/search-bar.php")?>
+			<?php require("layouts/search-bar.php")?>
 		</div>
 		<div class="logged-in-header-container">
 			<div class="logged-in-header-btn-group">

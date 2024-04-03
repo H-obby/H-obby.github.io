@@ -8,8 +8,7 @@
     <div class="logged-in-landing-container7">
       <div class="search-bar-container search-bar-root-class-name1">
         <div class="search-bar-container1">
-          <img alt="image" src="../public/search-svgrepo-com%20(1).svg" class="search-bar-image" />
-          <input type="text" placeholder="Rechercher" class="search-bar-textinput input" />
+					<?php require("layouts/search-bar.php")?>
         </div>
       </div>
 			<?php
