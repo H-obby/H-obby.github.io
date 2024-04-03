@@ -1,7 +1,7 @@
 <?php
 echo '
 <header class="header-header">
-	<a href="index" class="header-logo-name">
+	<a href="index&t='.time().'" class="header-logo-name">
 		<img class="header-image" alt="Logo Practicum" id="logo"/>
 	</a>
 	<div class="header-btn-group">

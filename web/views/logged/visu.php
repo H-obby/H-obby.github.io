@@ -157,6 +157,7 @@
     if($_SESSION["permissionLevel"] <= 1) header("Location: index");
     $controller = new MainController();
     $userData = $controller->mainManager->getUserFromID($_GET['userID'])[0];
+    $pfp = isset($userData["pfp"]) ? $userData["pfp"] :"placeholder.png";
     echo '
       <main class="visu-etudiant-main">
           <div class="visu-offre-stage-container1">
@@ -177,7 +178,7 @@
           </div>
         <img
           alt="Photo de profil d\''.$userData["surname"].' '.$userData["name"].'"
-          src="'.URL.'public/pfp/'.$userData["pfp"].'"
+          src="'.URL.'public/pfp/'.$pfp.'"
           class="visu-etudiant-image"
         />
         <div class="visu-etudiant-main-text-content">
@@ -225,6 +226,7 @@
     $controller = new MainController();
     $entrepriseData = $controller->mainManager->getEntrepriseFromID($_GET['entrepriseID'])[0];
     $jsonDesc = json_encode($entrepriseData["description"]);
+    $pfp = $entrepriseData["logo"]!="" ? $entrepriseData["logo"] :"placeholder.png";
     echo '
       <main class="visu-offre-stage-main">
         <div class="visu-offre-stage-container1">
@@ -232,7 +234,7 @@
             <div class="visu-offre-stage-container3">
               <img
                 alt="Logo de '.$entrepriseData["nom"].'"
-                src="'.URL.'public/logo/'.$entrepriseData["logo"].'"
+                src="'.URL.'public/logo/'.$pfp.'"
                 class="visu-etudiant-image"
                 style="margin-bottom:2rem;"
               />
@@ -338,6 +340,7 @@
         </li>';
       } ;
     }
+    $pfp = $userData["pfp"]!="" ? $userData["pfp"] :"placeholder.png";
 
     echo '
       <main class="visu-etudiant-main">
@@ -360,7 +363,7 @@
           </div>
         <img
           alt="Photo de profil d\''.$userData["surname"].' '.$userData["name"].'"
-          src="'.URL.'public/pfp/'.$userData["pfp"].'"
+          src="'.URL.'public/pfp/'.$pfp.'"
           class="visu-etudiant-image"
         />
         <div class="visu-etudiant-main-text-content">

@@ -295,12 +295,13 @@
 						foreach($datas["entreprises"] as &$entrepriseContainer){
 							$entrepriseData = $controller->mainManager->getEntrepriseFromID($entrepriseContainer["id_entreprise"])[0];
 							
+							$pfp = $entrepriseData["logo"]!="" ? $entrepriseData["logo"] :"placeholder.png";
 							echo '
 							<div onclick="window.location=\'affiche&entrepriseID='.$entrepriseContainer["id_entreprise"].'\';" class="entreprise-card-blog-post-card">
 								<div class="entreprise-card-container">
 									<img
 										alt="Logo de '.$entrepriseData["nom"].'"
-										src="'.URL.'public/pfp/'.$entrepriseData["logo"].'"
+										src="'.URL.'public/pfp/'.$pfp.'"
 										class="entreprise-card-image"
 									/>
 									<div class="entreprise-card-container1">
@@ -325,11 +326,12 @@
 						foreach($datas["users"] as &$userContainer){
 							$userData = $controller->mainManager->getUserFromID($userContainer["id_utilisateur"])[0];
 							
+							$pfp = isset($userData["pfp"]) ? $userData["pfp"] :"placeholder.png";
 							echo '
 							<div onclick="window.location=\'affiche&userID='.$userContainer["id_utilisateur"].'\';" class="etudiant-card-blog-post-card">
 								<div class="etudiant-card-container">
 									<img
-										src="'.URL.'public/pfp/'.$userData["pfp"].'"
+										src="'.URL.'public/pfp/'.$pfp.'"
 										class="etudiant-card-image"
 										alt="Photo de '.$userData["name"].' '.$userData["surname"].'"
 									/>
@@ -373,12 +375,13 @@
 							  }
 							}
 							$HTMLCentreList = substr($HTMLCentreList, 0, -2);
+							$pfp = $userData["pfp"]!="" ? $userData["pfp"] :"placeholder.png";
 							
 							echo '
 							<div onclick="window.location=\'affiche&tuteurID='.$userContainer["id_utilisateur"].'\';" class="etudiant-card-blog-post-card">
 								<div class="etudiant-card-container">
 									<img
-										src="'.URL.'public/pfp/'.$userData["pfp"].'"
+										src="'.URL.'public/pfp/'.$pfp.'"
 										class="etudiant-card-image"
 										alt="Photo de '.$userData["name"].' '.$userData["surname"].'"
 									/>

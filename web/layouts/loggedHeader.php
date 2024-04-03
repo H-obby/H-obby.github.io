@@ -8,7 +8,7 @@ if($_SESSION["permissionLevel"] < 3){
 
 <div>
 	<header data-role="Header" class="logged-in-header-header">
-		<a href="index" class="logged-in-header-logo-name">
+		<a href="index&t=<?=time()?>" class="logged-in-header-logo-name">
 			<img alt="Logo Practicum" class="logged-in-header-image" id="logo"/>
 		</a>
 		<div class="search-bar-container search-bar-root-class-name2">
