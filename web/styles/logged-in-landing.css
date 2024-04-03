@@ -26,6 +26,7 @@
 }
 .offre-stage-container {
   display: flex;
+  width: 100%;
   align-self: stretch;
   align-items: flex-start;
   margin-left: var(--dl-space-space-twounits);
