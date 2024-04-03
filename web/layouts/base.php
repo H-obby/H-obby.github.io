@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta name="theme-color">
+        <meta name="theme-color"content="#e7f0f2ff"/>
         <link
         rel="shortcut icon"
         href=<?=URL."public/practicum.svg"?>
