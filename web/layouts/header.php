@@ -2,7 +2,7 @@
 echo '
 <header class="header-header">
 	<a href="index" class="header-logo-name">
-		<img src="../public/practicum2.svg" class="header-image" alt="Logo Practicum" />
+		<img class="header-image" alt="Logo Practicum" id="logo"/>
 	</a>
 	<div class="header-btn-group">
 		<a href="login" class="header-auth button">
@@ -10,4 +10,18 @@ echo '
 		</a>
 	</div>
 </header>
+<script>
+	if(screen.width < 767){
+		document.getElementById("logo").src = "../public/practicum.svg";
+	} else {
+		document.getElementById("logo").src = "../public/practicum2.svg";
+	}
+	addEventListener("resize", function(){
+		if(screen.width < 767){
+			document.getElementById("logo").src = "../public/practicum.svg";
+		} else {
+			document.getElementById("logo").src = "../public/practicum2.svg";
+		}
+	});
+</script>
 ';

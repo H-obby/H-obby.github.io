@@ -9,7 +9,7 @@ if($_SESSION["permissionLevel"] < 3){
 <div>
 	<header data-role="Header" class="logged-in-header-header">
 		<a href="index" class="logged-in-header-logo-name">
-			<img alt="Logo Practicum" src="../public/practicum2.svg" class="logged-in-header-image" />
+			<img alt="Logo Practicum" class="logged-in-header-image" id="logo"/>
 		</a>
 		<div class="search-bar-container search-bar-root-class-name2">
 			<?php require("layouts/search-bar.php")?>
@@ -49,4 +49,18 @@ if($_SESSION["permissionLevel"] < 3){
 			</div>
 		</div>
 	</header>
+	<script>
+		if(screen.width < 767){
+			document.getElementById("logo").src = "../public/practicum.svg";
+		} else {
+			document.getElementById("logo").src = "../public/practicum2.svg";
+		}
+		addEventListener("resize", function(e){
+			if(screen.width < 767){
+				document.getElementById("logo").src = "../public/practicum.svg";
+			} else {
+				document.getElementById("logo").src = "../public/practicum2.svg";
+			}
+		});
+	</script>
 </div>
