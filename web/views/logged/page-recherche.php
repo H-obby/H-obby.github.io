@@ -132,7 +132,7 @@
 					if($datas["totalMatching"] > 0){
 						echo '
 						<span class="number-indicator">
-							Nous avons trouvés '.$datas["totalMatching"].' stages pour vous!
+							Nous avons trouvés '.($datas["totalMatching"]-1).' stages pour vous!
 						</span>
 						';
 						foreach($datas["stages"] as &$stageContainer){
@@ -290,7 +290,7 @@
 					if($datas["totalMatching"] > 0){
 						echo '
 						<span class="number-indicator">
-							Nous avons trouvés '.$datas["totalMatching"].' entreprises correspondantes!
+							Nous avons trouvés '.($datas["totalMatching"]-1).' entreprises correspondantes!
 						</span>
 						';
 						foreach($datas["entreprises"] as &$entrepriseContainer){
@@ -301,7 +301,7 @@
 								<div class="entreprise-card-container">
 									<img
 										alt="Logo de '.$entrepriseData["nom"].'"
-										src="'.URL.'public/'.$entrepriseData["logo"].'"
+										src="'.URL.'public/pfp/'.$entrepriseData["logo"].'"
 										class="entreprise-card-image"
 									/>
 									<div class="entreprise-card-container1">
@@ -320,7 +320,7 @@
 					if($datas["totalMatching"] > 0){
 						echo '
 						<span class="number-indicator">
-							Nous avons trouvés '.$datas["totalMatching"].' utilisateurs correspondants!
+							Nous avons trouvés '.($datas["totalMatching"]).' utilisateurs correspondants!
 						</span>
 						';
 						foreach($datas["users"] as &$userContainer){
@@ -330,7 +330,7 @@
 							<div onclick="window.location=\'affiche&userID='.$userContainer["id_utilisateur"].'\';" class="etudiant-card-blog-post-card">
 								<div class="etudiant-card-container">
 									<img
-										src="'.URL.'public/'.$userData["pfp"].'"
+										src="'.URL.'public/pfp/'.$userData["pfp"].'"
 										class="etudiant-card-image"
 										alt="Photo de '.$userData["name"].' '.$userData["surname"].'"
 									/>
@@ -354,7 +354,7 @@
 					if($datas["totalMatching"] > 0){
 						echo '
 						<span class="number-indicator">
-							Nous avons trouvés '.$datas["totalMatching"].' tuteurs correspondants!
+							Nous avons trouvés '.($datas["totalMatching"]).' tuteurs correspondants!
 						</span>
 						';
 						foreach($datas["tuteurs"] as &$userContainer){
@@ -379,7 +379,7 @@
 							<div onclick="window.location=\'affiche&tuteurID='.$userContainer["id_utilisateur"].'\';" class="etudiant-card-blog-post-card">
 								<div class="etudiant-card-container">
 									<img
-										src="'.URL.'public/'.$userData["pfp"].'"
+										src="'.URL.'public/pfp/'.$userData["pfp"].'"
 										class="etudiant-card-image"
 										alt="Photo de '.$userData["name"].' '.$userData["surname"].'"
 									/>

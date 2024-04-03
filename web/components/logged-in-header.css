@@ -75,9 +75,16 @@
 
 
 .profile {
-  height: 3rem;
+  height: 4.5rem;
   width: auto;
   cursor: pointer;
+  align-self: center;
+  object-fit: cover;
+  border-color: var(--dl-color-gray-black);
+  border-width: 3px;
+  margin-left: 2rem;
+  margin-right: var(--dl-space-space-twounits);
+  border-radius: var(--dl-radius-radius-round);
 }
 
 .sub-item {
@@ -155,7 +162,7 @@
     padding-right: var(--dl-space-space-twounits);
   }
 }
-@media(max-width: 479px) {
+@media(max-width: 412px) {
   .logged-in-header-header {
     padding: var(--dl-space-space-unit);
     justify-content: space-between;

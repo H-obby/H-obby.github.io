@@ -101,7 +101,7 @@
     display: none;
   }
 }
-@media(max-width: 479px) {
+@media(max-width: 412px) {
   .search-bar-textinput {
     max-width: var(--dl-size-size-maxwidth);
     min-width: auto;

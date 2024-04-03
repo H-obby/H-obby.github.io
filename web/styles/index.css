@@ -89,7 +89,7 @@
     padding-right: var(--dl-space-space-twounits);
   }
 }
-@media(max-width: 479px) {
+@media(max-width: 412px) {
   .index-hero {
     min-height: 60%;
     padding-top: var(--dl-space-space-twounits);

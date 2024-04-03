@@ -791,7 +791,7 @@ if(isset($_GET["stage_id"]) || (isset($_GET["type"]) && $_GET["type"] == "stage"
                             type: "success"
                         },
                         success: function(){
-                            window.location.replace("affiche&userID='.$answer.'&t='.time().'");
+                            window.location.replace("affiche&tuteurID='.$answer.'&t='.time().'");
                         },
                         error: function(jqXHR, textStatus, errorThrown){
                             console.log(errorThrown);

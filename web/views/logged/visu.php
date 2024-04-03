@@ -177,7 +177,7 @@
           </div>
         <img
           alt="Photo de profil d\''.$userData["surname"].' '.$userData["name"].'"
-          src="'.URL.'public/'.$userData["pfp"].'"
+          src="'.URL.'public/pfp/'.$userData["pfp"].'"
           class="visu-etudiant-image"
         />
         <div class="visu-etudiant-main-text-content">
@@ -232,7 +232,7 @@
             <div class="visu-offre-stage-container3">
               <img
                 alt="Logo de '.$entrepriseData["nom"].'"
-                src="'.URL.'public/'.$entrepriseData["logo"].'"
+                src="'.URL.'public/logo/'.$entrepriseData["logo"].'"
                 class="visu-etudiant-image"
                 style="margin-bottom:2rem;"
               />
@@ -360,7 +360,7 @@
           </div>
         <img
           alt="Photo de profil d\''.$userData["surname"].' '.$userData["name"].'"
-          src="'.URL.'public/'.$userData["pfp"].'"
+          src="'.URL.'public/pfp/'.$userData["pfp"].'"
           class="visu-etudiant-image"
         />
         <div class="visu-etudiant-main-text-content">

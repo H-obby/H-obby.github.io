@@ -30,6 +30,22 @@ class MainManager {
         return $data;
     }
 
+    public function getUserIDFromLogin(){
+        try {
+            $query = $this->dbConnect->prepare(
+                "SELECT id_utilisateur
+                FROM utilisateur
+                WHERE login = :login");
+            $query->bindvalue(":login", $_SESSION["loggedAs"]);
+            $query->execute();
+            return $query->fetchAll();
+        } catch (Exception $exception) {
+            echo '<h1>'.$exception->getMessage().'</h1>';
+            echo '<a href="https://www.google.fr/search?q='.$exception->getMessage().'" target="_blank">Recherche Google</a>';
+            die; // On arrête le code PHP
+        }
+    }
+
     public function getAdminName(){
         try {
             $query = $this->dbConnect->prepare(

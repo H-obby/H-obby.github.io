@@ -30,6 +30,7 @@
 }
 .etudiant-card-image {
   width: auto;
+  max-width: 200px;
   max-height: 60%;
   object-fit: cover;
   border-color: var(--dl-color-gray-black);
@@ -291,7 +292,7 @@
     padding-right: var(--dl-space-space-twounits);
   }
 }
-@media(max-width: 479px) {
+@media(max-width: 412px) {
   .page-recherche-utilisateur-form {
     align-self: center;
   }
@@ -429,7 +430,7 @@
     flex-direction: column;
   }
 }
-@media(max-width: 479px) {
+@media(max-width: 412px) {
   .offre-stage-container {
     margin-left: var(--dl-space-space-halfunit);
     margin-right: var(--dl-space-space-halfunit);
@@ -604,7 +605,7 @@
     padding-right: var(--dl-space-space-twounits);
   }
 }
-@media(max-width: 479px) {
+@media(max-width: 412px) {
   .page-recherche-form {
     align-self: center;
   }
@@ -642,6 +643,7 @@
 }
 .entreprise-card-image {
   width: auto;
+  max-width: 200px;
   height: 40%;
   max-height: auto;
   object-fit: cover;

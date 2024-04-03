@@ -122,7 +122,7 @@
     flex-direction: column;
   }
 }
-@media(max-width: 479px) {
+@media(max-width: 412px) {
   .offre-stage-container {
     margin-left: var(--dl-space-space-halfunit);
     margin-right: var(--dl-space-space-halfunit);

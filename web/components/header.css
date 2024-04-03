@@ -37,7 +37,7 @@
     padding-right: var(--dl-space-space-twounits);
   }
 }
-@media(max-width: 479px) {
+@media(max-width: 412px) {
   .header-header {
     padding: var(--dl-space-space-unit);
   }

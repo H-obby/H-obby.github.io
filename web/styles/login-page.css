@@ -107,7 +107,7 @@
     padding-right: var(--dl-space-space-twounits);
   }
 }
-@media(max-width: 479px) {
+@media(max-width: 412px) {
   .login-page-login-page {
     min-height: 60%;
     padding-top: var(--dl-space-space-twounits);

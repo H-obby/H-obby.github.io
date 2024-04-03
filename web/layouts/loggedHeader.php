@@ -1,3 +1,11 @@
+<?php
+if($_SESSION["permissionLevel"] < 3){
+	$pfp = $controller->mainManager->getUserFromID($controller->mainManager->getUserIDFromLogin()[0]["id_utilisateur"])[0]["pfp"];
+} else {
+	$pfp = "../public/leetram-200h.png";
+}
+?>
+
 <div>
 	<header data-role="Header" class="logged-in-header-header">
 		<a href="index" class="logged-in-header-logo-name">
@@ -14,7 +22,7 @@
 
 				<!-- Dropdown -->
 				<div class="dropdown_li">
-					<img src="../public/leetram-200h.png" class="profile" alt="profile picture"/>
+					<img src="<?= URL.'public/pfp/'.$pfp?>" class="profile" alt="profile picture"/>
 					<ul class="dropdown_ul">
 					  <li class="sub-item">
 						<span class="material-symbols-outlined"> manage_accounts </span>

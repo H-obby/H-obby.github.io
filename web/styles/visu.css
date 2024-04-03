@@ -229,7 +229,7 @@
     justify-content: flex-start;
   }
 }
-@media(max-width: 479px) {
+@media(max-width: 412px) {
   .visu-offre-stage-main {
     align-items: flex-start;
     flex-direction: column;
@@ -362,7 +362,7 @@
     justify-content: flex-start;
   }
 }
-@media(max-width: 479px) {
+@media(max-width: 412px) {
   .visu-etudiant-main {
     align-items: flex-start;
     flex-direction: column;
